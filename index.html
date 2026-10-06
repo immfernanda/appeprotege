@@ -151,7 +151,7 @@ header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-
 .s-btn{width:100%;border:0;border-radius:12px;padding:12px;font-weight:700;font-size:.8rem;cursor:pointer;color:#fff;background:var(--g,linear-gradient(90deg,#10b981,#16a34a));display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s}
 .s-btn:active{transform:scale(.97)}
 .s-btn svg{width:16px;height:16px}
-.pill{font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:999px}
+.pill{font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
 .p-ok{background:rgba(16,185,129,.15);color:#34d399}.p-warn{background:rgba(244,187,14,.15);color:#F4BB0E}.p-bad{background:rgba(244,63,94,.15);color:#fb7185}.p-info{background:rgba(100,198,204,.15);color:#64C6CC}
 .clock{text-align:center;padding:18px 0 14px}
 .clock b{font-size:2.6rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -183,6 +183,17 @@ header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-
 .drop:hover{border-color:#d946ef;background:rgba(217,70,239,.06)}
 .drop svg{width:28px;height:28px;color:#e879f9;margin:0 auto 8px}
 .dot{width:8px;height:8px;border-radius:50%;background:#a855f7;flex:none}
+.crumb{display:block;font-size:.58rem;color:#8b93b0;line-height:1.1}
+.av-mini{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);display:grid;place-items:center;font-weight:800;font-size:.66rem;flex:none}
+.s-check{display:flex;align-items:center;gap:8px;font-size:.72rem;color:#d5d9e8;margin-bottom:12px;cursor:pointer}
+.s-check input{accent-color:#10b981}
+.s-btn-sm{width:auto;padding:7px 10px;font-size:.66rem;border-radius:9px}
+.empty{text-align:center;color:#5e678a;font-size:.72rem;padding:22px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.empty svg{width:28px;height:28px}
+.steps-mini{display:flex;flex-wrap:wrap;align-items:center;gap:4px;background:#0e1530;border:1px solid #1a2347;border-radius:12px;padding:8px;margin-bottom:10px}
+.steps-mini span{font-size:.56rem;font-weight:700;border:1px solid #2b3557;border-radius:999px;padding:3px 7px}
+.steps-mini span.rej{color:#fb7185;border-color:#5c1a2a}
+.steps-mini i{font-style:normal;font-size:.56rem;color:#5e678a}
 .toast{position:absolute;left:14px;right:14px;bottom:18px;background:#10b981;color:#fff;font-size:.74rem;font-weight:600;padding:11px 14px;border-radius:12px;display:flex;gap:8px;align-items:center;transform:translateY(120%);opacity:0;transition:.35s;z-index:5}
 .toast svg{width:16px;height:16px}
 .toast.show{transform:none;opacity:1}
@@ -559,8 +570,8 @@ const MODULES = [
    desc:'Registro de ponto pelo celular, com horário e localização, e espelho de ponto sempre disponível para o colaborador e o RH.',
    items:['Marcação em um toque','Validação por localização','Espelho de ponto digital','Banco de horas e ajustes']},
   {id:'colaborador', name:'Gestão do Colaborador', icon:'users', g:['#3b82f6','#6366f1'],
-   desc:'Ficha completa de cada colaborador: dados, documentos, ASO, treinamentos e histórico em um só lugar.',
-   items:['Cadastro e documentos','Vencimento de ASO','Histórico do colaborador','Alertas de pendências']},
+   desc:'Cadastro, sugestões, solicitações, comunicados e férias dos colaboradores da sua empresa, tudo em um só lugar.',
+   items:['Cadastro de funcionários','Sugestões, inclusive anônimas','Solicitações com acompanhamento','Controle de férias e prazos']},
   {id:'rh', name:'Recursos Humanos', icon:'folder-lock', g:['#f59e0b','#d97706'],
    desc:'Rotinas de RH sem papel: holerites, férias e solicitações centralizadas e com acesso seguro.',
    items:['Holerite no app','Solicitação de férias','Documentos assinados','Solicitações ao RH']},
@@ -601,7 +612,49 @@ const pad = n => String(n).padStart(2,'0');
 const nowHM = () => {const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
 
 function toast(msg){const t=$('#toast');t.querySelector('span').textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2200)}
-const topBar = title => `<div class="app-top"><button data-home aria-label="Voltar"><i data-lucide="chevron-left"></i></button><h4>${title}</h4></div>`;
+const topBar = (title, back='home', crumb='') => `<div class="app-top"><button data-go="${back}" aria-label="Voltar"><i data-lucide="chevron-left"></i></button><div>${crumb?`<small class="crumb">${crumb}</small>`:''}<h4>${title}</h4></div></div>`;
+const PARENT = {}; // subtela -> módulo
+const esc = t => String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtD = d => pad(d.getDate())+'/'+pad(d.getMonth()+1);
+const addDays = (n,d=new Date()) => {const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()+n);return x};
+
+/* Próximos feriados nacionais, calculados a partir da data de hoje */
+function pascoa(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da)}
+function feriados(y){
+  const p=pascoa(y), f=(m,d,n,fac)=>({d:new Date(y,m-1,d),n,fac});
+  return [f(1,1,'Confraternização Universal'),{d:addDays(-48,p),n:'Carnaval',fac:1},{d:addDays(-47,p),n:'Carnaval',fac:1},{d:addDays(-2,p),n:'Sexta-feira Santa'},
+    f(4,21,'Tiradentes'),f(5,1,'Dia do Trabalho'),{d:addDays(60,p),n:'Corpus Christi',fac:1},f(9,7,'Independência do Brasil'),
+    f(10,12,'Nossa Senhora Aparecida'),f(11,2,'Finados'),f(11,15,'Proclamação da República'),f(11,20,'Dia Nacional de Zumbi e da Consciência Negra'),f(12,25,'Natal')];
+}
+function proximosFeriados(n=3){
+  const hoje=addDays(0), y=hoje.getFullYear();
+  return [...feriados(y),...feriados(y+1)].filter(h=>h.d>=hoje).sort((a,b)=>a.d-b.d)
+    .filter((h,i,arr)=>!(h.n==='Carnaval'&&arr[i-1]&&arr[i-1].n==='Carnaval')).slice(0,n);
+}
+function comunicadosFeriados(){
+  return proximosFeriados(3).map(h=>{
+    const dia=h.d.toLocaleDateString('pt-BR',{weekday:'long'});
+    return [`${h.fac?'Ponto facultativo':'Feriado'}: ${h.n}`, `${dia.charAt(0).toUpperCase()+dia.slice(1)}, ${fmtD(h.d)}. ${h.fac?'Confira a escala com seu gestor.':'Não haverá expediente.'}`];
+  });
+}
+
+const COL_TILES = [
+  {id:'col_funcionarios', name:'Funcionários', icon:'users', g:['#3b82f6','#6366f1']},
+  {id:'col_sugestoes', name:'Sugestões', icon:'lightbulb', g:['#f59e0b','#ea580c']},
+  {id:'col_solicitacoes', name:'Solicitações', icon:'clipboard-list', g:['#a855f7','#7c3aed']},
+  {id:'col_comunicados', name:'Comunicados', icon:'megaphone', g:['#14b8a6','#0891b2']},
+  {id:'col_ferias', name:'Férias', icon:'plane', g:['#84cc16','#16a34a']}
+];
+COL_TILES.forEach(t=>PARENT[t.id]='colaborador');
+Object.assign(state,{sugestoes:[], solicitacoes:[], novaSolic:false, busca:''});
+const SOLIC_STEPS = ['Aberto','Em Análise','Aprovado','Finalizado'];
+const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','Finalizado':'p-ok','Rejeitado':'p-bad'};
+const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
+const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
+function comunicadosHTML(){
+  const list=comunicadosList(), unread=list.filter((_,i)=>!state.read.has(i)).length;
+  return `<div class="s-muted" style="margin-bottom:10px">${unread?unread+' não lido(s) · toque para confirmar leitura':'Tudo lido ✓'}</div>`+list.map((c,i)=>`<div class="s-card" data-act="read" data-i="${i}" style="cursor:pointer"><div class="s-row"><b>${c[0]}</b>${state.read.has(i)?'<span class="pill p-ok">Lido</span>':'<span class="dot"></span>'}</div><div class="s-muted" style="margin-top:4px">${c[1]}</div></div>`).join('');
+}
 
 const SCREENS = {
   home(){
@@ -636,9 +689,7 @@ const SCREENS = {
     <div class="s-card s-row"><span>Atestado médico · 02/07</span><span class="pill p-ok">Aprovado</span></div>`;
   },
   comunicados(){
-    const list=[['Campanha Setembro Amarelo','Participe da roda de conversa na sexta, às 15h.'],['Novo procedimento de EPI','Confira as novas regras de uso no setor de produção.'],['Exames periódicos','Agende seu exame até o fim do mês.']];
-    const unread=list.filter((_,i)=>!state.read.has(i)).length;
-    return topBar('Comunicados')+`<div class="s-muted" style="margin-bottom:10px">${unread?unread+' não lido(s) · toque para confirmar leitura':'Tudo lido ✓'}</div>`+list.map((c,i)=>`<div class="s-card" data-act="read" data-i="${i}" style="cursor:pointer"><div class="s-row"><b>${c[0]}</b>${state.read.has(i)?'<span class="pill p-ok">Lido</span>':'<span class="dot"></span>'}</div><div class="s-muted" style="margin-top:4px">${c[1]}</div></div>`).join('');
+    return topBar('Comunicados')+comunicadosHTML();
   },
   psicossocial(){
     return topBar('Risco Psicossocial')+`<div class="s-card"><span class="s-muted">Pergunta 3 de 10</span><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:30%"></i></div><p style="margin-top:14px;font-size:.85rem;font-weight:600">Como você avalia sua carga de trabalho nas últimas semanas?</p>
@@ -651,11 +702,37 @@ const SCREENS = {
     return topBar('Integração e Cursos')+c.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill ${x[1]===100?'p-ok':'p-info'}">${x[1]===100?'Concluído':x[1]+'%'}</span></div><div class="bar"><i style="width:${x[1]}%"></i></div></div>`).join('')+`<button class="s-btn" style="--g:linear-gradient(90deg,#14b8a6,#0891b2)" data-act="curso"><i data-lucide="play"></i> Continuar curso</button>`;
   },
   colaborador(){
-    return topBar('Gestão do Colaborador')+`<div class="s-card s-row" style="justify-content:flex-start;gap:12px"><span style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);display:grid;place-items:center;font-weight:800">AS</span><div><b>Ana Souza</b><div class="s-muted">Operadora · Produção</div></div></div>
-    <div class="s-card s-row"><span>ASO periódico</span><span class="pill p-ok">Válido até 03/2027</span></div>
-    <div class="s-card s-row"><span>Treinamentos obrigatórios</span><span class="pill p-warn">1 pendente</span></div>
-    <div class="s-card s-row"><span>Documentos</span><span class="pill p-ok">Completos</span></div>
-    <div class="s-card s-row"><span>Ficha de EPI</span><span class="pill p-info">3 itens</span></div>`;
+    return topBar('Gestão do Colaborador')+`<p class="s-muted" style="margin:-4px 0 16px">Cadastro, sugestões, solicitações e comunicados dos colaboradores da sua empresa.</p>
+    <div class="app-grid">${COL_TILES.map(t=>`<button class="app-ic" data-go="${t.id}"><span class="ic" style="background:${gradOf(t)};--c:${t.g[0]}"><i data-lucide="${t.icon}"></i></span>${t.name}</button>`).join('')}</div>`;
+  },
+  col_funcionarios(){
+    const q=state.busca.toLowerCase(), list=FUNCIONARIOS.filter(f=>f[0].toLowerCase().includes(q)||f[1].toLowerCase().includes(q));
+    return topBar('Funcionários','colaborador','Gestão do Colaborador')+`<input class="s-input" id="buscaFunc" placeholder="Buscar funcionário..." value="${esc(state.busca)}">
+    ${list.map(f=>`<div class="s-card s-row" style="justify-content:flex-start;gap:10px"><span class="av-mini">${f[0].split(' ').map(p=>p[0]).join('')}</span><div style="flex:1;min-width:0"><b>${f[0]}</b><div class="s-muted">${f[1]}</div></div><span class="pill ${f[3]}">${f[2]}</span></div>`).join('')||'<div class="s-muted" style="text-align:center;padding:20px">Nenhum funcionário encontrado.</div>'}`;
+  },
+  col_sugestoes(){
+    return topBar('Sugestões','colaborador','Gestão do Colaborador')+`<p style="color:#f43f5e;font-weight:700;font-size:.8rem;margin-bottom:10px">Envie ideias e melhorias para a organização.</p>
+    <input class="s-input" id="sugTitulo" placeholder="Título" maxlength="60">
+    <textarea class="s-input" id="sugTexto" rows="3" placeholder="Descreva sua sugestão..." maxlength="300"></textarea>
+    <label class="s-check"><input type="checkbox" id="sugAnon"> Enviar anonimamente</label>
+    <button class="s-btn" data-act="sugerir"><i data-lucide="send"></i> Enviar</button>
+    <div style="margin-top:14px">${state.sugestoes.map(s=>`<div class="s-card fade-in"><div class="s-row"><b>${esc(s.t)}</b><span class="pill p-info">Recebida</span></div><div class="s-muted" style="margin-top:4px">${esc(s.x)}</div><div class="s-muted" style="margin-top:6px">${s.a?'Anônimo':'Ana Souza'} · agora</div></div>`).join('')||'<div class="empty"><i data-lucide="lightbulb"></i>Nenhuma sugestão ainda.</div>'}</div>`;
+  },
+  col_solicitacoes(){
+    const steps=`<div class="steps-mini">${SOLIC_STEPS.map(s=>`<span>${s}</span>`).join('<i>›</i>')}<i>ou</i><span class="rej">Rejeitado</span></div>`;
+    const form=state.novaSolic?`<div class="s-card fade-in"><select class="s-input" id="solTipo"><option>Declaração</option><option>Alteração de dados cadastrais</option><option>Adiantamento salarial</option><option>Troca de horário</option><option>Outros</option></select><textarea class="s-input" id="solTexto" rows="2" placeholder="Detalhe sua solicitação..." maxlength="200"></textarea><button class="s-btn" data-act="solicitar"><i data-lucide="send"></i> Enviar solicitação</button></div>`:'';
+    return topBar('Solicitações','colaborador','Gestão do Colaborador')+`<div class="s-row" style="margin-bottom:10px"><span class="s-muted">Suas solicitações</span><button class="s-btn s-btn-sm" data-act="novaSolic"><i data-lucide="${state.novaSolic?'x':'plus'}"></i> ${state.novaSolic?'Cancelar':'Nova solicitação'}</button></div>
+    ${steps}${form}${state.solicitacoes.map(s=>`<div class="s-card"><div class="s-row"><b>${esc(s.t)}</b><span class="pill ${SOLIC_PILL[s.st]}">${s.st}</span></div>${s.x?`<div class="s-muted" style="margin-top:4px">${esc(s.x)}</div>`:''}</div>`).join('')||(state.novaSolic?'':'<div class="empty"><i data-lucide="clipboard-list"></i>Nenhuma solicitação encontrada.</div>')}`;
+  },
+  col_comunicados(){
+    return topBar('Comunicados','colaborador','Gestão do Colaborador')+comunicadosHTML();
+  },
+  col_ferias(){
+    const f=[['Marcos Alves',addDays(24),'p-bad'],['Juliana Prado',addDays(52),'p-warn'],['Carlos Lima',addDays(130),'p-info']];
+    const dias=d=>Math.round((d-addDays(0))/864e5);
+    return topBar('Férias','colaborador','Gestão do Colaborador')+`<p class="s-muted" style="margin-bottom:10px">Férias pendentes de programar, ordenadas pela mais urgente. Prazo limite de 24 meses a partir da contratação.</p>
+    <div class="kpis"><div class="s-card"><b>3</b><span class="s-muted">Pendentes de programar</span></div><div class="s-card" style="border-color:#5c4513"><b style="color:#F4BB0E">1</b><span class="s-muted">Faltando 60 dias ou menos</span></div><div class="s-card" style="border-color:#5c1a2a"><b style="color:#fb7185">1</b><span class="s-muted">Faltando 30 dias ou menos</span></div><div class="s-card" style="border-color:#173a5c"><b style="color:#64C6CC">2</b><span class="s-muted">Já agendadas neste ciclo</span></div></div>
+    ${f.map(x=>`<div class="s-card s-row"><span><b>${x[0]}</b><div class="s-muted">Prazo limite ${fmtD(x[1])}</div></span><span class="pill ${x[2]}">Faltam ${dias(x[1])} dias</span></div>`).join('')}`;
   },
   rh(){
     return topBar('Recursos Humanos')+`<div class="kpis"><div class="s-card"><span class="s-muted">Banco de horas</span><b>+06:30</b></div><div class="s-card"><span class="s-muted">Férias</span><b>18 dias</b></div></div>
@@ -682,13 +759,12 @@ function go(id){
   body.innerHTML=`<div class="fade-in">${SCREENS[id]()}</div>`;
   body.scrollTop=0;
   icons();
-  if(id!=='home') selectTab(id,false);
+  if(id!=='home') selectTab(PARENT[id]||id,false);
 }
 function rerender(){const b=$('#appBody'),st=b.scrollTop;b.innerHTML=`<div>${SCREENS[current]()}</div>`;b.scrollTop=st;icons()}
 
 $('#appBody').addEventListener('click',e=>{
   const g=e.target.closest('[data-go]'); if(g){go(g.dataset.go);return}
-  if(e.target.closest('[data-home]')){go('home');return}
   const a=e.target.closest('[data-act]'); if(!a) return;
   const act=a.dataset.act;
   if(act==='punch'){state.punches.push(nowHM());rerender();toast(PUNCH_LABELS[state.punches.length-1]+' registrada às '+nowHM())}
@@ -702,6 +778,20 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='curso')toast('Retomando NR-35 · Aula 4');
   if(act==='holerite')toast('Holerite de setembro baixado');
   if(act==='ferias')toast('Solicitação enviada ao RH');
+  if(act==='sugerir'){
+    const t=$('#sugTitulo').value.trim(), x=$('#sugTexto').value.trim();
+    if(!t||!x){toast('Preencha o título e a sugestão');return}
+    state.sugestoes.unshift({t,x,a:$('#sugAnon').checked});rerender();toast('Sugestão enviada!');
+  }
+  if(act==='novaSolic'){state.novaSolic=!state.novaSolic;rerender()}
+  if(act==='solicitar'){
+    const s={t:$('#solTipo').value,x:$('#solTexto').value.trim(),st:'Aberto'};
+    state.solicitacoes.unshift(s);state.novaSolic=false;rerender();toast('Solicitação aberta');
+    setTimeout(()=>{s.st='Em Análise';if(current==='col_solicitacoes')rerender()},2500);
+  }
+});
+$('#appBody').addEventListener('input',e=>{
+  if(e.target.id==='buscaFunc'){state.busca=e.target.value;const pos=e.target.selectionStart;rerender();const i=$('#buscaFunc');i.focus();i.setSelectionRange(pos,pos)}
 });
 setInterval(()=>{const t=nowHM();$('#phoneTime').textContent=t;const c=$('#liveClock');if(c)c.textContent=t},1000);
 

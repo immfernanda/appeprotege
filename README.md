@@ -5,7 +5,7 @@ Site: https://immfernanda.github.io/appeprotege/
 
 - `index.html`: página completa (HTML, CSS e JS em um arquivo)
 - `assets/`: logo e imagens
-- `google-apps-script/Codigo.gs`: script que grava os leads na planilha e envia ao CRM
+- O script da planilha (Apps Script) fica fora do repositório porque contém o token secreto do CRM
 
 ## Configuração
 - No `index.html`, em `CONFIG.planilha`, coloque a URL do App da Web do Apps Script (termina em `/exec`).
