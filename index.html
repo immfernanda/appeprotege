@@ -194,6 +194,24 @@ header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-
 .steps-mini span{font-size:.56rem;font-weight:700;border:1px solid #2b3557;border-radius:999px;padding:3px 7px}
 .steps-mini span.rej{color:#fb7185;border-color:#5c1a2a}
 .steps-mini i{font-style:normal;font-size:.56rem;color:#5e678a}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.doc-card{background:#0e1530;border:1px solid #1a2347;border-radius:12px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;color:#fff;cursor:pointer;transition:.2s}
+.doc-card:hover{border-color:#f59e0b}
+.doc-card .ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);display:grid;place-items:center;box-shadow:0 6px 14px -6px #f59e0b}
+.doc-card svg{width:18px;height:18px}
+.doc-card b{font-size:.74rem}
+.doc-card small{font-size:.58rem;color:#8b93b0}
+.ph-modal{position:absolute;inset:0;background:rgba(2,4,14,.75);display:flex;align-items:center;padding:16px;z-index:4}
+.ph-sheet{background:#0e1530;border:1px solid #1a2347;border-radius:16px;padding:14px;width:100%;font-size:.78rem}
+.ph-x{background:none;border:0;color:#8b93b0;cursor:pointer}
+.ph-x svg{width:16px;height:16px}
+.opt{background:#030616;border:1px solid #1a2347;border-radius:12px;padding:16px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:.74rem;cursor:pointer}
+.opt:hover{border-color:#d946ef}
+.opt svg{width:22px;height:22px}
+.folha{width:100%;border-collapse:collapse;font-size:.6rem;font-variant-numeric:tabular-nums}
+.folha th{color:#8b93b0;font-weight:600;text-align:left;padding:4px 3px;border-bottom:1px solid #1a2347}
+.folha td{padding:5px 3px;border-bottom:1px solid #131b3a}
+.folha td span{color:#8b93b0}
 .toast{position:absolute;left:14px;right:14px;bottom:18px;background:#10b981;color:#fff;font-size:.74rem;font-weight:600;padding:11px 14px;border-radius:12px;display:flex;gap:8px;align-items:center;transform:translateY(120%);opacity:0;transition:.35s;z-index:5}
 .toast svg{width:16px;height:16px}
 .toast.show{transform:none;opacity:1}
@@ -573,11 +591,11 @@ const MODULES = [
    desc:'Cadastro, sugestões, solicitações, comunicados e férias dos colaboradores da sua empresa, tudo em um só lugar.',
    items:['Cadastro de funcionários','Sugestões, inclusive anônimas','Solicitações com acompanhamento','Controle de férias e prazos']},
   {id:'rh', name:'Recursos Humanos', icon:'folder-lock', g:['#f59e0b','#d97706'],
-   desc:'Rotinas de RH sem papel: holerites, férias e solicitações centralizadas e com acesso seguro.',
-   items:['Holerite no app','Solicitação de férias','Documentos assinados','Solicitações ao RH']},
+   desc:'Documentos da empresa e do colaborador, relógio ponto e folha de ponto em um só lugar, com acesso seguro.',
+   items:['Documentos de SST (PGR, PCMSO, LTCAT, ASO)','Documentos pessoais solicitados','Relógio ponto','Folha ponto (espelho)']},
   {id:'atestados', name:'Atestados / Declarações', icon:'clipboard-check', g:['#d946ef','#db2777'],
-   desc:'O colaborador fotografa o atestado e envia direto ao RH. Fim dos atestados perdidos no WhatsApp do gestor.',
-   items:['Envio por foto','Status de análise','Controle de afastamentos','Histórico organizado']},
+   desc:'O colaborador escolhe Atestado ou Declaração, fotografa e envia direto ao RH. Fim dos atestados perdidos no WhatsApp do gestor.',
+   items:['Atestado ou declaração','Envio por foto','Acompanhamento do status','Histórico organizado']},
   {id:'epi', name:'EPI', icon:'hard-hat', g:['#f97316','#dc2626'],
    desc:'Controle de entrega, validade e troca de EPIs, com confirmação de recebimento pelo próprio colaborador.',
    items:['Ficha de EPI digital','Confirmação de recebimento','Alertas de troca e validade','Controle por CA']},
@@ -646,6 +664,16 @@ const COL_TILES = [
   {id:'col_ferias', name:'Férias', icon:'plane', g:['#84cc16','#16a34a']}
 ];
 COL_TILES.forEach(t=>PARENT[t.id]='colaborador');
+const RH_TILES = [
+  {id:'rh_docempresa', name:'Documentos da Empresa', icon:'archive'},
+  {id:'rh_docpessoais', name:'Documentos Pessoais', icon:'file-user'},
+  {id:'rh_relogio', name:'Relógio Ponto', icon:'clock'},
+  {id:'rh_folha', name:'Folha Ponto', icon:'file-text'}
+].map(t=>({...t,g:['#f59e0b','#d97706']}));
+RH_TILES.forEach(t=>PARENT[t.id]='rh');
+const DOCS_SST = [['AEP','activity',1],['ASO','stethoscope',3],['Contrato','file-pen-line',1],['LIP','brain',1],['LTCAT','flask-conical',1],['Outros','file-question',2],['PCMSO','heart-pulse',1],['PGR','shield-alert',1]];
+const DOCS_SST_DESC = {AEP:'Avaliação Ergonômica Preliminar',ASO:'Atestados de Saúde Ocupacional',Contrato:'Contrato de prestação de serviços',LIP:'Laudo de Insalubridade e Periculosidade',LTCAT:'Laudo Técnico das Condições Ambientais',Outros:'Documentos complementares',PCMSO:'Programa de Controle Médico de Saúde Ocupacional',PGR:'Programa de Gerenciamento de Riscos'};
+Object.assign(state,{docAberto:null, docsPessoais:{'RG ou CNH':'enviado','Comprovante de residência':'pendente','Certificado de reservista':'pendente'}, atModal:false, atTipo:null, atestados:[]});
 Object.assign(state,{sugestoes:[], solicitacoes:[], novaSolic:false, busca:''});
 const SOLIC_STEPS = ['Aberto','Em Análise','Aprovado','Finalizado'];
 const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','Finalizado':'p-ok','Rejeitado':'p-bad'};
@@ -662,9 +690,10 @@ const SCREENS = {
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
     <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
   },
-  ponto(){
+  rh_relogio(){ return SCREENS.ponto('rh','Relógio Ponto','Recursos Humanos'); },
+  ponto(back='home',title='Registrar Ponto',crumb=''){
     const next = PUNCH_LABELS[state.punches.length];
-    return topBar('Registrar Ponto')+`<div class="clock"><b id="liveClock">${nowHM()}</b><div class="s-muted">${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}</div><span class="geo"><i data-lucide="map-pin"></i> Localização validada</span></div>
+    return topBar(title,back,crumb)+`<div class="clock"><b id="liveClock">${nowHM()}</b><div class="s-muted">${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}</div><span class="geo"><i data-lucide="map-pin"></i> Localização validada</span></div>
     ${next?`<button class="s-btn" data-act="punch"><i data-lucide="fingerprint"></i> Registrar ${next}</button>`:`<div class="s-card" style="text-align:center"><b>Jornada completa ✓</b><div class="s-muted">Bom descanso!</div></div>`}
     <div style="margin-top:14px">${state.punches.map((p,i)=>`<div class="s-card s-row"><span>${PUNCH_LABELS[i]}</span><span class="pill p-ok">${p}</span></div>`).join('')||'<div class="s-muted" style="text-align:center">Nenhum registro hoje</div>'}</div>`;
   },
@@ -682,11 +711,16 @@ const SCREENS = {
     ${state.epiSigned?'':`<button class="s-btn" style="--g:linear-gradient(90deg,#f97316,#dc2626)" data-act="epi"><i data-lucide="pen-line"></i> Confirmar recebimento</button>`}`;
   },
   atestados(){
-    return topBar('Atestados / Declarações')+`<div class="drop" data-act="upload"><i data-lucide="${state.uploaded?'check-circle-2':'camera'}"></i>${state.uploaded?'<b>Atestado enviado ao RH</b><div class="s-muted">Em análise</div>':'<b>Enviar atestado</b><div class="s-muted">Toque para fotografar o documento</div>'}<div class="bar" style="--g:linear-gradient(90deg,#d946ef,#db2777)"><i id="upBar" style="width:${state.uploaded?100:0}%"></i></div></div>
-    <div class="s-muted" style="margin-bottom:8px">Histórico</div>
-    ${state.uploaded?`<div class="s-card s-row"><span>Atestado médico · hoje</span><span class="pill p-warn">Em análise</span></div>`:''}
-    <div class="s-card s-row"><span>Declaração de comparecimento · 14/08</span><span class="pill p-ok">Aprovado</span></div>
-    <div class="s-card s-row"><span>Atestado médico · 02/07</span><span class="pill p-ok">Aprovado</span></div>`;
+    const modal=!state.atModal?'':`<div class="ph-modal fade-in"><div class="ph-sheet">
+      <div class="s-row" style="margin-bottom:12px"><b>${state.atTipo?'Enviar '+state.atTipo:'Enviar Atestado / Declaração'}</b><button class="ph-x" data-act="atFechar" aria-label="Fechar"><i data-lucide="x"></i></button></div>
+      ${!state.atTipo?`<div class="kpis" style="margin:0"><button class="opt" data-act="atTipo" data-t="Atestado"><i data-lucide="stethoscope" style="color:#f9a8d4"></i>Atestado</button><button class="opt" data-act="atTipo" data-t="Declaração"><i data-lucide="file-text" style="color:#7dd3fc"></i>Declaração</button></div>`
+      :`<div class="drop" data-act="upload"><i data-lucide="camera"></i><b>Toque para fotografar</b><div class="s-muted">ou escolher um arquivo</div><div class="bar" style="--g:linear-gradient(90deg,#d946ef,#db2777)"><i id="upBar" style="width:0%"></i></div></div>`}
+    </div></div>`;
+    return topBar('Atestado / Declarações')+`<p class="s-muted" style="margin:-4px 0 12px">Envie seu atestado ou declaração e acompanhe os que você já enviou.</p>
+    <button class="s-btn" data-act="atAbrir"><i data-lucide="plus"></i> Enviar Atestado / Declaração</button>
+    <div style="margin-top:14px">${state.atestados.map(a=>`<div class="s-card s-row fade-in"><span><b>${a.t}</b><div class="s-muted">Enviado hoje às ${a.h}</div></span><span class="pill p-warn">Em análise</span></div>`).join('')}
+    <div class="s-card s-row"><span><b>Declaração</b><div class="s-muted">Comparecimento · 14/08</div></span><span class="pill p-ok">Aprovado</span></div>
+    <div class="s-card s-row"><span><b>Atestado</b><div class="s-muted">Consulta médica · 02/07</div></span><span class="pill p-ok">Aprovado</span></div></div>${modal}`;
   },
   comunicados(){
     return topBar('Comunicados')+comunicadosHTML();
@@ -735,10 +769,32 @@ const SCREENS = {
     ${f.map(x=>`<div class="s-card s-row"><span><b>${x[0]}</b><div class="s-muted">Prazo limite ${fmtD(x[1])}</div></span><span class="pill ${x[2]}">Faltam ${dias(x[1])} dias</span></div>`).join('')}`;
   },
   rh(){
-    return topBar('Recursos Humanos')+`<div class="kpis"><div class="s-card"><span class="s-muted">Banco de horas</span><b>+06:30</b></div><div class="s-card"><span class="s-muted">Férias</span><b>18 dias</b></div></div>
-    <div class="s-card s-row" data-act="holerite" style="cursor:pointer"><span><b>Holerite · Setembro</b><div class="s-muted">Disponível</div></span><i data-lucide="download" style="width:18px;color:#f59e0b"></i></div>
-    <div class="s-card s-row"><span><b>Solicitação de férias</b><div class="s-muted">Janeiro · 15 dias</div></span><span class="pill p-warn">Em análise</span></div>
-    <button class="s-btn" style="--g:linear-gradient(90deg,#f59e0b,#d97706)" data-act="ferias"><i data-lucide="calendar-plus"></i> Solicitar férias</button>`;
+    return topBar('Recursos Humanos','home','Início')+`<div class="app-grid" style="grid-template-columns:repeat(2,1fr);gap:18px 8px;margin-top:8px">${RH_TILES.map(t=>`<button class="app-ic" data-go="${t.id}"><span class="ic" style="background:${gradOf(t)};--c:${t.g[0]}"><i data-lucide="${t.icon}"></i></span>${t.name}</button>`).join('')}</div>`;
+  },
+  rh_docempresa(){
+    const back='rh', crumb='Recursos Humanos';
+    if(state.docAberto){
+      const d=DOCS_SST.find(x=>x[0]===state.docAberto);
+      return `<div class="app-top"><button data-act="docFechar" aria-label="Voltar"><i data-lucide="chevron-left"></i></button><div><small class="crumb">Documentos da Empresa</small><h4>${d[0]}</h4></div></div><p class="s-muted" style="margin:-4px 0 12px">${DOCS_SST_DESC[d[0]]}</p>`+
+        Array.from({length:d[2]},(_,i)=>`<div class="s-card s-row" data-act="docVer" style="cursor:pointer"><span style="display:flex;gap:10px;align-items:center"><i data-lucide="file-text" style="width:20px;color:#f59e0b"></i><span><b>${d[0]}${d[2]>1?' '+(i+1):''} · ${new Date().getFullYear()}</b><div class="s-muted">PDF · arquivado pela eProtege</div></span></span><i data-lucide="eye" style="width:17px;color:#8b93b0"></i></div>`).join('');
+    }
+    return topBar('Documentos da Empresa',back,crumb)+`<p class="s-muted" style="margin:-4px 0 12px">Documentos de Segurança do Trabalho arquivados pela eProtege, organizados por tipo. Somente visualização.</p>
+    <div class="doc-grid">${DOCS_SST.map(d=>`<button class="doc-card" data-act="docAbrir" data-d="${d[0]}"><span class="ic"><i data-lucide="${d[1]}"></i></span><b>${d[0]}</b><small>${d[2]} documento${d[2]>1?'s':''}</small></button>`).join('')}</div>`;
+  },
+  rh_docpessoais(){
+    const docs=Object.entries(state.docsPessoais);
+    return topBar('Documentos Pessoais','rh','Recursos Humanos')+`<p class="s-muted" style="margin:-4px 0 12px">Documentos solicitados pela gestão para o seu cadastro. Anexe os pendentes clicando em "Enviar".</p>`+
+      docs.map(([n,st])=>`<div class="s-card s-row"><span><b>${n}</b><div class="s-muted">${st==='pendente'?'Solicitado pela gestão':'Recebido pela gestão'}</div></span>${st==='pendente'?`<button class="s-btn s-btn-sm" data-act="docEnviar" data-d="${n}"><i data-lucide="upload"></i> Enviar</button>`:'<span class="pill p-ok">Enviado</span>'}</div>`).join('');
+  },
+  rh_folha(){
+    const hoje=addDays(0), dias=[];
+    for(let i=1;dias.length<6&&i<20;i++){const d=addDays(-i,hoje);if(d.getDay()%6)dias.push(d)}
+    const sem=['dom','seg','ter','qua','qui','sex','sáb'];
+    let mes=hoje.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});mes=mes.charAt(0).toUpperCase()+mes.slice(1);
+    const linhas=dias.map((d,i)=>{const e=['07:58','08:02','07:55','08:10','08:00','07:57'][i],s=['17:04','17:00','17:12','17:30','17:01','16:58'][i];return `<tr><td>${fmtD(d)} <span>${sem[d.getDay()]}</span></td><td>${e}</td><td>12:00</td><td>13:00</td><td>${s}</td></tr>`}).join('');
+    return topBar('Folha Ponto','rh','Recursos Humanos')+`<div class="s-row" style="margin-bottom:10px"><b style="font-size:.8rem">${mes}</b><span class="pill p-ok">Banco +06:30</span></div>
+    <div class="s-card" style="padding:8px"><table class="folha"><thead><tr><th>Dia</th><th>Ent.</th><th>Alm.</th><th>Volta</th><th>Saída</th></tr></thead><tbody>${linhas}</tbody></table></div>
+    <button class="s-btn" style="--g:linear-gradient(90deg,#f59e0b,#d97706)" data-act="folhaPdf"><i data-lucide="download"></i> Baixar espelho de ponto</button>`;
   },
   tratativas(){
     return topBar('Tratativas')+`<div class="s-card"><div class="s-row"><b>Ocorrência #0142</b><span class="pill p-warn">Em andamento</span></div><div class="s-muted">Piso escorregadio · Setor de expedição</div></div>
@@ -754,7 +810,7 @@ const SCREENS = {
 
 let current='home';
 function go(id){
-  current=id;
+  current=id; state.docAberto=null; state.atModal=false;
   const body=$('#appBody');
   body.innerHTML=`<div class="fade-in">${SCREENS[id]()}</div>`;
   body.scrollTop=0;
@@ -772,7 +828,15 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='denunciar'){state.protocol='#'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.floor(1000+Math.random()*9000);rerender()}
   if(act==='newden'){state.protocol=null;rerender()}
   if(act==='epi'){state.epiSigned=true;rerender();toast('Recebimento do EPI confirmado')}
-  if(act==='upload'&&!state.uploaded){const bar=$('#upBar');bar.style.width='100%';setTimeout(()=>{state.uploaded=true;rerender();toast('Atestado enviado ao RH')},700)}
+  if(act==='atAbrir'){state.atModal=true;state.atTipo=null;rerender()}
+  if(act==='atFechar'){state.atModal=false;rerender()}
+  if(act==='atTipo'){state.atTipo=a.dataset.t;rerender()}
+  if(act==='upload'){const bar=$('#upBar');if(bar)bar.style.width='100%';const t=state.atTipo;setTimeout(()=>{state.atestados.unshift({t,h:nowHM()});state.atModal=false;rerender();toast(t+' enviado ao RH')},700)}
+  if(act==='docAbrir'){state.docAberto=a.dataset.d;rerender()}
+  if(act==='docFechar'){state.docAberto=null;rerender()}
+  if(act==='docVer')toast('Abrindo documento para visualização');
+  if(act==='docEnviar'){state.docsPessoais[a.dataset.d]='enviado';rerender();toast('Documento enviado à gestão')}
+  if(act==='folhaPdf')toast('Espelho de ponto baixado');
   if(act==='read'){state.read.add(+a.dataset.i);rerender()}
   if(act==='face'){state.face=+a.dataset.i;rerender();toast('Resposta registrada com sigilo')}
   if(act==='curso')toast('Retomando NR-35 · Aula 4');
