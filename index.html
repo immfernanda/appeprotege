@@ -17,7 +17,6 @@
   --slate:#3E5A70;
   --ink:#0B1F3A; --muted:#5B6B80; --line:#E3EAF2;
   --bg:#F5F9FC; --card:#FFFFFF;
-  --wa:#25D366; --wa-dark:#128C4A;
   --grad: linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);
   --radius:20px;
   --shadow:0 20px 50px -20px rgba(0,27,74,.25);
@@ -42,11 +41,8 @@ section{padding:96px 0}
 .btn svg{width:19px;height:19px}
 .btn-primary{background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(18,176,182,.7)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(18,176,182,.85)}
-.btn-wa{background:var(--wa);color:#fff;box-shadow:0 12px 30px -12px rgba(37,211,102,.8)}
-.btn-wa:hover{background:var(--wa-dark);transform:translateY(-2px)}
 .btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
-.wa-glyph{width:20px;height:20px;background:currentColor;-webkit-mask:url(https://cdn.jsdelivr.net/npm/simple-icons@13.0.0/icons/whatsapp.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/npm/simple-icons@13.0.0/icons/whatsapp.svg) center/contain no-repeat;flex:none}
 
 /* Header */
 header{position:fixed;inset:0 0 auto;z-index:50;transition:background .3s,box-shadow .3s}
@@ -313,33 +309,6 @@ footer a:hover{color:var(--aqua)}
 .copy{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 footer .brand .wm{height:24px}
 
-/* WhatsApp floating */
-.wa-float{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
-.wa-fab{width:62px;height:62px;border-radius:50%;border:0;background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 30px -8px rgba(37,211,102,.7);position:relative;transition:transform .2s}
-.wa-fab:hover{transform:scale(1.07)}
-.wa-fab .wa-glyph{width:32px;height:32px}
-.wa-fab::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--wa);animation:pulse 2.2s infinite;z-index:-1}
-@keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.7);opacity:0}}
-.wa-fab .badge-n{position:absolute;top:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:#e11d48;font-size:.7rem;font-weight:700;display:grid;place-items:center;border:2px solid #fff}
-.wa-bubble{background:#fff;color:var(--ink);padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:.82rem;font-weight:600;box-shadow:var(--shadow);max-width:230px;animation:fadeIn .5s}
-.wa-pop{width:340px;max-width:calc(100vw - 32px);background:#fff;border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,27,74,.5);overflow:hidden;display:none;transform-origin:bottom right}
-.wa-pop.open{display:block;animation:popIn .3s ease}
-@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:none}}
-.wa-head{background:#075E54;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
-.wa-head .av{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;padding:6px;flex:none}
-.wa-head b{display:block;font-size:.95rem}
-.wa-head small{opacity:.8;font-size:.74rem;display:flex;align-items:center;gap:5px}
-.wa-head small::before{content:"";width:7px;height:7px;border-radius:50%;background:#25D366}
-.wa-head button{margin-left:auto;background:none;border:0;color:#fff;cursor:pointer;opacity:.8}
-.wa-head button svg{width:20px;height:20px}
-.wa-body{padding:18px;background:#ECE5DD url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23d6cdc2'/%3E%3C/svg%3E")}
-.wa-msg{background:#fff;padding:10px 12px;border-radius:0 12px 12px 12px;font-size:.84rem;margin-bottom:14px;box-shadow:0 1px 1px rgba(0,0,0,.08);max-width:90%}
-.wa-body .f{margin-bottom:10px}
-.wa-body .f input,.wa-body .f select{background:#fff;padding:10px 12px;font-size:.86rem}
-.wa-body .btn{width:100%;margin-top:4px}
-.wa-note{font-size:.68rem;color:#6b7280;text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px}
-.wa-note svg{width:12px;height:12px}
-
 /* Reveal */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
@@ -415,13 +384,13 @@ footer .brand .wm{height:24px}
         <div class="s-row"><b>Seu interesse</b><a href="#monte" class="int-edit">Editar</a></div>
         <div class="int-chips" id="intChips"></div>
       </div>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <label class="consent"><input type="checkbox" id="lgpd" required> <span>Concordo em ser contatado(a) pela eProtege e com o tratamento dos meus dados conforme a LGPD.</span></label>
       <button type="submit" class="btn btn-primary" style="width:100%">Quero uma demonstração <i data-lucide="arrow-right"></i></button>
       <div class="success" id="success">
         <div class="ok"><i data-lucide="check"></i></div>
         <h3>Recebemos seu contato!</h3>
         <p>Obrigado, <b id="sName"></b>. Um especialista eProtege vai falar com você em breve.</p>
-        <button type="button" class="btn btn-wa" id="successWa"><span class="wa-glyph"></span> Adiantar pelo WhatsApp</button>
       </div>
     </form>
   </div>
@@ -577,36 +546,11 @@ footer .brand .wm{height:24px}
   </div>
 </footer>
 
-<!-- WHATSAPP FLOAT -->
-<div class="wa-float">
-  <div class="wa-pop" id="waPop" role="dialog" aria-label="Fale conosco pelo WhatsApp">
-    <div class="wa-head">
-      <div class="av"><img src="assets/simbolo.png" alt=""></div>
-      <div><b>eProtege</b><small>Online agora</small></div>
-      <button id="waClose" aria-label="Fechar"><i data-lucide="x"></i></button>
-    </div>
-    <form class="wa-body" id="waForm" novalidate>
-      <div class="wa-msg">Olá! 👋 Quer conhecer o App eProtege? Deixe seus dados e continue a conversa no WhatsApp.</div>
-      <div class="f"><input id="waNome" placeholder="Nome*" autocomplete="name" required><small class="e">Informe seu nome</small></div>
-      <div class="f"><input id="waTel" type="tel" placeholder="Telefone*" autocomplete="tel" data-mask required><small class="e">Telefone inválido</small></div>
-      <div class="f"><input id="waEmail" type="email" placeholder="E-mail*" autocomplete="email" required><small class="e">E-mail inválido</small></div>
-      <div class="f"><input id="waEmpresa" placeholder="Nome da empresa*" autocomplete="organization" required><small class="e">Informe a empresa</small></div>
-      <div class="f"><select id="waTam" required><option value="">Quantidade de funcionários*</option></select><small class="e">Selecione uma opção</small></div>
-      <button class="btn btn-wa" type="submit"><span class="wa-glyph"></span> Iniciar conversa</button>
-      <div class="wa-note"><i data-lucide="lock"></i> Seus dados estão seguros</div>
-    </form>
-  </div>
-  <div class="wa-bubble" id="waBubble" hidden>Posso ajudar? Fale com um especialista 💬</div>
-  <button class="wa-fab" id="waFab" aria-label="Abrir conversa no WhatsApp"><span class="wa-glyph"></span><span class="badge-n">1</span></button>
-</div>
-
 <script>
 /* ============ CONFIGURAÇÃO ============ */
 const CONFIG = {
-  // Número do WhatsApp comercial: DDI + DDD + número, só dígitos (ex.: 5511999999999)
-  whatsapp: '5500000000000',
-  // Opcional: URL que recebe os leads em JSON (Zapier, Make, RD Station, Google Apps Script…)
-  webhook: ''
+  // URL do App da Web do Google Apps Script ligado à planilha de leads (termina em /exec)
+  planilha: ''
 };
 /* ===================================== */
 
@@ -774,7 +718,6 @@ $('#modTabs').addEventListener('click',e=>{const t=e.target.closest('[data-tab]'
 
 /* ---------- Form ---------- */
 $('#colab').insertAdjacentHTML('beforeend',SIZES.map(s=>`<option>${s}</option>`).join(''));
-$('#waTam').insertAdjacentHTML('beforeend',SIZES.map(s=>`<option>${s}</option>`).join(''));
 
 document.querySelectorAll('[data-mask]').forEach(i=>i.addEventListener('input',()=>{
   let d=i.value.replace(/\D/g,'').slice(0,11);
@@ -784,11 +727,20 @@ const validTel=v=>v.replace(/\D/g,'').length>=10;
 const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 function check(el,ok){el.closest('.f').classList.toggle('err',!ok);return ok}
 
-function openWA(text){window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`,'_blank','noopener')}
+/* Campanha e criativo vêm dos parâmetros UTM do link do anúncio */
+const UTM=(()=>{
+  const q=new URLSearchParams(location.search), keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  let saved={};try{saved=JSON.parse(sessionStorage.getItem('utm')||'{}')}catch(e){}
+  const now={};keys.forEach(k=>{if(q.get(k))now[k]=q.get(k)});
+  const u=Object.keys(now).length?now:saved;
+  try{sessionStorage.setItem('utm',JSON.stringify(u))}catch(e){}
+  return u;
+})();
 function sendLead(data){
-  if(window.dataLayer) dataLayer.push({event:'lead_eprotege_app',...data});
-  if(!CONFIG.webhook) return;
-  fetch(CONFIG.webhook,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...data,origem:'LP App eProtege',data:new Date().toISOString(),pagina:location.href})}).catch(()=>{});
+  const payload={...data,campanha:UTM.utm_campaign||'',criativo:UTM.utm_content||UTM.utm_term||'',origem:UTM.utm_source||'',midia:UTM.utm_medium||'',pagina:location.href,website:$('#website').value};
+  if(window.dataLayer) dataLayer.push({event:'lead_eprotege_app'});
+  if(!CONFIG.planilha){console.warn('CONFIG.planilha vazio: lead não enviado',payload);return}
+  fetch(CONFIG.planilha,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
 }
 
 /* ---------- Builder ---------- */
@@ -822,29 +774,10 @@ $('#leadForm').addEventListener('submit',e=>{
   const ok=[check($('#nome'),$('#nome').value.trim().length>1),check($('#tel'),validTel($('#tel').value)),check($('#email'),validEmail($('#email').value)),check($('#empresa'),$('#empresa').value.trim().length>1),check($('#colab'),!!$('#colab').value)].every(Boolean);
   const lg=$('#lgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
   if(!ok||!lg.checked)return;
-  lastLead={nome:$('#nome').value.trim(),telefone:$('#tel').value,email:$('#email').value.trim(),empresa:$('#empresa').value.trim(),funcionarios:$('#colab').value,modulos:interest.join(', '),canal:'formulario'};
+  lastLead={nome:$('#nome').value.trim(),telefone:$('#tel').value,email:$('#email').value.trim(),empresa:$('#empresa').value.trim(),tamanho:$('#colab').value,interesse:interest.join(', ')};
   sendLead(lastLead);
   $('#sName').textContent=lastLead.nome.split(' ')[0];
   $('#success').classList.add('show');icons();
-});
-$('#successWa').addEventListener('click',()=>{const d=lastLead;openWA(`Olá, eProtege! Quero agendar uma demonstração do App eProtege.\n\n*Nome:* ${d.nome}\n*Empresa:* ${d.empresa}\n*E-mail:* ${d.email}\n*Telefone:* ${d.telefone}\n*Funcionários:* ${d.funcionarios}${d.modulos?`\n*Módulos de interesse:* ${d.modulos}`:''}`)});
-
-/* WhatsApp float */
-const pop=$('#waPop'),bubble=$('#waBubble');
-function togglePop(open){pop.classList.toggle('open',open);bubble.hidden=true;if(open)setTimeout(()=>$('#waNome').focus(),150)}
-$('#waFab').addEventListener('click',()=>togglePop(!pop.classList.contains('open')));
-$('#waClose').addEventListener('click',()=>togglePop(false));
-document.querySelectorAll('[data-open-wa]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();togglePop(true)}));
-setTimeout(()=>{if(!pop.classList.contains('open'))bubble.hidden=false},6000);
-bubble.addEventListener('click',()=>togglePop(true));
-$('#waForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const ok=[check($('#waNome'),$('#waNome').value.trim().length>1),check($('#waTel'),validTel($('#waTel').value)),check($('#waEmail'),validEmail($('#waEmail').value)),check($('#waEmpresa'),$('#waEmpresa').value.trim().length>1),check($('#waTam'),!!$('#waTam').value)].every(Boolean);
-  if(!ok)return;
-  const data={nome:$('#waNome').value.trim(),telefone:$('#waTel').value,email:$('#waEmail').value.trim(),empresa:$('#waEmpresa').value.trim(),funcionarios:$('#waTam').value,canal:'whatsapp-flutuante'};
-  sendLead(data);
-  openWA(`Olá, eProtege! Tenho interesse no App eProtege.\n\n*Nome:* ${data.nome}\n*Telefone:* ${data.telefone}\n*E-mail:* ${data.email}\n*Empresa:* ${data.empresa}\n*Funcionários:* ${data.funcionarios}`);
-  togglePop(false);$('#waForm').reset();
 });
 
 /* ---------- UI niceties ---------- */
