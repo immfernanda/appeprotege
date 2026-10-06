@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App eProtege | Gestão de SST e Pessoas em um só lugar</title>
+<meta name="description" content="Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial, cursos e área comercial em um único app. Conheça o sistema de gestão da eProtege.">
+<link rel="icon" href="assets/simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  /* Paleta oficial: Manual da Marca eProtege */
+  --navy:#001B4A; --blue:#2864B0; --teal:#12B0B6; --aqua:#64C6CC; --yellow:#F4BB0E;
+  --slate:#3E5A70;
+  --ink:#0B1F3A; --muted:#5B6B80; --line:#E3EAF2;
+  --bg:#F5F9FC; --card:#FFFFFF;
+  --wa:#25D366; --wa-dark:#128C4A;
+  --grad: linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);
+  --radius:20px;
+  --shadow:0 20px 50px -20px rgba(0,27,74,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:Montserrat,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+.container{width:min(1180px,100% - 32px);margin-inline:auto}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+h1,h2,h3{line-height:1.15;letter-spacing:-.02em}
+h2{font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:800;color:var(--navy);margin:12px 0 14px}
+.lead{font-size:1.08rem;color:var(--muted);max-width:620px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+section{padding:96px 0}
+.center{text-align:center}.center .lead{margin-inline:auto}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;border:0;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+.btn svg{width:19px;height:19px}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(18,176,182,.7)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(18,176,182,.85)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 12px 30px -12px rgba(37,211,102,.8)}
+.btn-wa:hover{background:var(--wa-dark);transform:translateY(-2px)}
+.btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.wa-glyph{width:20px;height:20px;background:currentColor;-webkit-mask:url(https://cdn.jsdelivr.net/npm/simple-icons@13.0.0/icons/whatsapp.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/npm/simple-icons@13.0.0/icons/whatsapp.svg) center/contain no-repeat;flex:none}
+
+/* Header */
+header{position:fixed;inset:0 0 auto;z-index:50;transition:background .3s,box-shadow .3s}
+header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .sym{height:42px}
+.brand .wm{height:36px}
+.nav-links{display:flex;gap:30px;font-weight:600;font-size:.92rem;color:var(--slate)}
+.nav-links a:hover{color:var(--teal)}
+.nav .btn{padding:11px 20px;font-size:.88rem;white-space:nowrap}
+.menu-btn{display:none;background:none;border:0;cursor:pointer;color:var(--navy)}
+
+/* Hero */
+.hero{position:relative;padding:150px 0 90px;overflow:hidden;background:
+  radial-gradient(900px 500px at 85% 10%,rgba(100,198,204,.28),transparent 60%),
+  radial-gradient(700px 500px at 0% 90%,rgba(40,100,176,.14),transparent 60%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.hero-list{list-style:none;display:grid;gap:12px;margin-top:30px;font-weight:600;color:var(--slate)}
+.hero-list li{display:flex;gap:10px;align-items:center}
+.hero-list svg{width:20px;height:20px;color:var(--teal);flex:none}
+.painel{background:var(--bg);padding-top:120px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:7px 14px 7px 8px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--slate);box-shadow:0 6px 20px -12px rgba(0,27,74,.3)}
+.badge b{background:var(--yellow);color:var(--navy);padding:3px 9px;border-radius:999px;font-size:.72rem;letter-spacing:.04em}
+.hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:var(--navy);margin:22px 0 20px}
+.hero .lead{font-size:1.12rem}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin:34px 0 30px}
+.trust{display:flex;gap:26px;flex-wrap:wrap;font-size:.86rem;color:var(--muted);font-weight:600}
+.trust span{display:flex;align-items:center;gap:7px}
+.trust svg{width:18px;height:18px;color:var(--teal)}
+
+.hero-visual{position:relative}
+.browser{background:#0b1226;border-radius:16px;box-shadow:0 40px 80px -30px rgba(0,27,74,.55);overflow:hidden;transform:perspective(1400px) rotateY(-8deg) rotateX(3deg);transition:transform .6s}
+.hero-visual:hover .browser{transform:perspective(1400px) rotateY(0) rotateX(0)}
+.browser-bar{display:flex;gap:6px;padding:11px 14px;background:#141c33}
+.browser-bar i{width:10px;height:10px;border-radius:50%;background:#2c3655}
+.browser-bar i:nth-child(1){background:#ff5f57}.browser-bar i:nth-child(2){background:#febc2e}.browser-bar i:nth-child(3){background:#28c840}
+.float-card{position:absolute;background:#fff;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);font-size:.82rem;animation:bob 5s ease-in-out infinite}
+.float-card .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none}
+.float-card .ic svg{width:19px;height:19px}
+.float-card strong{display:block;color:var(--navy);font-size:.88rem}
+.float-card small{color:var(--muted)}
+.fc1{left:-34px;bottom:-26px}.fc1 .ic{background:linear-gradient(135deg,#10b981,#16a34a)}
+.fc2{right:-18px;top:-30px;animation-delay:-2.5s}.fc2 .ic{background:linear-gradient(135deg,#f43f5e,#e11d48)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* Stats */
+.stats{padding:0;margin-top:-10px;position:relative;z-index:2}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--navy);border-radius:var(--radius);padding:34px 20px;color:#fff;box-shadow:var(--shadow);background-image:radial-gradient(500px 200px at 100% 0,rgba(18,176,182,.35),transparent 70%)}
+.stat{text-align:center;padding:0 12px;border-right:1px solid rgba(255,255,255,.12)}
+.stat:last-child{border:0}
+.stat b{display:block;font-size:2.3rem;font-weight:800;color:var(--aqua);line-height:1.1}
+.stat span{font-size:.88rem;opacity:.85}
+
+/* Modules / interactive phone */
+.modules{background:#fff}
+.mod-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:start;margin-top:48px}
+.mod-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mod-tab{background:var(--bg);border:1.5px solid transparent;border-radius:16px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;text-align:center;font-size:.78rem;font-weight:600;color:var(--slate);transition:all .25s;line-height:1.25}
+.mod-tab .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;box-shadow:0 8px 18px -8px var(--c,#000);transition:transform .25s}
+.mod-tab .ic svg{width:22px;height:22px}
+.mod-tab:hover{background:#fff;border-color:var(--line);transform:translateY(-3px)}
+.mod-tab:hover .ic{transform:scale(1.08)}
+.mod-tab.active{background:#fff;border-color:var(--teal);color:var(--navy);box-shadow:0 14px 30px -18px rgba(18,176,182,.8)}
+.mod-detail{margin-top:26px;background:linear-gradient(180deg,#F5F9FC,#fff);border:1px solid var(--line);border-radius:var(--radius);padding:30px;min-height:250px}
+.mod-detail h3{font-size:1.45rem;color:var(--navy);font-weight:800;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.mod-detail h3 .tag{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;background:rgba(244,187,14,.18);color:#9a7300;padding:4px 10px;border-radius:999px;font-weight:700}
+.mod-detail p{color:var(--muted)}
+.mod-detail ul{list-style:none;margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
+.mod-detail li{display:flex;gap:9px;font-size:.9rem;font-weight:500}
+.mod-detail li svg{width:18px;height:18px;color:var(--teal);flex:none;margin-top:2px}
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.phone-wrap{position:sticky;top:100px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.phone-hint{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.phone-hint svg{width:16px;height:16px;color:var(--teal)}
+.phone{width:310px;height:630px;background:#0a0f1f;border-radius:46px;padding:12px;box-shadow:0 0 0 2px #1d2540,0 50px 90px -30px rgba(0,27,74,.6);position:relative}
+.phone::before{content:"";position:absolute;top:22px;left:50%;transform:translateX(-50%);width:90px;height:24px;background:#000;border-radius:20px;z-index:3}
+.screen{width:100%;height:100%;border-radius:36px;background:#030616;color:#fff;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{display:flex;justify-content:space-between;padding:16px 26px 0;font-size:.72rem;font-weight:600;height:44px}
+.status span:last-child{display:flex;gap:4px;align-items:center}
+.status svg{width:13px;height:13px}
+.app-body{flex:1;overflow-y:auto;padding:12px 18px 20px;scrollbar-width:none}
+.app-body::-webkit-scrollbar{display:none}
+.app-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.app-top button{background:#111833;border:0;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;cursor:pointer;color:#fff}
+.app-top button svg{width:17px;height:17px}
+.app-top h4{font-size:.95rem;font-weight:700}
+.hello h4{font-size:1.05rem;font-weight:700}
+.hello p{font-size:.72rem;color:#8b93b0;margin-bottom:14px}
+.ponto-bar{display:flex;align-items:center;gap:12px;width:100%;background:linear-gradient(90deg,#10b981,#16a34a);border:0;border-radius:14px;padding:12px;color:#fff;cursor:pointer;font-weight:700;font-size:.85rem;box-shadow:0 10px 24px -12px #10b981;margin-bottom:18px}
+.ponto-bar .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.ponto-bar svg{width:18px;height:18px}
+.ponto-bar .chev{margin-left:auto}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px}
+.app-ic{background:none;border:0;color:#d5d9e8;font-size:.6rem;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;line-height:1.2;text-align:center}
+.app-ic .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;box-shadow:0 8px 16px -8px var(--c);transition:transform .2s}
+.app-ic:hover .ic{transform:scale(1.08)}
+.app-ic svg{width:22px;height:22px}
+/* inner screens */
+.s-card{background:#0e1530;border:1px solid #1a2347;border-radius:14px;padding:12px;margin-bottom:10px;font-size:.74rem}
+.s-card b{font-size:.8rem}
+.s-muted{color:#8b93b0;font-size:.68rem}
+.s-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.s-btn{width:100%;border:0;border-radius:12px;padding:12px;font-weight:700;font-size:.8rem;cursor:pointer;color:#fff;background:var(--g,linear-gradient(90deg,#10b981,#16a34a));display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s}
+.s-btn:active{transform:scale(.97)}
+.s-btn svg{width:16px;height:16px}
+.pill{font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:999px}
+.p-ok{background:rgba(16,185,129,.15);color:#34d399}.p-warn{background:rgba(244,187,14,.15);color:#F4BB0E}.p-bad{background:rgba(244,63,94,.15);color:#fb7185}.p-info{background:rgba(100,198,204,.15);color:#64C6CC}
+.clock{text-align:center;padding:18px 0 14px}
+.clock b{font-size:2.6rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.geo{display:inline-flex;gap:5px;align-items:center;font-size:.64rem;color:#34d399;background:rgba(16,185,129,.12);padding:4px 10px;border-radius:999px;margin-top:6px}
+.geo svg{width:12px;height:12px}
+.s-input{width:100%;background:#0e1530;border:1px solid #1a2347;border-radius:10px;padding:10px;color:#fff;font-size:.74rem;margin-bottom:10px;resize:none}
+.toggle{display:flex;align-items:center;justify-content:space-between;font-size:.74rem;margin-bottom:10px}
+.switch{width:38px;height:22px;border-radius:999px;background:#10b981;position:relative;cursor:pointer;border:0}
+.switch::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.switch.off{background:#2b3557}.switch.off::after{right:19px}
+.bar{height:6px;background:#1a2347;border-radius:6px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--g,linear-gradient(90deg,#14b8a6,#0891b2));border-radius:6px;transition:width .6s}
+.faces{display:flex;justify-content:space-between;margin:14px 0}
+.faces button{width:42px;height:42px;border-radius:12px;border:1px solid #1a2347;background:#0e1530;font-size:1.25rem;cursor:pointer;transition:.2s}
+.faces button.sel{background:linear-gradient(135deg,#fb923c,#ea580c);border-color:transparent;transform:scale(1.1)}
+.tl{position:relative;padding-left:18px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:#1a2347}
+.tl div{position:relative;margin-bottom:14px;font-size:.74rem}
+.tl div::before{content:"";position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;background:#2b3557;border:2px solid #030616}
+.tl div.done::before{background:#22c55e}
+.tl div.now::before{background:#F4BB0E;box-shadow:0 0 0 4px rgba(244,187,14,.2)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.kpis .s-card{margin:0}
+.kpis b{font-size:1.2rem;display:block}
+.chart{display:flex;align-items:flex-end;gap:6px;height:70px;margin-top:10px}
+.chart i{flex:1;background:linear-gradient(180deg,#38bdf8,#2563eb);border-radius:5px 5px 2px 2px;animation:grow .8s ease both}
+@keyframes grow{from{height:0!important}}
+.drop{border:1.5px dashed #2b3557;border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;margin-bottom:12px;font-size:.74rem;transition:.2s}
+.drop:hover{border-color:#d946ef;background:rgba(217,70,239,.06)}
+.drop svg{width:28px;height:28px;color:#e879f9;margin:0 auto 8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#a855f7;flex:none}
+.toast{position:absolute;left:14px;right:14px;bottom:18px;background:#10b981;color:#fff;font-size:.74rem;font-weight:600;padding:11px 14px;border-radius:12px;display:flex;gap:8px;align-items:center;transform:translateY(120%);opacity:0;transition:.35s;z-index:5}
+.toast svg{width:16px;height:16px}
+.toast.show{transform:none;opacity:1}
+
+/* Benefits split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.pains{display:grid;gap:14px;margin-top:28px}
+.pain{display:flex;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;transition:.25s}
+.pain:hover{border-color:var(--aqua);transform:translateX(6px)}
+.pain .ic{width:44px;height:44px;border-radius:12px;background:rgba(18,176,182,.1);color:var(--teal);display:grid;place-items:center;flex:none}
+.pain .ic svg{width:21px;height:21px}
+.pain h4{color:var(--navy);font-size:1rem;margin-bottom:2px}
+.pain p{font-size:.88rem;color:var(--muted)}
+.compare{background:var(--navy);color:#fff;border-radius:24px;padding:34px;position:relative;overflow:hidden}
+.compare::after{content:"";position:absolute;width:300px;height:300px;right:-120px;bottom:-120px;background:radial-gradient(circle,rgba(18,176,182,.45),transparent 70%)}
+.compare h3{font-size:1.25rem;margin-bottom:20px}
+.cmp-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;font-size:.86rem;position:relative;z-index:1}
+.cmp-row div{padding:12px 14px;border-radius:12px;display:flex;gap:8px;align-items:flex-start}
+.cmp-row div svg{width:17px;height:17px;flex:none;margin-top:2px}
+.cmp-row .old{background:rgba(255,255,255,.05);color:#aab6cf}
+.cmp-row .old svg{color:#fb7185}
+.cmp-row .new{background:rgba(18,176,182,.16);color:#fff}
+.cmp-row .new svg{color:var(--aqua)}
+.cmp-head{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;opacity:.7}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:50px;counter-reset:s}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;position:relative;transition:.3s}
+.step:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+.step::before{counter-increment:s;content:"0" counter(s);position:absolute;top:22px;right:26px;font-size:2.6rem;font-weight:800;color:rgba(18,176,182,.15)}
+.step .ic{width:52px;height:52px;border-radius:15px;background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:18px}
+.step h3{color:var(--navy);font-size:1.15rem;margin-bottom:8px}
+.step p{color:var(--muted);font-size:.92rem}
+
+/* Builder */
+.builder{background:linear-gradient(160deg,var(--navy) 0%,#03306e 100%);color:#fff;position:relative;overflow:hidden}
+.builder::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 90% 10%,rgba(18,176,182,.35),transparent 70%),radial-gradient(500px 300px at 0 100%,rgba(40,100,176,.4),transparent 70%)}
+.builder .container{position:relative}
+.builder h2{color:#fff}
+.builder .lead{color:#b9c7e0}
+.b-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:30px;margin-top:44px}
+.b-panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:28px;backdrop-filter:blur(6px)}
+.b-panel h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--aqua);margin-bottom:14px}
+.range-row{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.range-row output{min-width:96px;text-align:center;font-weight:800;font-size:1.3rem;background:rgba(255,255,255,.1);padding:6px 10px;border-radius:12px}
+input[type=range]{flex:1;accent-color:var(--teal);height:6px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.2);background:transparent;color:#dbe4f3;cursor:pointer;font-size:.84rem;font-weight:600;transition:.2s}
+.chip svg{width:16px;height:16px}
+.chip:hover{border-color:var(--aqua)}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.summary .big{font-size:3rem;font-weight:800;line-height:1;color:var(--aqua)}
+.summary ul{list-style:none;margin:18px 0 22px;display:grid;gap:9px}
+.summary li{display:flex;gap:9px;font-size:.88rem;color:#dbe4f3}
+.summary li svg{width:17px;height:17px;color:var(--yellow);flex:none;margin-top:2px}
+.summary .btn{width:100%}
+
+/* Lead form */
+.lead-sec{background:#fff}
+.form-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.why{display:grid;gap:16px;margin-top:28px}
+.why > div{display:flex;gap:14px;align-items:flex-start}
+.why .ic{width:40px;height:40px;border-radius:12px;background:rgba(244,187,14,.16);color:#b98900;display:grid;place-items:center;flex:none}
+.why .ic svg{width:19px;height:19px}
+.why b{color:var(--navy);display:block}
+.why span{font-size:.9rem;color:var(--muted)}
+form.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:var(--shadow);position:relative}
+form.card h3{color:var(--navy);font-size:1.35rem;margin-bottom:4px}
+form.card > p{color:var(--muted);font-size:.9rem;margin-bottom:22px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.full{grid-column:1/-1}
+.f label{font-size:.78rem;font-weight:700;color:var(--slate)}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg);font-size:.92rem;transition:.2s;outline:none;width:100%}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px rgba(18,176,182,.12)}
+.f.err input,.f.err select{border-color:#e11d48}
+.f small.e{color:#e11d48;font-size:.72rem;display:none}
+.f.err small.e{display:block}
+.f-mods{display:flex;flex-wrap:wrap;gap:8px}
+.f-mods label{font-size:.78rem;font-weight:600;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);cursor:pointer;color:var(--slate);transition:.2s;user-select:none}
+.f-mods input{display:none}
+.f-mods label:has(input:checked){background:var(--teal);border-color:var(--teal);color:#fff}
+.consent{display:flex;gap:10px;font-size:.76rem;color:var(--muted);margin:18px 0;align-items:flex-start}
+.consent input{margin-top:3px;accent-color:var(--teal)}
+.form-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-actions .btn{width:100%}
+.int-box{margin-top:16px;background:rgba(18,176,182,.07);border:1.5px dashed var(--aqua);border-radius:14px;padding:12px 14px;animation:fadeIn .4s}
+.int-box .s-row{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--navy);margin-bottom:8px}
+.int-edit{color:var(--teal);font-weight:700;font-size:.78rem}
+.int-chips{display:flex;flex-wrap:wrap;gap:6px}
+.int-chips span{font-size:.74rem;font-weight:600;background:var(--teal);color:#fff;padding:5px 10px;border-radius:999px}
+.success{position:absolute;inset:0;background:#fff;border-radius:24px;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;gap:14px}
+.success.show{display:flex;animation:fadeIn .4s}
+.success .ok{width:76px;height:76px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff}
+.success .ok svg{width:38px;height:38px}
+.success h3{color:var(--navy)}
+.success p{color:var(--muted);max-width:340px}
+
+/* FAQ */
+.faq{max-width:820px;margin:44px auto 0;display:grid;gap:12px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 22px;transition:.2s}
+.faq details[open]{border-color:var(--aqua);box-shadow:0 14px 30px -22px rgba(0,27,74,.5)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 0;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;gap:16px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{width:20px;height:20px;color:var(--teal);transition:transform .3s;flex:none}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq details p{color:var(--muted);padding-bottom:20px;font-size:.94rem}
+
+/* CTA band + footer */
+.cta-band{padding:0 0 96px}
+.cta-box{background:var(--grad);border-radius:28px;padding:56px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:30px;position:relative;overflow:hidden}
+.cta-box::after{content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;background:url(assets/simbolo.png) center/contain no-repeat;opacity:.13;filter:brightness(10)}
+.cta-box h2{color:#fff;margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.2rem)}
+.cta-box p{opacity:.92}
+.cta-box .btns{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.cta-box .btn-ghost{border-color:transparent}
+footer{background:var(--navy);color:#b9c7e0;padding:20px 0;font-size:.8rem}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+footer .brand .wm{height:34px}
+footer h5{color:#fff;font-size:.9rem;margin-bottom:12px}
+footer ul{list-style:none;display:grid;gap:8px}
+footer a:hover{color:var(--aqua)}
+.slogan{margin-top:16px;font-weight:300;font-size:1.05rem;color:#fff;max-width:280px}
+.copy{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+footer .brand .wm{height:24px}
+
+/* WhatsApp floating */
+.wa-float{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.wa-fab{width:62px;height:62px;border-radius:50%;border:0;background:var(--wa);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 30px -8px rgba(37,211,102,.7);position:relative;transition:transform .2s}
+.wa-fab:hover{transform:scale(1.07)}
+.wa-fab .wa-glyph{width:32px;height:32px}
+.wa-fab::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--wa);animation:pulse 2.2s infinite;z-index:-1}
+@keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.7);opacity:0}}
+.wa-fab .badge-n{position:absolute;top:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:#e11d48;font-size:.7rem;font-weight:700;display:grid;place-items:center;border:2px solid #fff}
+.wa-bubble{background:#fff;color:var(--ink);padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:.82rem;font-weight:600;box-shadow:var(--shadow);max-width:230px;animation:fadeIn .5s}
+.wa-pop{width:340px;max-width:calc(100vw - 32px);background:#fff;border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,27,74,.5);overflow:hidden;display:none;transform-origin:bottom right}
+.wa-pop.open{display:block;animation:popIn .3s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:none}}
+.wa-head{background:#075E54;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.wa-head .av{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;padding:6px;flex:none}
+.wa-head b{display:block;font-size:.95rem}
+.wa-head small{opacity:.8;font-size:.74rem;display:flex;align-items:center;gap:5px}
+.wa-head small::before{content:"";width:7px;height:7px;border-radius:50%;background:#25D366}
+.wa-head button{margin-left:auto;background:none;border:0;color:#fff;cursor:pointer;opacity:.8}
+.wa-head button svg{width:20px;height:20px}
+.wa-body{padding:18px;background:#ECE5DD url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23d6cdc2'/%3E%3C/svg%3E")}
+.wa-msg{background:#fff;padding:10px 12px;border-radius:0 12px 12px 12px;font-size:.84rem;margin-bottom:14px;box-shadow:0 1px 1px rgba(0,0,0,.08);max-width:90%}
+.wa-body .f{margin-bottom:10px}
+.wa-body .f input,.wa-body .f select{background:#fff;padding:10px 12px;font-size:.86rem}
+.wa-body .btn{width:100%;margin-top:4px}
+.wa-note{font-size:.68rem;color:#6b7280;text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px}
+.wa-note svg{width:12px;height:12px}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* Responsive */
+@media (max-width:1024px){
+  .hero-grid,.mod-grid,.split,.b-grid,.form-wrap{grid-template-columns:1fr}
+  .hero-visual{max-width:640px;margin:20px auto 0}
+  .phone-wrap{position:static;order:-1}
+  .mod-grid{gap:34px}
+  .f-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  section{padding:72px 0}
+  .nav .btn{padding:9px 14px;font-size:.78rem}
+  .brand .wm{height:26px}.brand .sym{height:32px}
+  .hero{padding-top:118px}
+  .browser{transform:none}
+  .fc1{left:-6px;bottom:-30px}.fc2{right:-6px;top:-34px}
+  .float-card{padding:9px 12px;font-size:.72rem}
+  .stats-grid{grid-template-columns:1fr 1fr;row-gap:24px}
+  .stat:nth-child(2){border:0}
+  .mod-tabs{grid-template-columns:repeat(3,1fr)}
+  .mod-detail ul{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .cmp-row{font-size:.8rem}
+  .fields,.form-actions{grid-template-columns:1fr}
+  form.card{padding:24px}
+  .cta-box{flex-direction:column;align-items:flex-start;padding:36px 26px}
+  .f-grid{grid-template-columns:1fr}
+  .phone{transform:scale(.92);margin:-20px 0}
+}
+@media (max-width:480px){header .brand .wm{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="container nav">
+    <a href="#top" class="brand" aria-label="eProtege, início">
+      <img class="sym" src="assets/simbolo.png" alt="">
+      <img class="wm" src="assets/wordmark.png" alt="eProtege Medicina e Engenharia do Trabalho">
+    </a>
+    <a href="#leadForm" class="btn btn-primary">Quero uma demonstração</a>
+  </div>
+</header>
+
+<!-- HERO + FORM -->
+<section class="hero" id="form">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <h1>Saúde, segurança e gestão de pessoas <span class="grad-text">na palma da mão.</span></h1>
+      <p class="lead">Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial, cursos e área comercial em um único sistema, com o suporte de quem é referência em Saúde e Segurança do Trabalho há mais de 20 anos.</p>
+      <ul class="hero-list">
+        <li><i data-lucide="check-circle-2"></i> Demonstração gratuita e sem compromisso</li>
+        <li><i data-lucide="check-circle-2"></i> App para o colaborador e painel para o gestor</li>
+        <li><i data-lucide="check-circle-2"></i> Dados protegidos conforme a LGPD</li>
+      </ul>
+    </div>
+    <form class="card reveal" id="leadForm" novalidate>
+      <h3>Agende uma demonstração gratuita</h3>
+      <p>Preencha e um especialista entra em contato.</p>
+      <div class="fields">
+        <div class="f full"><label for="nome">Nome*</label><input id="nome" name="nome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome</small></div>
+        <div class="f"><label for="tel">Telefone*</label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="(00) 00000 0000" data-mask required><small class="e">Telefone inválido</small></div>
+        <div class="f"><label for="email">E-mail*</label><input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required><small class="e">E-mail inválido</small></div>
+        <div class="f full"><label for="empresa">Nome da empresa*</label><input id="empresa" name="empresa" autocomplete="organization" placeholder="Nome da empresa" required><small class="e">Informe a empresa</small></div>
+        <div class="f full"><label for="colab">Quantidade de funcionários*</label>
+          <select id="colab" name="colab" required><option value="">Selecione</option></select><small class="e">Selecione uma opção</small></div>
+      </div>
+      <div class="int-box" id="intBox" hidden>
+        <div class="s-row"><b>Seu interesse</b><a href="#monte" class="int-edit">Editar</a></div>
+        <div class="int-chips" id="intChips"></div>
+      </div>
+      <label class="consent"><input type="checkbox" id="lgpd" required> <span>Concordo em ser contatado(a) pela eProtege e com o tratamento dos meus dados conforme a LGPD.</span></label>
+      <button type="submit" class="btn btn-primary" style="width:100%">Quero uma demonstração <i data-lucide="arrow-right"></i></button>
+      <div class="success" id="success">
+        <div class="ok"><i data-lucide="check"></i></div>
+        <h3>Recebemos seu contato!</h3>
+        <p>Obrigado, <b id="sName"></b>. Um especialista eProtege vai falar com você em breve.</p>
+        <button type="button" class="btn btn-wa" id="successWa"><span class="wa-glyph"></span> Adiantar pelo WhatsApp</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat"><b data-count="20" data-prefix="+">0</b><span>anos em SST</span></div>
+      <div class="stat"><b data-count="11">0</b><span>módulos integrados</span></div>
+      <div class="stat"><b data-count="100" data-suffix="%">0</b><span>digital, sem papel</span></div>
+      <div class="stat"><b data-count="24" data-suffix="h">0</b><span>canal de denúncias ativo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules" id="funcionalidades">
+  <div class="container">
+    <div class="center reveal">
+      <span class="eyebrow">Funcionalidades</span>
+      <h2>Tudo o que sua empresa precisa, <span class="grad-text">em um só app</span></h2>
+      <p class="lead">Clique em um módulo e veja como ele funciona no celular do seu colaborador. Experimente: o app é interativo.</p>
+    </div>
+    <div class="mod-grid">
+      <div class="reveal">
+        <div class="mod-tabs" id="modTabs"></div>
+        <div class="mod-detail" id="modDetail"></div>
+      </div>
+      <div class="phone-wrap reveal">
+        <div class="phone">
+          <div class="screen">
+            <div class="status"><span id="phoneTime">9:41</span><span><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span></div>
+            <div class="app-body" id="appBody"></div>
+            <div class="toast" id="toast"><i data-lucide="check-circle-2"></i><span></span></div>
+          </div>
+        </div>
+        <div class="phone-hint"><i data-lucide="mouse-pointer-click"></i> Toque nos botões e teste o app</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="beneficios">
+  <div class="container split">
+    <div class="reveal">
+      <span class="eyebrow">Por que um sistema integrado</span>
+      <h2>Menos planilha e papel. <span class="grad-text">Mais segurança e controle.</span></h2>
+      <p class="lead">Quando ponto, EPI, atestados e denúncias ficam espalhados, o risco trabalhista aumenta. O App eProtege centraliza tudo e deixa sua empresa pronta para auditorias e fiscalizações.</p>
+      <div class="pains">
+        <div class="pain"><div class="ic"><i data-lucide="scale"></i></div><div><h4>Conformidade legal em dia</h4><p>Apoio às exigências da NR-1 (riscos psicossociais), NR-6 (EPI) e Lei 14.457/22 (canal de denúncias).</p></div></div>
+        <div class="pain"><div class="ic"><i data-lucide="timer"></i></div><div><h4>Agilidade no dia a dia</h4><p>Colaborador registra ponto, envia atestado e confirma EPI pelo celular, em segundos.</p></div></div>
+        <div class="pain"><div class="ic"><i data-lucide="lock-keyhole"></i></div><div><h4>Confidencialidade e sigilo</h4><p>Denúncias anônimas e respostas psicossociais protegidas, como prevê a nossa missão.</p></div></div>
+      </div>
+    </div>
+    <div class="compare reveal">
+      <h3>Antes × Depois do App eProtege</h3>
+      <div class="cmp-row cmp-head"><span>Sem o app</span><span>Com o app</span></div>
+      <div class="cmp-row"><div class="old"><i data-lucide="x"></i>Folha de ponto em papel</div><div class="new"><i data-lucide="check"></i>Ponto digital com localização</div></div>
+      <div class="cmp-row"><div class="old"><i data-lucide="x"></i>Fichas de EPI perdidas</div><div class="new"><i data-lucide="check"></i>Entrega assinada no app</div></div>
+      <div class="cmp-row"><div class="old"><i data-lucide="x"></i>Atestado no WhatsApp do gestor</div><div class="new"><i data-lucide="check"></i>Envio direto ao RH</div></div>
+      <div class="cmp-row"><div class="old"><i data-lucide="x"></i>Medo de denunciar</div><div class="new"><i data-lucide="check"></i>Canal 100% anônimo</div></div>
+      <div class="cmp-row"><div class="old"><i data-lucide="x"></i>Comunicado no mural</div><div class="new"><i data-lucide="check"></i>Aviso com confirmação de leitura</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona" style="padding-top:0">
+  <div class="container">
+    <div class="center reveal">
+      <span class="eyebrow">Como funciona</span>
+      <h2>Implantação simples, <span class="grad-text">suporte de verdade</span></h2>
+      <p class="lead">Você não recebe só um software: recebe a equipe eProtege ao seu lado, do diagnóstico ao acompanhamento.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="ic"><i data-lucide="search-check"></i></div><h3>Diagnóstico</h3><p>Entendemos a realidade da sua empresa, número de colaboradores e quais módulos fazem sentido.</p></div>
+      <div class="step reveal"><div class="ic"><i data-lucide="rocket"></i></div><h3>Implantação</h3><p>Configuramos o app, cadastramos sua equipe e treinamos gestores e colaboradores.</p></div>
+      <div class="step reveal"><div class="ic"><i data-lucide="heart-handshake"></i></div><h3>Acompanhamento</h3><p>Suporte contínuo de quem entende de SST, com proximidade e humanidade.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section class="builder" id="monte">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--aqua)">Simulador</span>
+      <h2>Monte a solução ideal para sua empresa</h2>
+      <p class="lead">Selecione o tamanho da equipe e os módulos que mais importam. Suas escolhas vão direto para o formulário.</p>
+    </div>
+    <div class="b-grid">
+      <div class="b-panel reveal">
+        <h4>Quantos funcionários?</h4>
+        <div class="range-row">
+          <input type="range" id="emp" min="1" max="7" value="3" aria-label="Quantidade de funcionários">
+          <output id="empOut"></output>
+        </div>
+        <h4>Quais módulos interessam?</h4>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="b-panel summary reveal" aria-live="polite">
+        <h4>Sua solução</h4>
+        <div class="big" id="sumCount">3</div>
+        <div style="color:#b9c7e0;font-size:.9rem" id="sumLabel"></div>
+        <ul id="sumList"></ul>
+        <a href="#leadForm" class="btn btn-primary" id="sendBuilder">Receber proposta personalizada <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:0;background:#fff">
+  <div class="container">
+    <div class="center reveal">
+      <span class="eyebrow">Dúvidas frequentes</span>
+      <h2>Perguntas e respostas</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal"><summary>O app funciona no celular do colaborador? <i data-lucide="plus"></i></summary><p>Sim. O colaborador acessa pelo celular e os gestores e o RH acompanham tudo pelo painel. Ponto, atestados, EPI e comunicados ficam a poucos toques.</p></details>
+      <details class="reveal"><summary>O canal de denúncias é realmente anônimo? <i data-lucide="plus"></i></summary><p>Sim. O colaborador pode denunciar sem se identificar e acompanha o andamento por um número de protocolo. Isso ajuda sua empresa a atender à Lei 14.457/2022.</p></details>
+      <details class="reveal"><summary>Posso contratar apenas alguns módulos? <i data-lucide="plus"></i></summary><p>Sim. Montamos a solução de acordo com a necessidade e o porte da sua empresa. Na demonstração, ajudamos você a escolher os módulos certos.</p></details>
+      <details class="reveal"><summary>Como o app ajuda com a nova NR-1? <i data-lucide="plus"></i></summary><p>O módulo de Risco Psicossocial aplica questionários confidenciais e organiza os resultados, apoiando o gerenciamento de riscos psicossociais exigido pela NR-1, com a orientação técnica da equipe eProtege.</p></details>
+      <details class="reveal"><summary>Quanto tempo leva a implantação? <i data-lucide="plus"></i></summary><p>Depende do porte e dos módulos escolhidos. Na demonstração, apresentamos um cronograma para a realidade da sua empresa.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" style="background:#fff">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div style="position:relative;z-index:1">
+        <h2>Escale novos patamares com Saúde e Segurança.</h2>
+        <p>Veja o App eProtege funcionando na sua empresa.</p>
+      </div>
+      <div class="btns">
+        <a href="#leadForm" class="btn btn-ghost">Quero uma demonstração</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="copy">
+      <a href="#top" class="brand"><img class="sym" src="assets/simbolo.png" alt="" style="height:30px"><img class="wm" src="assets/wordmark-branco.png" alt="eProtege"></a>
+      <span>© <span id="yr"></span> eProtege. Todos os direitos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float">
+  <div class="wa-pop" id="waPop" role="dialog" aria-label="Fale conosco pelo WhatsApp">
+    <div class="wa-head">
+      <div class="av"><img src="assets/simbolo.png" alt=""></div>
+      <div><b>eProtege</b><small>Online agora</small></div>
+      <button id="waClose" aria-label="Fechar"><i data-lucide="x"></i></button>
+    </div>
+    <form class="wa-body" id="waForm" novalidate>
+      <div class="wa-msg">Olá! 👋 Quer conhecer o App eProtege? Deixe seus dados e continue a conversa no WhatsApp.</div>
+      <div class="f"><input id="waNome" placeholder="Nome*" autocomplete="name" required><small class="e">Informe seu nome</small></div>
+      <div class="f"><input id="waTel" type="tel" placeholder="Telefone*" autocomplete="tel" data-mask required><small class="e">Telefone inválido</small></div>
+      <div class="f"><input id="waEmail" type="email" placeholder="E-mail*" autocomplete="email" required><small class="e">E-mail inválido</small></div>
+      <div class="f"><input id="waEmpresa" placeholder="Nome da empresa*" autocomplete="organization" required><small class="e">Informe a empresa</small></div>
+      <div class="f"><select id="waTam" required><option value="">Quantidade de funcionários*</option></select><small class="e">Selecione uma opção</small></div>
+      <button class="btn btn-wa" type="submit"><span class="wa-glyph"></span> Iniciar conversa</button>
+      <div class="wa-note"><i data-lucide="lock"></i> Seus dados estão seguros</div>
+    </form>
+  </div>
+  <div class="wa-bubble" id="waBubble" hidden>Posso ajudar? Fale com um especialista 💬</div>
+  <button class="wa-fab" id="waFab" aria-label="Abrir conversa no WhatsApp"><span class="wa-glyph"></span><span class="badge-n">1</span></button>
+</div>
+
+<script>
+/* ============ CONFIGURAÇÃO ============ */
+const CONFIG = {
+  // Número do WhatsApp comercial: DDI + DDD + número, só dígitos (ex.: 5511999999999)
+  whatsapp: '5500000000000',
+  // Opcional: URL que recebe os leads em JSON (Zapier, Make, RD Station, Google Apps Script…)
+  webhook: ''
+};
+/* ===================================== */
+
+const MODULES = [
+  {id:'ponto', name:'Cartão Ponto', icon:'clock', g:['#10b981','#16a34a'], tag:'Mais usado',
+   desc:'Registro de ponto pelo celular, com horário e localização, e espelho de ponto sempre disponível para o colaborador e o RH.',
+   items:['Marcação em um toque','Validação por localização','Espelho de ponto digital','Banco de horas e ajustes']},
+  {id:'colaborador', name:'Gestão do Colaborador', icon:'users', g:['#3b82f6','#6366f1'],
+   desc:'Ficha completa de cada colaborador: dados, documentos, ASO, treinamentos e histórico em um só lugar.',
+   items:['Cadastro e documentos','Vencimento de ASO','Histórico do colaborador','Alertas de pendências']},
+  {id:'rh', name:'Recursos Humanos', icon:'folder-lock', g:['#f59e0b','#d97706'],
+   desc:'Rotinas de RH sem papel: holerites, férias e solicitações centralizadas e com acesso seguro.',
+   items:['Holerite no app','Solicitação de férias','Documentos assinados','Solicitações ao RH']},
+  {id:'atestados', name:'Atestados / Declarações', icon:'clipboard-check', g:['#d946ef','#db2777'],
+   desc:'O colaborador fotografa o atestado e envia direto ao RH. Fim dos atestados perdidos no WhatsApp do gestor.',
+   items:['Envio por foto','Status de análise','Controle de afastamentos','Histórico organizado']},
+  {id:'epi', name:'EPI', icon:'hard-hat', g:['#f97316','#dc2626'],
+   desc:'Controle de entrega, validade e troca de EPIs, com confirmação de recebimento pelo próprio colaborador.',
+   items:['Ficha de EPI digital','Confirmação de recebimento','Alertas de troca e validade','Controle por CA']},
+  {id:'tratativas', name:'Tratativas', icon:'handshake', g:['#22c55e','#16a34a'],
+   desc:'Registre ocorrências e acompanhe cada tratativa do início ao fim, com responsáveis e prazos.',
+   items:['Registro de ocorrências','Plano de ação','Responsáveis e prazos','Histórico auditável']},
+  {id:'comunicados', name:'Comunicados', icon:'megaphone', g:['#a855f7','#7c3aed'],
+   desc:'Envie avisos para toda a empresa ou por setor e saiba exatamente quem leu.',
+   items:['Envio por setor','Confirmação de leitura','Anexos e imagens','Notificações no celular']},
+  {id:'psicossocial', name:'Risco Psicossocial', icon:'brain', g:['#fb923c','#ea580c'], tag:'NR-1',
+   desc:'Questionários confidenciais para mapear riscos psicossociais, apoiando o gerenciamento exigido pela NR-1.',
+   items:['Questionários anônimos','Indicadores por setor','Apoio técnico eProtege','Plano de ação']},
+  {id:'denuncias', name:'Canal de Denúncias', icon:'shield-alert', g:['#f43f5e','#e11d48'], tag:'Anônimo',
+   desc:'Canal 100% anônimo e seguro para relatos de assédio, conduta e segurança, com acompanhamento por protocolo.',
+   items:['Denúncia anônima','Protocolo de acompanhamento','Apoio à Lei 14.457/22','Sigilo das informações']},
+  {id:'cursos', name:'Integração e Cursos', icon:'graduation-cap', g:['#14b8a6','#0891b2'],
+   desc:'Integração de novos colaboradores e trilhas de cursos e treinamentos com acompanhamento de progresso.',
+   items:['Integração digital','Trilhas de NRs','Progresso por colaborador','Certificados']},
+  {id:'comercial', name:'Área Comercial', icon:'briefcase', g:['#38bdf8','#2563eb'],
+   desc:'Acompanhe leads, propostas e metas da equipe comercial com indicadores em tempo real.',
+   items:['Funil de vendas','Propostas e metas','Indicadores em tempo real','Relatórios da equipe']}
+];
+const SIZES = ['Até 20','21 a 50','51 a 100','101 a 250','251 a 500','501 a 1000','Mais de 1000'];
+const gradOf = m => `linear-gradient(135deg,${m.g[0]},${m.g[1]})`;
+const $ = s => document.querySelector(s);
+const icons = () => lucide.createIcons();
+
+/* ---------- Phone app ---------- */
+const state = {punches:[], epiSigned:false, read:new Set(), face:null, anon:true, protocol:null, uploaded:false};
+const PUNCH_LABELS = ['Entrada','Saída almoço','Volta almoço','Saída'];
+const pad = n => String(n).padStart(2,'0');
+const nowHM = () => {const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+
+function toast(msg){const t=$('#toast');t.querySelector('span').textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2200)}
+const topBar = title => `<div class="app-top"><button data-home aria-label="Voltar"><i data-lucide="chevron-left"></i></button><h4>${title}</h4></div>`;
+
+const SCREENS = {
+  home(){
+    return `<div class="hello"><h4>Bem-vindo(a), Ana!</h4><p>Escolha uma área para começar.</p></div>
+    <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
+    <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
+  },
+  ponto(){
+    const next = PUNCH_LABELS[state.punches.length];
+    return topBar('Registrar Ponto')+`<div class="clock"><b id="liveClock">${nowHM()}</b><div class="s-muted">${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}</div><span class="geo"><i data-lucide="map-pin"></i> Localização validada</span></div>
+    ${next?`<button class="s-btn" data-act="punch"><i data-lucide="fingerprint"></i> Registrar ${next}</button>`:`<div class="s-card" style="text-align:center"><b>Jornada completa ✓</b><div class="s-muted">Bom descanso!</div></div>`}
+    <div style="margin-top:14px">${state.punches.map((p,i)=>`<div class="s-card s-row"><span>${PUNCH_LABELS[i]}</span><span class="pill p-ok">${p}</span></div>`).join('')||'<div class="s-muted" style="text-align:center">Nenhum registro hoje</div>'}</div>`;
+  },
+  denuncias(){
+    if(state.protocol) return topBar('Canal de Denúncias')+`<div class="s-card" style="text-align:center;padding:24px 12px"><i data-lucide="shield-check" style="display:block;width:40px;height:40px;color:#34d399;margin:0 auto 10px"></i><b>Denúncia enviada com sigilo</b><p class="s-muted" style="margin:6px 0 12px">Guarde seu protocolo para acompanhar:</p><span class="pill p-info" style="font-size:.85rem;padding:6px 14px">${state.protocol}</span></div><button class="s-btn" style="--g:#1a2347" data-act="newden">Nova denúncia</button>`;
+    return topBar('Canal de Denúncias')+`<div class="toggle"><span><b>Enviar anonimamente</b><br><span class="s-muted">Sua identidade não será revelada</span></span><button class="switch ${state.anon?'':'off'}" data-act="anon" aria-label="Anônimo"></button></div>
+    <select class="s-input"><option>Assédio moral</option><option>Assédio sexual</option><option>Segurança do trabalho</option><option>Conduta antiética</option><option>Outros</option></select>
+    <textarea class="s-input" rows="4" placeholder="Descreva o ocorrido..."></textarea>
+    <button class="s-btn" style="--g:linear-gradient(90deg,#f43f5e,#e11d48)" data-act="denunciar"><i data-lucide="send"></i> Enviar denúncia</button>`;
+  },
+  epi(){
+    return topBar('Meus EPIs')+`<div class="s-card"><div class="s-row"><b>Capacete de segurança</b><span class="pill p-ok">Em uso</span></div><div class="s-muted">CA 31469 · Entregue em 12/08</div></div>
+    <div class="s-card"><div class="s-row"><b>Luva nitrílica</b><span class="pill p-warn">Troca em 5 dias</span></div><div class="s-muted">CA 28011 · Entregue em 01/09</div></div>
+    <div class="s-card"><div class="s-row"><b>Protetor auricular</b><span class="pill ${state.epiSigned?'p-ok':'p-bad'}">${state.epiSigned?'Recebido':'Aguardando assinatura'}</span></div><div class="s-muted">CA 5745 · Nova entrega</div></div>
+    ${state.epiSigned?'':`<button class="s-btn" style="--g:linear-gradient(90deg,#f97316,#dc2626)" data-act="epi"><i data-lucide="pen-line"></i> Confirmar recebimento</button>`}`;
+  },
+  atestados(){
+    return topBar('Atestados / Declarações')+`<div class="drop" data-act="upload"><i data-lucide="${state.uploaded?'check-circle-2':'camera'}"></i>${state.uploaded?'<b>Atestado enviado ao RH</b><div class="s-muted">Em análise</div>':'<b>Enviar atestado</b><div class="s-muted">Toque para fotografar o documento</div>'}<div class="bar" style="--g:linear-gradient(90deg,#d946ef,#db2777)"><i id="upBar" style="width:${state.uploaded?100:0}%"></i></div></div>
+    <div class="s-muted" style="margin-bottom:8px">Histórico</div>
+    ${state.uploaded?`<div class="s-card s-row"><span>Atestado médico · hoje</span><span class="pill p-warn">Em análise</span></div>`:''}
+    <div class="s-card s-row"><span>Declaração de comparecimento · 14/08</span><span class="pill p-ok">Aprovado</span></div>
+    <div class="s-card s-row"><span>Atestado médico · 02/07</span><span class="pill p-ok">Aprovado</span></div>`;
+  },
+  comunicados(){
+    const list=[['Campanha Setembro Amarelo','Participe da roda de conversa na sexta, às 15h.'],['Novo procedimento de EPI','Confira as novas regras de uso no setor de produção.'],['Exames periódicos','Agende seu exame até o fim do mês.']];
+    const unread=list.filter((_,i)=>!state.read.has(i)).length;
+    return topBar('Comunicados')+`<div class="s-muted" style="margin-bottom:10px">${unread?unread+' não lido(s) · toque para confirmar leitura':'Tudo lido ✓'}</div>`+list.map((c,i)=>`<div class="s-card" data-act="read" data-i="${i}" style="cursor:pointer"><div class="s-row"><b>${c[0]}</b>${state.read.has(i)?'<span class="pill p-ok">Lido</span>':'<span class="dot"></span>'}</div><div class="s-muted" style="margin-top:4px">${c[1]}</div></div>`).join('');
+  },
+  psicossocial(){
+    return topBar('Risco Psicossocial')+`<div class="s-card"><span class="s-muted">Pergunta 3 de 10</span><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:30%"></i></div><p style="margin-top:14px;font-size:.85rem;font-weight:600">Como você avalia sua carga de trabalho nas últimas semanas?</p>
+    <div class="faces">${['😣','🙁','😐','🙂','😄'].map((f,i)=>`<button data-act="face" data-i="${i}" class="${state.face===i?'sel':''}">${f}</button>`).join('')}</div>
+    <div class="s-row s-muted"><span>Muito pesada</span><span>Tranquila</span></div></div>
+    <div class="s-card s-row" style="gap:10px"><i data-lucide="lock" style="width:18px;color:#fb923c;flex:none"></i><span class="s-muted">Respostas anônimas e confidenciais. Só resultados agregados são analisados.</span></div>`;
+  },
+  cursos(){
+    const c=[['Integração eProtege',100],['NR-35 · Trabalho em altura',60],['NR-06 · Uso de EPI',20]];
+    return topBar('Integração e Cursos')+c.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill ${x[1]===100?'p-ok':'p-info'}">${x[1]===100?'Concluído':x[1]+'%'}</span></div><div class="bar"><i style="width:${x[1]}%"></i></div></div>`).join('')+`<button class="s-btn" style="--g:linear-gradient(90deg,#14b8a6,#0891b2)" data-act="curso"><i data-lucide="play"></i> Continuar curso</button>`;
+  },
+  colaborador(){
+    return topBar('Gestão do Colaborador')+`<div class="s-card s-row" style="justify-content:flex-start;gap:12px"><span style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#6366f1);display:grid;place-items:center;font-weight:800">AS</span><div><b>Ana Souza</b><div class="s-muted">Operadora · Produção</div></div></div>
+    <div class="s-card s-row"><span>ASO periódico</span><span class="pill p-ok">Válido até 03/2027</span></div>
+    <div class="s-card s-row"><span>Treinamentos obrigatórios</span><span class="pill p-warn">1 pendente</span></div>
+    <div class="s-card s-row"><span>Documentos</span><span class="pill p-ok">Completos</span></div>
+    <div class="s-card s-row"><span>Ficha de EPI</span><span class="pill p-info">3 itens</span></div>`;
+  },
+  rh(){
+    return topBar('Recursos Humanos')+`<div class="kpis"><div class="s-card"><span class="s-muted">Banco de horas</span><b>+06:30</b></div><div class="s-card"><span class="s-muted">Férias</span><b>18 dias</b></div></div>
+    <div class="s-card s-row" data-act="holerite" style="cursor:pointer"><span><b>Holerite · Setembro</b><div class="s-muted">Disponível</div></span><i data-lucide="download" style="width:18px;color:#f59e0b"></i></div>
+    <div class="s-card s-row"><span><b>Solicitação de férias</b><div class="s-muted">Janeiro · 15 dias</div></span><span class="pill p-warn">Em análise</span></div>
+    <button class="s-btn" style="--g:linear-gradient(90deg,#f59e0b,#d97706)" data-act="ferias"><i data-lucide="calendar-plus"></i> Solicitar férias</button>`;
+  },
+  tratativas(){
+    return topBar('Tratativas')+`<div class="s-card"><div class="s-row"><b>Ocorrência #0142</b><span class="pill p-warn">Em andamento</span></div><div class="s-muted">Piso escorregadio · Setor de expedição</div></div>
+    <div class="s-card tl"><div class="done"><b>Ocorrência registrada</b><div class="s-muted">02/10 · Supervisor</div></div><div class="done"><b>Análise de causa</b><div class="s-muted">03/10 · Téc. Segurança</div></div><div class="now"><b>Plano de ação</b><div class="s-muted">Sinalização + piso antiderrapante</div></div><div><b>Concluída</b><div class="s-muted">Prazo: 15/10</div></div></div>`;
+  },
+  comercial(){
+    const bars=[40,55,48,70,62,85,92];
+    return topBar('Área Comercial')+`<div class="kpis"><div class="s-card"><span class="s-muted">Leads no mês</span><b>128</b><span class="pill p-ok">+18%</span></div><div class="s-card"><span class="s-muted">Propostas</span><b>34</b><span class="pill p-info">R$ 212 mil</span></div></div>
+    <div class="s-card"><b>Vendas · últimas semanas</b><div class="chart">${bars.map((h,i)=>`<i style="height:${h}%;animation-delay:${i*.07}s"></i>`).join('')}</div></div>
+    <div class="s-card"><div class="s-row"><span>Meta do mês</span><b>78%</b></div><div class="bar" style="--g:linear-gradient(90deg,#38bdf8,#2563eb)"><i style="width:78%"></i></div></div>`;
+  }
+};
+
+let current='home';
+function go(id){
+  current=id;
+  const body=$('#appBody');
+  body.innerHTML=`<div class="fade-in">${SCREENS[id]()}</div>`;
+  body.scrollTop=0;
+  icons();
+  if(id!=='home') selectTab(id,false);
+}
+function rerender(){const b=$('#appBody'),st=b.scrollTop;b.innerHTML=`<div>${SCREENS[current]()}</div>`;b.scrollTop=st;icons()}
+
+$('#appBody').addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]'); if(g){go(g.dataset.go);return}
+  if(e.target.closest('[data-home]')){go('home');return}
+  const a=e.target.closest('[data-act]'); if(!a) return;
+  const act=a.dataset.act;
+  if(act==='punch'){state.punches.push(nowHM());rerender();toast(PUNCH_LABELS[state.punches.length-1]+' registrada às '+nowHM())}
+  if(act==='anon'){state.anon=!state.anon;rerender()}
+  if(act==='denunciar'){state.protocol='#'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.floor(1000+Math.random()*9000);rerender()}
+  if(act==='newden'){state.protocol=null;rerender()}
+  if(act==='epi'){state.epiSigned=true;rerender();toast('Recebimento do EPI confirmado')}
+  if(act==='upload'&&!state.uploaded){const bar=$('#upBar');bar.style.width='100%';setTimeout(()=>{state.uploaded=true;rerender();toast('Atestado enviado ao RH')},700)}
+  if(act==='read'){state.read.add(+a.dataset.i);rerender()}
+  if(act==='face'){state.face=+a.dataset.i;rerender();toast('Resposta registrada com sigilo')}
+  if(act==='curso')toast('Retomando NR-35 · Aula 4');
+  if(act==='holerite')toast('Holerite de setembro baixado');
+  if(act==='ferias')toast('Solicitação enviada ao RH');
+});
+setInterval(()=>{const t=nowHM();$('#phoneTime').textContent=t;const c=$('#liveClock');if(c)c.textContent=t},1000);
+
+/* ---------- Module tabs ---------- */
+$('#modTabs').innerHTML=MODULES.map(m=>`<button class="mod-tab" data-tab="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('');
+function selectTab(id,syncPhone=true){
+  const m=MODULES.find(x=>x.id===id);
+  document.querySelectorAll('.mod-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  $('#modDetail').innerHTML=`<div class="fade-in"><h3>${m.name}${m.tag?`<span class="tag">${m.tag}</span>`:''}</h3><p>${m.desc}</p><ul>${m.items.map(i=>`<li><i data-lucide="check-circle-2"></i>${i}</li>`).join('')}</ul></div>`;
+  icons();
+  if(syncPhone&&current!==id) go(id);
+}
+$('#modTabs').addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(!t)return;selectTab(t.dataset.tab);if(innerWidth<=1024)document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'})});
+
+/* ---------- Form ---------- */
+$('#colab').insertAdjacentHTML('beforeend',SIZES.map(s=>`<option>${s}</option>`).join(''));
+$('#waTam').insertAdjacentHTML('beforeend',SIZES.map(s=>`<option>${s}</option>`).join(''));
+
+document.querySelectorAll('[data-mask]').forEach(i=>i.addEventListener('input',()=>{
+  let d=i.value.replace(/\D/g,'').slice(0,11);
+  i.value=d.length>10?`(${d.slice(0,2)}) ${d.slice(2,7)} ${d.slice(7)}`:d.length>6?`(${d.slice(0,2)}) ${d.slice(2,6)} ${d.slice(6)}`:d.length>2?`(${d.slice(0,2)}) ${d.slice(2)}`:d.length?`(${d}`:'';
+}));
+const validTel=v=>v.replace(/\D/g,'').length>=10;
+const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+function check(el,ok){el.closest('.f').classList.toggle('err',!ok);return ok}
+
+function openWA(text){window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`,'_blank','noopener')}
+function sendLead(data){
+  if(window.dataLayer) dataLayer.push({event:'lead_eprotege_app',...data});
+  if(!CONFIG.webhook) return;
+  fetch(CONFIG.webhook,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...data,origem:'LP App eProtege',data:new Date().toISOString(),pagina:location.href})}).catch(()=>{});
+}
+
+/* ---------- Builder ---------- */
+const picked=new Set(['ponto','denuncias','epi']);
+let interest=[];
+$('#chips').innerHTML=MODULES.map(m=>`<button class="chip" data-id="${m.id}"><i data-lucide="${m.icon}"></i>${m.name}</button>`).join('');
+const LEGAL={ponto:'Ponto digital com espelho sempre acessível',denuncias:'Canal anônimo alinhado à Lei 14.457/22',psicossocial:'Apoio à gestão de riscos psicossociais (NR-1)',epi:'Controle de entregas de EPI (NR-6)',cursos:'Treinamentos e integração rastreáveis',atestados:'Atestados centralizados no RH',comunicados:'Comunicados com confirmação de leitura',colaborador:'Ficha completa de cada colaborador',rh:'RH sem papel: holerite e férias',tratativas:'Tratativas com histórico auditável',comercial:'Funil comercial e metas em tempo real'};
+function renderBuilder(){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',picked.has(c.dataset.id)));
+  const size=SIZES[$('#emp').value-1];
+  $('#empOut').textContent=size;
+  $('#sumCount').textContent=picked.size;
+  $('#sumLabel').textContent=`módulo${picked.size===1?'':'s'} selecionado${picked.size===1?'':'s'} para ${size.toLowerCase()} funcionários`;
+  $('#sumList').innerHTML=picked.size?[...picked].map(id=>`<li><i data-lucide="badge-check"></i>${LEGAL[id]}</li>`).join(''):'<li style="opacity:.7">Selecione ao menos um módulo</li>';
+  icons();
+}
+$('#chips').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;picked.has(c.dataset.id)?picked.delete(c.dataset.id):picked.add(c.dataset.id);renderBuilder()});
+$('#emp').addEventListener('input',renderBuilder);
+$('#sendBuilder').addEventListener('click',()=>{
+  $('#colab').value=SIZES[$('#emp').value-1];
+  interest=MODULES.filter(m=>picked.has(m.id)).map(m=>m.name);
+  $('#intChips').innerHTML=interest.map(n=>`<span>${n}</span>`).join('')||'<span>Conhecer o app completo</span>';
+  $('#intBox').hidden=false;
+  setTimeout(()=>$('#nome').focus({preventScroll:true}),700);
+});
+renderBuilder();
+
+let lastLead=null;
+$('#leadForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const ok=[check($('#nome'),$('#nome').value.trim().length>1),check($('#tel'),validTel($('#tel').value)),check($('#email'),validEmail($('#email').value)),check($('#empresa'),$('#empresa').value.trim().length>1),check($('#colab'),!!$('#colab').value)].every(Boolean);
+  const lg=$('#lgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
+  if(!ok||!lg.checked)return;
+  lastLead={nome:$('#nome').value.trim(),telefone:$('#tel').value,email:$('#email').value.trim(),empresa:$('#empresa').value.trim(),funcionarios:$('#colab').value,modulos:interest.join(', '),canal:'formulario'};
+  sendLead(lastLead);
+  $('#sName').textContent=lastLead.nome.split(' ')[0];
+  $('#success').classList.add('show');icons();
+});
+$('#successWa').addEventListener('click',()=>{const d=lastLead;openWA(`Olá, eProtege! Quero agendar uma demonstração do App eProtege.\n\n*Nome:* ${d.nome}\n*Empresa:* ${d.empresa}\n*E-mail:* ${d.email}\n*Telefone:* ${d.telefone}\n*Funcionários:* ${d.funcionarios}${d.modulos?`\n*Módulos de interesse:* ${d.modulos}`:''}`)});
+
+/* WhatsApp float */
+const pop=$('#waPop'),bubble=$('#waBubble');
+function togglePop(open){pop.classList.toggle('open',open);bubble.hidden=true;if(open)setTimeout(()=>$('#waNome').focus(),150)}
+$('#waFab').addEventListener('click',()=>togglePop(!pop.classList.contains('open')));
+$('#waClose').addEventListener('click',()=>togglePop(false));
+document.querySelectorAll('[data-open-wa]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();togglePop(true)}));
+setTimeout(()=>{if(!pop.classList.contains('open'))bubble.hidden=false},6000);
+bubble.addEventListener('click',()=>togglePop(true));
+$('#waForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const ok=[check($('#waNome'),$('#waNome').value.trim().length>1),check($('#waTel'),validTel($('#waTel').value)),check($('#waEmail'),validEmail($('#waEmail').value)),check($('#waEmpresa'),$('#waEmpresa').value.trim().length>1),check($('#waTam'),!!$('#waTam').value)].every(Boolean);
+  if(!ok)return;
+  const data={nome:$('#waNome').value.trim(),telefone:$('#waTel').value,email:$('#waEmail').value.trim(),empresa:$('#waEmpresa').value.trim(),funcionarios:$('#waTam').value,canal:'whatsapp-flutuante'};
+  sendLead(data);
+  openWA(`Olá, eProtege! Tenho interesse no App eProtege.\n\n*Nome:* ${data.nome}\n*Telefone:* ${data.telefone}\n*E-mail:* ${data.email}\n*Empresa:* ${data.empresa}\n*Funcionários:* ${data.funcionarios}`);
+  togglePop(false);$('#waForm').reset();
+});
+
+/* ---------- UI niceties ---------- */
+const header=$('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>20),{passive:true});
+$('#yr').textContent=new Date().getFullYear();
+
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;en.target.classList.add('in');
+  en.target.querySelectorAll('[data-count]').forEach(el=>{const end=+el.dataset.count,p=el.dataset.prefix||'',s=el.dataset.suffix||'';let t0=null;
+    const step=ts=>{t0??=ts;const k=Math.min((ts-t0)/1200,1);el.textContent=p+Math.round(end*(1-Math.pow(1-k,3)))+s;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)});
+  io.unobserve(en.target)}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+go('home'); selectTab('ponto',false); icons();
+</script>
+</body>
+</html>
