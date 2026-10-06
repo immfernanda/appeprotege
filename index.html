@@ -194,6 +194,8 @@ header.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-
 .steps-mini span{font-size:.56rem;font-weight:700;border:1px solid #2b3557;border-radius:999px;padding:3px 7px}
 .steps-mini span.rej{color:#fb7185;border-color:#5c1a2a}
 .steps-mini i{font-style:normal;font-size:.56rem;color:#5e678a}
+.s-lbl{display:block;font-size:.62rem;color:#8b93b0;margin-bottom:4px}
+.s-list{margin:6px 0 0 14px;color:#b9c0d8;font-size:.7rem;display:grid;gap:3px}
 .doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .doc-card{background:#0e1530;border:1px solid #1a2347;border-radius:12px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;color:#fff;cursor:pointer;transition:.2s}
 .doc-card:hover{border-color:#f59e0b}
@@ -597,17 +599,17 @@ const MODULES = [
    desc:'O colaborador escolhe Atestado ou Declaração, fotografa e envia direto ao RH. Fim dos atestados perdidos no WhatsApp do gestor.',
    items:['Atestado ou declaração','Envio por foto','Acompanhamento do status','Histórico organizado']},
   {id:'epi', name:'EPI', icon:'hard-hat', g:['#f97316','#dc2626'],
-   desc:'Controle de entrega, validade e troca de EPIs, com confirmação de recebimento pelo próprio colaborador.',
-   items:['Ficha de EPI digital','Confirmação de recebimento','Alertas de troca e validade','Controle por CA']},
+   desc:'O colaborador vê os EPIs da função, solicita novos ou trocas e assina a retirada pelo próprio celular.',
+   items:['Solicitação de EPI pelo app','Assinatura digital da retirada','Alertas de troca e validade','Ficha de EPI e controle por CA']},
   {id:'tratativas', name:'Tratativas', icon:'handshake', g:['#22c55e','#16a34a'],
-   desc:'Registre ocorrências e acompanhe cada tratativa do início ao fim, com responsáveis e prazos.',
-   items:['Registro de ocorrências','Plano de ação','Responsáveis e prazos','Histórico auditável']},
+   desc:'Pedidos de materiais, sugestões de melhoria e projetos estruturados, acompanhados do início ao fim.',
+   items:['Pedidos de materiais','Sugestões e melhorias','Projeto estruturado com etapas','Histórico auditável']},
   {id:'comunicados', name:'Comunicados', icon:'megaphone', g:['#a855f7','#7c3aed'],
    desc:'Envie avisos para toda a empresa ou por setor e saiba exatamente quem leu.',
    items:['Envio por setor','Confirmação de leitura','Anexos e imagens','Notificações no celular']},
   {id:'psicossocial', name:'Risco Psicossocial', icon:'brain', g:['#fb923c','#ea580c'], tag:'NR-1',
-   desc:'Questionários confidenciais para mapear riscos psicossociais, apoiando o gerenciamento exigido pela NR-1.',
-   items:['Questionários anônimos','Indicadores por setor','Apoio técnico eProtege','Plano de ação']},
+   desc:'Questionários confidenciais, indicadores organizacionais, perfil, análise de cargo, feedback e gameficação, apoiando a gestão de riscos psicossociais exigida pela NR-1.',
+   items:['Questionários anônimos','Indicadores organizacionais','Perfil pessoal e análise de cargo','Feedback e gameficação']},
   {id:'denuncias', name:'Canal de Denúncias', icon:'shield-alert', g:['#f43f5e','#e11d48'], tag:'Anônimo',
    desc:'Canal 100% anônimo e seguro para relatos de assédio, conduta e segurança, com acompanhamento por protocolo.',
    items:['Denúncia anônima','Protocolo de acompanhamento','Apoio à Lei 14.457/22','Sigilo das informações']},
@@ -671,6 +673,27 @@ const RH_TILES = [
   {id:'rh_folha', name:'Folha Ponto', icon:'file-text'}
 ].map(t=>({...t,g:['#f59e0b','#d97706']}));
 RH_TILES.forEach(t=>PARENT[t.id]='rh');
+const TRAT_TILES = [
+  {id:'tr_pedidos', name:'Pedidos de Materiais', icon:'package'},
+  {id:'tr_melhoria', name:'Sugestões / Melhoria', icon:'lightbulb'},
+  {id:'tr_projeto', name:'Projeto Estruturado', icon:'layers'}
+].map(t=>({...t,g:['#22c55e','#16a34a']}));
+TRAT_TILES.forEach(t=>PARENT[t.id]='tratativas');
+const PSICO_TILES = [
+  {id:'ps_riscos', name:'Riscos Psicossociais', icon:'circle-alert'},
+  {id:'ps_org', name:'Organizacional', icon:'network'},
+  {id:'ps_dev', name:'Desenvolvimento Pessoal e Liderança', icon:'trending-up'},
+  {id:'ps_perfil', name:'Análise Perfil Pessoal', icon:'user-search'},
+  {id:'ps_cargo', name:'Análise de Cargo', icon:'briefcase', g:['#3b82f6','#4f46e5']},
+  {id:'ps_feedback', name:'Feedback', icon:'message-square'},
+  {id:'ps_game', name:'Gameficação', icon:'trophy'}
+].map(t=>({g:['#fb923c','#ea580c'],...t}));
+PSICO_TILES.forEach(t=>PARENT[t.id]='psicossocial');
+const tilesGrid = (tiles,cols=3) => `<div class="app-grid" style="grid-template-columns:repeat(${cols},1fr)">${tiles.map(t=>`<button class="app-ic" data-go="${t.id}"><span class="ic" style="background:${gradOf(t)};--c:${t.g[0]}"><i data-lucide="${t.icon}"></i></span>${t.name}</button>`).join('')}</div>`;
+const EPIS = ['Capacete de segurança','Óculos de proteção','Protetor facial','Protetor auricular tipo plug','Protetor auricular tipo concha','Máscara PFF2','Respirador semifacial com filtro','Luva de vaqueta','Luva nitrílica','Luva de látex','Luva isolante (eletricista)','Mangote de proteção','Avental de PVC','Botina de segurança','Bota de PVC (borracha)','Cinto de segurança tipo paraquedista','Talabarte duplo','Colete refletivo','Creme de proteção para as mãos','Vestimenta antichama'];
+const EPI_MOTIVOS = ['Primeira solicitação','Troca por desgaste','Perda ou extravio','Dano ou defeito','Fim da validade'];
+const EPI_PILL = {'Aguardando aprovação':'p-warn','Aprovado':'p-info','Retirado':'p-ok'};
+Object.assign(state,{epiModal:false, epiSolic:[], pedidos:[], melhorias:[], feedbacks:[], perfil:false, denForm:false, pontos:1240});
 const DOCS_SST = [['AEP','activity',1],['ASO','stethoscope',3],['Contrato','file-pen-line',1],['LIP','brain',1],['LTCAT','flask-conical',1],['Outros','file-question',2],['PCMSO','heart-pulse',1],['PGR','shield-alert',1]];
 const DOCS_SST_DESC = {AEP:'Avaliação Ergonômica Preliminar',ASO:'Atestados de Saúde Ocupacional',Contrato:'Contrato de prestação de serviços',LIP:'Laudo de Insalubridade e Periculosidade',LTCAT:'Laudo Técnico das Condições Ambientais',Outros:'Documentos complementares',PCMSO:'Programa de Controle Médico de Saúde Ocupacional',PGR:'Programa de Gerenciamento de Riscos'};
 Object.assign(state,{docAberto:null, docsPessoais:{'RG ou CNH':'enviado','Comprovante de residência':'pendente','Certificado de reservista':'pendente'}, atModal:false, atTipo:null, atestados:[]});
@@ -698,6 +721,10 @@ const SCREENS = {
     <div style="margin-top:14px">${state.punches.map((p,i)=>`<div class="s-card s-row"><span>${PUNCH_LABELS[i]}</span><span class="pill p-ok">${p}</span></div>`).join('')||'<div class="s-muted" style="text-align:center">Nenhum registro hoje</div>'}</div>`;
   },
   denuncias(){
+    if(!state.denForm&&!state.protocol) return topBar('Canal de Denúncias')+`<p class="s-muted" style="margin:-4px 0 14px">Registre uma denúncia de forma anônima e segura.</p>
+    <div class="s-card" style="text-align:center;padding:26px 14px"><i data-lucide="shield-alert" style="display:block;width:34px;height:34px;color:#8b93b0;margin:0 auto 12px"></i><b style="font-size:.86rem">Precisa relatar algo?</b>
+    <p class="s-muted" style="margin:8px 0 16px;line-height:1.5">O canal de denúncias é anônimo e seguro. Você não precisa se identificar, e ninguém no Portal do Cliente tem acesso a casos individuais.</p>
+    <button class="s-btn" data-act="denAbrir" style="--g:linear-gradient(90deg,#059669,#047857)">Registrar uma denúncia <i data-lucide="external-link"></i></button></div>`;
     if(state.protocol) return topBar('Canal de Denúncias')+`<div class="s-card" style="text-align:center;padding:24px 12px"><i data-lucide="shield-check" style="display:block;width:40px;height:40px;color:#34d399;margin:0 auto 10px"></i><b>Denúncia enviada com sigilo</b><p class="s-muted" style="margin:6px 0 12px">Guarde seu protocolo para acompanhar:</p><span class="pill p-info" style="font-size:.85rem;padding:6px 14px">${state.protocol}</span></div><button class="s-btn" style="--g:#1a2347" data-act="newden">Nova denúncia</button>`;
     return topBar('Canal de Denúncias')+`<div class="toggle"><span><b>Enviar anonimamente</b><br><span class="s-muted">Sua identidade não será revelada</span></span><button class="switch ${state.anon?'':'off'}" data-act="anon" aria-label="Anônimo"></button></div>
     <select class="s-input"><option>Assédio moral</option><option>Assédio sexual</option><option>Segurança do trabalho</option><option>Conduta antiética</option><option>Outros</option></select>
@@ -705,10 +732,21 @@ const SCREENS = {
     <button class="s-btn" style="--g:linear-gradient(90deg,#f43f5e,#e11d48)" data-act="denunciar"><i data-lucide="send"></i> Enviar denúncia</button>`;
   },
   epi(){
-    return topBar('Meus EPIs')+`<div class="s-card"><div class="s-row"><b>Capacete de segurança</b><span class="pill p-ok">Em uso</span></div><div class="s-muted">CA 31469 · Entregue em 12/08</div></div>
+    const modal=!state.epiModal?'':`<div class="ph-modal fade-in"><div class="ph-sheet">
+      <div class="s-row" style="margin-bottom:10px"><b>Solicitar EPI</b><button class="ph-x" data-act="epiFechar" aria-label="Fechar"><i data-lucide="x"></i></button></div>
+      <label class="s-lbl">EPI</label><select class="s-input" id="epiItem"><option value="">Selecione...</option>${EPIS.map(e=>`<option>${e}</option>`).join('')}</select>
+      <div style="display:grid;grid-template-columns:1fr 52px;gap:6px"><div><label class="s-lbl">Motivo</label><select class="s-input" id="epiMotivo">${EPI_MOTIVOS.map(m=>`<option>${m}</option>`).join('')}</select></div><div><label class="s-lbl">Qtd.</label><input class="s-input" id="epiQtd" type="number" min="1" value="1"></div></div>
+      <label class="s-lbl">Observação (opcional)</label><textarea class="s-input" id="epiObs" rows="2" maxlength="150"></textarea>
+      <div class="s-row"><button class="ph-x" data-act="epiFechar" style="font-size:.72rem">Cancelar</button><button class="s-btn s-btn-sm" data-act="epiEnviar" style="--g:linear-gradient(90deg,#f97316,#ea580c)">Enviar solicitação</button></div>
+    </div></div>`;
+    return topBar('EPI')+`<div class="s-row" style="margin:-4px 0 12px;align-items:flex-start"><p class="s-muted" style="flex:1">Veja o que você precisa, solicite e assine a retirada dos seus EPIs.</p><button class="s-btn s-btn-sm" data-act="epiAbrir" style="--g:linear-gradient(90deg,#f97316,#ea580c)"><i data-lucide="send"></i> Solicitar EPI</button></div>
+    <b style="font-size:.8rem;display:block;margin-bottom:8px">Minhas solicitações</b>
+    ${state.epiSolic.map((s,i)=>`<div class="s-card fade-in"><div class="s-row"><b>${s.q}x ${s.e}</b><span class="pill ${EPI_PILL[s.st]}">${s.st}</span></div><div class="s-muted" style="margin-top:3px">${s.m}${s.o?' · '+esc(s.o):''}</div>${s.st==='Aprovado'?`<button class="s-btn s-btn-sm" data-act="epiAssinar" data-i="${i}" style="margin-top:8px;--g:linear-gradient(90deg,#f97316,#ea580c)"><i data-lucide="pen-line"></i> Assinar retirada</button>`:''}</div>`).join('')||'<div class="s-muted" style="margin-bottom:12px">Nenhuma solicitação ainda.</div>'}
+    <b style="font-size:.8rem;display:block;margin:12px 0 8px">Meus EPIs</b>
+    <div class="s-card"><div class="s-row"><b>Capacete de segurança</b><span class="pill p-ok">Em uso</span></div><div class="s-muted">CA 31469 · Entregue em 12/08</div></div>
     <div class="s-card"><div class="s-row"><b>Luva nitrílica</b><span class="pill p-warn">Troca em 5 dias</span></div><div class="s-muted">CA 28011 · Entregue em 01/09</div></div>
     <div class="s-card"><div class="s-row"><b>Protetor auricular</b><span class="pill ${state.epiSigned?'p-ok':'p-bad'}">${state.epiSigned?'Recebido':'Aguardando assinatura'}</span></div><div class="s-muted">CA 5745 · Nova entrega</div></div>
-    ${state.epiSigned?'':`<button class="s-btn" style="--g:linear-gradient(90deg,#f97316,#dc2626)" data-act="epi"><i data-lucide="pen-line"></i> Confirmar recebimento</button>`}`;
+    ${state.epiSigned?'':`<button class="s-btn" style="--g:linear-gradient(90deg,#f97316,#dc2626)" data-act="epi"><i data-lucide="pen-line"></i> Confirmar recebimento</button>`}${modal}`;
   },
   atestados(){
     const modal=!state.atModal?'':`<div class="ph-modal fade-in"><div class="ph-sheet">
@@ -726,7 +764,45 @@ const SCREENS = {
     return topBar('Comunicados')+comunicadosHTML();
   },
   psicossocial(){
-    return topBar('Risco Psicossocial')+`<div class="s-card"><span class="s-muted">Pergunta 3 de 10</span><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:30%"></i></div><p style="margin-top:14px;font-size:.85rem;font-weight:600">Como você avalia sua carga de trabalho nas últimas semanas?</p>
+    return topBar('Risco Psicossocial','home','Início')+tilesGrid(PSICO_TILES);
+  },
+  ps_org(){
+    const ind=[['Clima organizacional',78],['Comunicação interna',64],['Reconhecimento',58],['Equilíbrio vida e trabalho',71]];
+    return topBar('Organizacional','psicossocial','Risco Psicossocial')+`<p class="s-muted" style="margin:-4px 0 12px">Indicadores agregados da empresa. Nenhuma resposta individual é exibida.</p>`+
+      ind.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill ${x[1]>=70?'p-ok':x[1]>=60?'p-warn':'p-bad'}">${x[1]}%</span></div><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:${x[1]}%"></i></div></div>`).join('');
+  },
+  ps_dev(){
+    const t=[['Comunicação assertiva',80],['Gestão do tempo',45],['Liderança de equipes',20]];
+    return topBar('Desenvolvimento Pessoal e Liderança','psicossocial','Risco Psicossocial')+`<p class="s-muted" style="margin:-4px 0 12px">Trilhas para desenvolver competências e formar novas lideranças.</p>`+
+      t.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill p-info">${x[1]}%</span></div><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:${x[1]}%"></i></div></div>`).join('')+
+      `<button class="s-btn" style="--g:linear-gradient(90deg,#fb923c,#ea580c)" data-act="trilha"><i data-lucide="play"></i> Continuar trilha</button>`;
+  },
+  ps_perfil(){
+    const p=[['Executor',72],['Comunicador',58],['Planejador',81],['Analista',64]];
+    return topBar('Análise Perfil Pessoal','psicossocial','Risco Psicossocial')+(state.perfil?
+      `<div class="s-card" style="text-align:center"><b>Seu perfil predominante: Planejador</b><div class="s-muted" style="margin-top:4px">Organizado, constante e cuidadoso com os processos.</div></div>`+p.map(x=>`<div class="s-card"><div class="s-row"><span>${x[0]}</span><b>${x[1]}%</b></div><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:${x[1]}%"></i></div></div>`).join('')
+      :`<div class="s-card" style="text-align:center;padding:22px 12px"><i data-lucide="user-search" style="display:block;width:34px;height:34px;color:#fb923c;margin:0 auto 10px"></i><b>Descubra seu perfil comportamental</b><p class="s-muted" style="margin:6px 0 14px">São 24 perguntas rápidas, cerca de 5 minutos.</p><button class="s-btn" style="--g:linear-gradient(90deg,#fb923c,#ea580c)" data-act="perfil"><i data-lucide="play"></i> Iniciar análise</button></div>`);
+  },
+  ps_cargo(){
+    return topBar('Análise de Cargo','psicossocial','Risco Psicossocial')+`<div class="s-card"><span class="s-muted">Cargo</span><b style="display:block;font-size:.86rem">Operadora de Produção</b><span class="s-muted">Setor de Produção · CBO 7841-05</span></div>
+    <div class="s-card"><b>Principais atividades</b><ul class="s-list"><li>Operar máquinas da linha de produção</li><li>Conferir a qualidade das peças</li><li>Manter o posto de trabalho organizado</li></ul></div>
+    <div class="s-card"><b>Exigências do cargo</b><div class="s-row" style="margin-top:6px"><span class="s-muted">Esforço físico</span><span class="pill p-warn">Moderado</span></div><div class="s-row" style="margin-top:4px"><span class="s-muted">Ritmo de trabalho</span><span class="pill p-warn">Alto</span></div><div class="s-row" style="margin-top:4px"><span class="s-muted">Autonomia</span><span class="pill p-info">Média</span></div></div>`;
+  },
+  ps_feedback(){
+    return topBar('Feedback','psicossocial','Risco Psicossocial')+`<label class="s-lbl">Para quem?</label><select class="s-input" id="fbPara"><option>Meu gestor</option><option>Minha equipe</option><option>RH</option><option>Empresa</option></select>
+    <textarea class="s-input" id="fbTexto" rows="3" placeholder="Escreva seu feedback..." maxlength="300"></textarea>
+    <label class="s-check"><input type="checkbox" id="fbAnon" checked> Enviar anonimamente</label>
+    <button class="s-btn" style="--g:linear-gradient(90deg,#fb923c,#ea580c)" data-act="feedback"><i data-lucide="send"></i> Enviar feedback</button>
+    <div style="margin-top:12px">${state.feedbacks.map(f=>`<div class="s-card fade-in"><div class="s-row"><b>Para: ${f.p}</b><span class="pill p-ok">Enviado</span></div><div class="s-muted" style="margin-top:4px">${esc(f.t)}</div></div>`).join('')}</div>`;
+  },
+  ps_game(){
+    const r=[['Ana Souza',state.pontos],['Carlos Lima',1180],['Juliana Prado',990]].sort((a,b)=>b[1]-a[1]);
+    return topBar('Gameficação','psicossocial','Risco Psicossocial')+`<div class="s-card" style="text-align:center"><span class="s-muted">Seus pontos</span><b style="display:block;font-size:1.6rem;color:#fb923c">${state.pontos}</b><span class="pill p-info">Nível 5 · Guardião da Segurança</span></div>
+    <div class="s-card"><b>Desafio da semana</b><div class="s-muted" style="margin:4px 0 8px">Responda o questionário de bem-estar e ganhe 50 pontos.</div><button class="s-btn s-btn-sm" data-act="desafio" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i data-lucide="zap"></i> Fazer agora</button></div>
+    <div class="s-card"><b>Ranking da equipe</b>${r.map((x,i)=>`<div class="s-row" style="margin-top:6px"><span>${['🥇','🥈','🥉'][i]} ${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>`;
+  },
+  ps_riscos(){
+    return topBar('Riscos Psicossociais','psicossocial','Risco Psicossocial')+`<div class="s-card"><span class="s-muted">Pergunta 3 de 10</span><div class="bar" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i style="width:30%"></i></div><p style="margin-top:14px;font-size:.85rem;font-weight:600">Como você avalia sua carga de trabalho nas últimas semanas?</p>
     <div class="faces">${['😣','🙁','😐','🙂','😄'].map((f,i)=>`<button data-act="face" data-i="${i}" class="${state.face===i?'sel':''}">${f}</button>`).join('')}</div>
     <div class="s-row s-muted"><span>Muito pesada</span><span>Tranquila</span></div></div>
     <div class="s-card s-row" style="gap:10px"><i data-lucide="lock" style="width:18px;color:#fb923c;flex:none"></i><span class="s-muted">Respostas anônimas e confidenciais. Só resultados agregados são analisados.</span></div>`;
@@ -797,7 +873,24 @@ const SCREENS = {
     <button class="s-btn" style="--g:linear-gradient(90deg,#f59e0b,#d97706)" data-act="folhaPdf"><i data-lucide="download"></i> Baixar espelho de ponto</button>`;
   },
   tratativas(){
-    return topBar('Tratativas')+`<div class="s-card"><div class="s-row"><b>Ocorrência #0142</b><span class="pill p-warn">Em andamento</span></div><div class="s-muted">Piso escorregadio · Setor de expedição</div></div>
+    return topBar('Tratativas','home','Início')+tilesGrid(TRAT_TILES);
+  },
+  tr_pedidos(){
+    return topBar('Pedidos de Materiais','tratativas','Tratativas')+`<p class="s-muted" style="margin:-4px 0 12px">Peça materiais de trabalho e acompanhe a entrega.</p>
+    <div style="display:grid;grid-template-columns:1fr 54px;gap:6px"><input class="s-input" id="pedItem" placeholder="Material (ex.: fita zebrada)" maxlength="50"><input class="s-input" id="pedQtd" type="number" min="1" value="1"></div>
+    <button class="s-btn" data-act="pedir"><i data-lucide="package"></i> Fazer pedido</button>
+    <div style="margin-top:12px">${state.pedidos.map(p=>`<div class="s-card s-row fade-in"><span><b>${p.q}x ${esc(p.i)}</b><div class="s-muted">Pedido hoje às ${p.h}</div></span><span class="pill p-warn">Em separação</span></div>`).join('')}
+    <div class="s-card s-row"><span><b>2x Cone de sinalização</b><div class="s-muted">Pedido em 29/09</div></span><span class="pill p-ok">Entregue</span></div></div>`;
+  },
+  tr_melhoria(){
+    return topBar('Sugestões / Melhoria','tratativas','Tratativas')+`<p class="s-muted" style="margin:-4px 0 12px">Aponte melhorias no ambiente e nos processos de trabalho.</p>
+    <select class="s-input" id="melArea"><option>Segurança</option><option>Ergonomia</option><option>Processos</option><option>Ambiente de trabalho</option><option>Outros</option></select>
+    <textarea class="s-input" id="melTexto" rows="3" placeholder="Descreva a melhoria..." maxlength="300"></textarea>
+    <button class="s-btn" data-act="melhoria"><i data-lucide="send"></i> Enviar</button>
+    <div style="margin-top:12px">${state.melhorias.map(m=>`<div class="s-card fade-in"><div class="s-row"><b>${m.a}</b><span class="pill p-info">Em avaliação</span></div><div class="s-muted" style="margin-top:4px">${esc(m.t)}</div></div>`).join('')}</div>`;
+  },
+  tr_projeto(){
+    return topBar('Projeto Estruturado','tratativas','Tratativas')+`<div class="s-card"><div class="s-row"><b>Ocorrência #0142</b><span class="pill p-warn">Em andamento</span></div><div class="s-muted">Piso escorregadio · Setor de expedição</div></div>
     <div class="s-card tl"><div class="done"><b>Ocorrência registrada</b><div class="s-muted">02/10 · Supervisor</div></div><div class="done"><b>Análise de causa</b><div class="s-muted">03/10 · Téc. Segurança</div></div><div class="now"><b>Plano de ação</b><div class="s-muted">Sinalização + piso antiderrapante</div></div><div><b>Concluída</b><div class="s-muted">Prazo: 15/10</div></div></div>`;
   },
   comercial(){
@@ -810,7 +903,8 @@ const SCREENS = {
 
 let current='home';
 function go(id){
-  current=id; state.docAberto=null; state.atModal=false;
+  current=id; state.docAberto=null; state.atModal=false; state.epiModal=false;
+  if(id==='denuncias'&&!state.protocol) state.denForm=false;
   const body=$('#appBody');
   body.innerHTML=`<div class="fade-in">${SCREENS[id]()}</div>`;
   body.scrollTop=0;
@@ -837,6 +931,22 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='docVer')toast('Abrindo documento para visualização');
   if(act==='docEnviar'){state.docsPessoais[a.dataset.d]='enviado';rerender();toast('Documento enviado à gestão')}
   if(act==='folhaPdf')toast('Espelho de ponto baixado');
+  if(act==='denAbrir'){state.denForm=true;rerender()}
+  if(act==='epiAbrir'){state.epiModal=true;rerender()}
+  if(act==='epiFechar'){state.epiModal=false;rerender()}
+  if(act==='epiEnviar'){
+    const e=$('#epiItem').value; if(!e){toast('Selecione o EPI');return}
+    const s={e,m:$('#epiMotivo').value,q:Math.max(1,+$('#epiQtd').value||1),o:$('#epiObs').value.trim(),st:'Aguardando aprovação'};
+    state.epiSolic.unshift(s);state.epiModal=false;rerender();toast('Solicitação de EPI enviada');
+    setTimeout(()=>{s.st='Aprovado';if(current==='epi'&&!state.epiModal)rerender()},2500);
+  }
+  if(act==='epiAssinar'){state.epiSolic[+a.dataset.i].st='Retirado';rerender();toast('Retirada assinada')}
+  if(act==='pedir'){const i=$('#pedItem').value.trim();if(!i){toast('Informe o material');return}state.pedidos.unshift({i,q:Math.max(1,+$('#pedQtd').value||1),h:nowHM()});rerender();toast('Pedido enviado')}
+  if(act==='melhoria'){const t=$('#melTexto').value.trim();if(!t){toast('Descreva a melhoria');return}state.melhorias.unshift({a:$('#melArea').value,t});rerender();toast('Melhoria enviada')}
+  if(act==='feedback'){const t=$('#fbTexto').value.trim();if(!t){toast('Escreva seu feedback');return}state.feedbacks.unshift({p:$('#fbPara').value,t});rerender();toast($('#fbAnon')?.checked===false?'Feedback enviado':'Feedback enviado com sigilo')}
+  if(act==='perfil'){state.perfil=true;rerender();toast('Análise concluída')}
+  if(act==='trilha')toast('Retomando: Gestão do tempo');
+  if(act==='desafio'){state.pontos+=50;rerender();toast('+50 pontos!')}
   if(act==='read'){state.read.add(+a.dataset.i);rerender()}
   if(act==='face'){state.face=+a.dataset.i;rerender();toast('Resposta registrada com sigilo')}
   if(act==='curso')toast('Retomando NR-35 · Aula 4');
