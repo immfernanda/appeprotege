@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experimente o App eProtege</title>
+<meta name="description" content="Teste o App de Gestão eProtege: ponto, EPI, atestados, canal de denúncias, risco psicossocial e muito mais.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="assets/app-phone.css">
+<style>
+:root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Montserrat,system-ui,sans-serif;min-height:100vh;color:#fff;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(800px 500px at 100% 0,rgba(18,176,182,.35),transparent 65%),radial-gradient(700px 500px at 0 100%,rgba(40,100,176,.45),transparent 65%),linear-gradient(160deg,#001B4A,#03306e);background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.wrap{width:min(1180px,100% - 32px);margin:0 auto;padding:36px 0 48px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:34px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{height:38px}.brand .wm{height:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font-weight:700;font-size:.92rem;background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(18,176,182,.7);white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.grid{display:grid;grid-template-columns:1fr 330px;gap:56px;align-items:start}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua)}
+h1{font-size:clamp(1.8rem,3.6vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:10px 0 12px}
+h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#c3d3ea;max-width:620px;line-height:1.6}
+.mod-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px}
+.mod-tab{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;text-align:center;font-size:.78rem;font-weight:600;color:#d2deef;transition:all .25s;line-height:1.25}
+.mod-tab .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;box-shadow:0 8px 18px -8px var(--c,#000)}
+.mod-tab .ic svg{width:21px;height:21px}
+.mod-tab:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+.mod-tab.active{background:#fff;border-color:var(--teal);color:var(--navy)}
+.mod-detail{margin-top:18px;background:#fff;color:var(--navy);border-radius:20px;padding:24px 26px;min-height:190px}
+.mod-detail h3{font-size:1.35rem;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.mod-detail h3 .tag{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:rgba(244,187,14,.18);color:#9a7300;padding:4px 10px;border-radius:999px}
+.mod-detail p{color:var(--muted);font-size:.94rem;line-height:1.55}
+.mod-detail ul{list-style:none;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.mod-detail li{display:flex;gap:8px;font-size:.88rem;font-weight:500;color:#0B1F3A}
+.mod-detail li svg{width:17px;height:17px;color:var(--teal);flex:none;margin-top:2px}
+.phone-wrap{position:sticky;top:24px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.phone-hint{font-size:.8rem;color:#9fb3d1;display:flex;align-items:center;gap:6px}
+.phone-hint svg{width:16px;height:16px;color:var(--aqua)}
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr;gap:28px}
+  .phone-wrap{position:static;order:-1}
+  .mod-tabs{grid-template-columns:repeat(3,1fr)}
+  .mod-detail ul{grid-template-columns:1fr}
+  .top .btn span{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><img src="assets/simbolo.png" alt=""><img class="wm" src="assets/wordmark-branco.png" alt="eProtege"></a>
+    <a class="btn" href="index.html#leadForm"><span>Quero uma demonstração</span> <i data-lucide="arrow-right"></i></a>
+  </div>
+  <div class="grid">
+    <div>
+      <span class="eyebrow">Experimente</span>
+      <h1>Toque em um módulo e veja <span>o app funcionando</span></h1>
+      <p class="lead">Este é o App eProtege no celular do seu colaborador. Bata o ponto, envie um atestado, solicite um EPI: tudo funciona aqui.</p>
+      <div class="mod-tabs" id="modTabs"></div>
+      <div class="mod-detail" id="modDetail"></div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"><span id="phoneTime">9:41</span><span><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span></div>
+          <div class="app-body" id="appBody"></div>
+          <div class="toast" id="toast"><i data-lucide="check-circle-2"></i><span></span></div>
+        </div>
+      </div>
+      <div class="phone-hint"><i data-lucide="pointer"></i> Toque nos botões e teste o app</div>
+    </div>
+  </div>
+</div>
+<script src="assets/app-phone.js"></script>
+<script>
+// No celular, ao escolher um módulo, rola até o aparelho
+$('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
+icons();
+</script>
+</body>
+</html>
