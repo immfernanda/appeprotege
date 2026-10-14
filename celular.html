@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=2">
+<link rel="stylesheet" href="assets/app-phone.css?v=3">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -138,7 +138,8 @@ body.locked .quiz{display:block}
 .q-ok svg{width:38px;height:38px}
 .q-card p.q-teaser{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;font-size:.86rem;font-weight:700;color:#8b4a24}
 .q-teaser svg{width:18px;height:18px;flex:none}
-.phone-wrap .q-sorteio{width:100%;margin:6px 0 0}
+.phone-hint.senha-dica{font-size:.9rem;font-weight:700;color:#F4BB0E;text-align:center}
+.phone-hint.senha-dica svg{color:#F4BB0E;width:18px;height:18px}
 .q-res .q-garg{list-style:none;margin-top:16px;display:grid;gap:10px;text-align:left}
 .q-garg li{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:12px}
 .q-garg .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
@@ -148,18 +149,12 @@ body.locked .quiz{display:block}
 .q-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .q-chips span{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;background:rgba(18,176,182,.12);color:var(--navy);padding:7px 12px;border-radius:999px}
 .q-chips svg{width:15px;height:15px;color:var(--teal)}
-.q-sorteio{background:linear-gradient(135deg,#5a2d17,#8b4a24);color:#fff;border-radius:20px;padding:26px 18px;margin-bottom:24px;text-align:center;box-shadow:0 16px 34px -18px rgba(90,45,23,.9)}
 .q-cesta{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#5a2d17,#8b4a24);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:20px}
 .q-cesta .q-gift{margin:0;flex:none}
 .q-cesta small{display:block;font-size:.8rem;opacity:.9}
 .q-cesta b{display:block;font-size:1.3rem;font-weight:800;line-height:1.15;color:#F4BB0E}
 .q-gift{width:52px;height:52px;border-radius:50%;background:#F4BB0E;color:#3b1d0e;display:grid;place-items:center;margin:0 auto 10px}
 .q-gift svg{width:26px;height:26px}
-.q-sorteio .q-gift{width:64px;height:64px;margin-bottom:12px}
-.q-sorteio .q-gift svg{width:32px;height:32px}
-.q-sorteio b{display:block;font-size:1.35rem;font-weight:800;line-height:1.25}
-.q-sorteio small{display:block;font-size:.85rem;opacity:.9;margin-top:10px;line-height:1.45}
-.q-senha{display:inline-block;margin-top:6px;background:#fff;color:#3b1d0e;font-weight:800;font-size:2.2rem;letter-spacing:.22em;padding:8px 16px 8px 24px;border-radius:14px}
 .res-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .res-chips .res-chip{margin-bottom:0}
 .personal .mod-tab:not(.rec){filter:grayscale(1);opacity:.4}
@@ -202,7 +197,7 @@ body.locked .quiz{display:block}
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js?v=2"></script>
+<script src="assets/app-phone.js?v=3"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
@@ -304,7 +299,6 @@ function renderForm(){
       <button type="submit" class="q-btn">${est?'Desbloquear o app':'Desbloquear resultado'} <i data-lucide="lock-open"></i></button>
     </form>`);
 }
-const sorteioHTML=senha=>senha?`<div class="q-sorteio"><div class="q-gift"><i data-lucide="gift"></i></div><b>Você está concorrendo a uma cesta Kopenhagen!</b><small>Sua senha do sorteio</small><div class="q-senha">${senha}</div><small>Guarde esta senha (tire um print). O ganhador será avisado pelo telefone informado.</small></div>`:'';
 // Senha do sorteio: 5 caracteres sem letras ou números que se confundem (O/0, I/1, S/5...)
 const gerarSenha=()=>{const c='ACDEFGHJKMNPQRTUVWXY34679';let t='';for(let i=0;i<5;i++)t+=c[Math.floor(Math.random()*c.length)];return t};
 function renderResult(r){
@@ -312,7 +306,7 @@ function renderResult(r){
     show(`<div class="q-res"><span class="eyebrow">Obrigado por participar!</span>
       <div class="q-ok"><i data-lucide="party-popper"></i></div>
       <h2>Agora é com você: <span>teste o app</span></h2><p>Veja como o App eProtege cuida da saúde e da segurança de quem trabalha.</p>
-      <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app.</p>
+      <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está escondida no app.</p>
       <button class="q-btn" data-q="app">Ver o app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
     return;
   }
@@ -324,19 +318,19 @@ function renderResult(r){
     <ul class="q-garg">${recs.map((x,i)=>`<li><span class="ic" style="background:${gradOf(x)}"><i data-lucide="${x.icon}"></i></span><div><b>${i+1}. ${x.nome}</b><small>${x.t}</small></div></li>`).join('')}</ul>
     <div class="q-mods-t">Seu app personalizado</div>
     <div class="q-chips">${mods.map(m=>`<span><i data-lucide="${m.icon}"></i>${m.name}</span>`).join('')}</div>
-    <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app.</p>
+    <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está escondida no app.</p>
     <button class="q-btn" data-q="app">Ver o meu app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
 }
 function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
   // O celular passa a cumprimentar a pessoa pelo nome
   if(r&&r.nome){NOME_USUARIO=r.nome.replace(/[<>"&]/g,'').trim()||NOME_USUARIO;rerender()}
-  if(r&&r.senha&&!$('.phone-wrap .q-sorteio')){$('.phone-hint').insertAdjacentHTML('afterend',sorteioHTML(r.senha));icons()}
+  if(r&&r.senha){SENHA_SORTEIO=r.senha;$('.phone-hint').innerHTML='<i data-lucide="gift"></i><span>Sua senha do sorteio está no app: toque em <b>Sorteio</b></span>';$('.phone-hint').classList.add('senha-dica');rerender()}
   const mods=modsDe(r&&r.recs);
   if(!mods.length)return;
   document.body.classList.add('personal');
   const st=document.createElement('style');
-  st.textContent=`.personal .app-grid:not([style]) .app-ic${mods.map(id=>`:not([data-go="${id}"])`).join('')},.personal .ponto-bar{filter:grayscale(1);opacity:.4}`;
+  st.textContent=`.personal .app-grid:not([style]) .app-ic:not(.sorteio-ic)${mods.map(id=>`:not([data-go="${id}"])`).join('')},.personal .ponto-bar{filter:grayscale(1);opacity:.4}`;
   document.head.appendChild(st);
   // Módulos dos gargalos vão para o começo, com o selo "Para você"
   const tabs=$('#modTabs');

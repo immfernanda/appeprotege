@@ -119,6 +119,8 @@ const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','
 // Nome de quem usa o celular de demonstração (o quiz troca pelo nome da pessoa)
 let NOME_USUARIO = 'Ana Souza';
 const primeiroNome = () => NOME_USUARIO.split(' ')[0];
+// Senha do sorteio (o quiz preenche): aparece como ícone extra na tela inicial
+let SENHA_SORTEIO = '';
 const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
 const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
 function comunicadosHTML(){
@@ -130,7 +132,13 @@ const SCREENS = {
   home(){
     return `<div class="hello"><h4>Bem-vindo(a), ${esc(primeiroNome())}!</h4><p>Escolha uma área para começar.</p></div>
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
-    <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
+    <div class="app-grid">${SENHA_SORTEIO?`<button class="app-ic sorteio-ic" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span>Sorteio</button>`:''}${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
+  },
+  sorteio(){
+    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
+      <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Sua senha do sorteio</span>
+      <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
+      <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>`;
   },
   rh_relogio(){ return SCREENS.ponto('rh','Relógio Ponto','Recursos Humanos'); },
   ponto(back='home',title='Registrar Ponto',crumb=''){
@@ -328,7 +336,8 @@ function go(id){
   body.innerHTML=`<div class="fade-in">${SCREENS[id]()}</div>`;
   body.scrollTop=0;
   icons();
-  if(id!=='home') selectTab(PARENT[id]||id,false);
+  const mod=PARENT[id]||id;
+  if(id!=='home'&&MODULES.some(m=>m.id===mod)) selectTab(mod,false);
 }
 function rerender(){const b=$('#appBody'),st=b.scrollTop;b.innerHTML=`<div>${SCREENS[current]()}</div>`;b.scrollTop=st;icons()}
 
