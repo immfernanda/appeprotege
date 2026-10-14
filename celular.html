@@ -145,12 +145,18 @@ body.locked .quiz{display:block}
 .q-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .q-chips span{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;background:rgba(18,176,182,.12);color:var(--navy);padding:7px 12px;border-radius:999px}
 .q-chips svg{width:15px;height:15px;color:var(--teal)}
-.q-sorteio{background:linear-gradient(135deg,#5a2d17,#8b4a24);color:#fff;border-radius:18px;padding:18px 16px;margin-bottom:22px;text-align:center}
-.q-gift{width:46px;height:46px;border-radius:50%;background:#F4BB0E;color:#3b1d0e;display:grid;place-items:center;margin:0 auto 10px}
-.q-gift svg{width:24px;height:24px}
-.q-sorteio b{display:block;font-size:1.02rem;line-height:1.3}
-.q-sorteio small{display:block;font-size:.78rem;opacity:.85;margin-top:8px;line-height:1.4}
-.q-senha{display:inline-block;margin-top:6px;background:#fff;color:#3b1d0e;font-weight:800;font-size:1.7rem;letter-spacing:.22em;padding:6px 14px 6px 20px;border-radius:12px}
+.q-sorteio{background:linear-gradient(135deg,#5a2d17,#8b4a24);color:#fff;border-radius:20px;padding:26px 18px;margin-bottom:24px;text-align:center;box-shadow:0 16px 34px -18px rgba(90,45,23,.9)}
+.q-cesta{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#5a2d17,#8b4a24);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:20px}
+.q-cesta .q-gift{margin:0;flex:none}
+.q-cesta small{display:block;font-size:.8rem;opacity:.9}
+.q-cesta b{display:block;font-size:1.3rem;font-weight:800;line-height:1.15;color:#F4BB0E}
+.q-gift{width:52px;height:52px;border-radius:50%;background:#F4BB0E;color:#3b1d0e;display:grid;place-items:center;margin:0 auto 10px}
+.q-gift svg{width:26px;height:26px}
+.q-sorteio .q-gift{width:64px;height:64px;margin-bottom:12px}
+.q-sorteio .q-gift svg{width:32px;height:32px}
+.q-sorteio b{display:block;font-size:1.35rem;font-weight:800;line-height:1.25}
+.q-sorteio small{display:block;font-size:.85rem;opacity:.9;margin-top:10px;line-height:1.45}
+.q-senha{display:inline-block;margin-top:6px;background:#fff;color:#3b1d0e;font-weight:800;font-size:2.2rem;letter-spacing:.22em;padding:8px 16px 8px 24px;border-radius:14px}
 .res-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .res-chips .res-chip{margin-bottom:0}
 .personal .mod-tab:not(.rec){filter:grayscale(1);opacity:.4}
@@ -249,7 +255,8 @@ function show(html){card.innerHTML=`<div class="fade-in">${html}</div>`;icons();
 const qHead=(w,label)=>`<div class="q-head"><button class="q-back" data-q="back" aria-label="Voltar"><i data-lucide="chevron-left"></i></button><div class="q-prog"><i style="width:${w}%"></i></div><span class="q-count">${label}</span></div>`;
 
 function renderIntro(){
-  show(`<span class="eyebrow">Quiz eProtege</span>
+  show(`<div class="q-cesta"><span class="q-gift"><i data-lucide="gift"></i></span><div><small>Responda e concorra a uma</small><b>Cesta Kopenhagen</b></div></div>
+    <span class="eyebrow">Quiz eProtege</span>
     <h2>Quanto a sua empresa <span>precisa da eProtege?</span></h2>
     <p>Responda e veja onde a eProtege age nos gargalos da sua empresa.</p>
     <ul class="q-perks">
@@ -257,7 +264,6 @@ function renderIntro(){
       <li><i data-lucide="lock"></i>Respostas sigilosas</li>
       <li><i data-lucide="sparkles"></i>Diagnóstico na hora</li>
       <li><i data-lucide="smartphone"></i>No final, teste o app com os módulos para você</li>
-      <li><i data-lucide="gift"></i>Concorra a uma cesta Kopenhagen</li>
     </ul>
     <button class="q-btn" data-q="start">Começar <i data-lucide="arrow-right"></i></button>`);
 }
