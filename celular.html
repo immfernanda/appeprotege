@@ -129,6 +129,10 @@ body.locked .quiz{display:block}
 .q-num{border:1.5px solid var(--line);background:var(--bg);color:var(--navy);border-radius:12px;padding:11px 0;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;transition:.15s}
 .q-num:hover{border-color:var(--teal)}
 .q-num.on{background:var(--grad);border-color:transparent;color:#fff}
+.q-ns{width:100%;margin-top:10px;border:1.5px dashed var(--line);background:#fff;color:var(--slate);border-radius:12px;padding:10px;font:inherit;font-weight:600;font-size:.86rem;cursor:pointer;transition:.15s}
+.q-ns:hover{border-color:var(--teal)}
+.q-ns.on{border-style:solid;border-color:var(--teal);background:rgba(18,176,182,.1);color:var(--navy)}
+.q-card p.q-sig.q-foot{justify-content:center;text-align:center;margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:.72rem}
 .q-btn:disabled{opacity:.4;cursor:default;box-shadow:none}
 .q-ok{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;margin:16px auto 8px}
 .q-ok svg{width:38px;height:38px}
@@ -223,7 +227,7 @@ const estudante=()=>quiz.perfil==='Estudante';
 const nota=(x,i)=>quiz.notas[x.id+'|'+i];
 
 function quizResult(){
-  const nec=QUIZ.map(x=>{const v=x.itens.map((_,i)=>nota(x,i));return {x,n:v.reduce((t,n)=>t+(x.inv?n-1:5-n),0)/(v.length*4)}});
+  const nec=QUIZ.map(x=>{const v=x.itens.map((_,i)=>nota(x,i));return {x,n:v.reduce((t,n)=>(n=n||3,t+(x.inv?n-1:5-n)),0)/(v.length*4)}});
   const pct=Math.round(nec.reduce((t,o)=>t+o.n,0)/nec.length*100);
   // Os 3 maiores gargalos (menores notas), mesmo que a empresa esteja bem avaliada
   const recs=nec.filter(o=>o.x.rec).sort((a,b)=>b.n-a.n).slice(0,3).map(o=>o.x.id);
@@ -253,14 +257,14 @@ function renderPerfil(){
 }
 function renderQuestion(){
   const x=QUIZ[quiz.step-1], n=quiz.step, multi=x.itens.length>1;
-  const done=x.itens.every((_,i)=>nota(x,i));
+  const done=x.itens.every((_,i)=>nota(x,i)!==undefined);
   show(`${qHead(n/QUIZ.length*100,`${n} de ${QUIZ.length}`)}
     <h2 class="q-q">${x.q}</h2>
     ${x.cons?`<p class="q-cons-t">Considerando:</p><ul class="q-cons">${x.cons.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}
-    <p class="q-sig"><i data-lucide="lock"></i>Sigiloso: suas respostas não são enviadas à sua empresa.</p>
     <div class="q-scale"><span>1 = ${x.lo}</span><span>5 = ${x.hi}</span></div>
-    <div class="q-rates">${x.itens.map((it,i)=>`<div class="q-rate">${multi?`<b>${it}</b>`:''}<div class="q-nums">${[1,2,3,4,5].map(v=>`<button class="q-num${nota(x,i)===v?' on':''}" data-rate="${i}" data-v="${v}" aria-label="${it}: ${v}">${v}</button>`).join('')}</div></div>`).join('')}</div>
-    ${multi?`<button class="q-btn" data-q="next"${done?'':' disabled'}>Próxima <i data-lucide="arrow-right"></i></button>`:''}`);
+    <div class="q-rates">${x.itens.map((it,i)=>`<div class="q-rate">${multi?`<b>${it}</b>`:''}<div class="q-nums">${[1,2,3,4,5].map(v=>`<button class="q-num${nota(x,i)===v?' on':''}" data-rate="${i}" data-v="${v}" aria-label="${it}: ${v}">${v}</button>`).join('')}</div><button class="q-ns${nota(x,i)===0?' on':''}" data-rate="${i}" data-v="0">Não sei responder</button></div>`).join('')}</div>
+    ${multi?`<button class="q-btn" data-q="next"${done?'':' disabled'}>Próxima <i data-lucide="arrow-right"></i></button>`:''}
+    <p class="q-sig q-foot"><i data-lucide="lock"></i>Sigiloso: suas respostas não são enviadas à sua empresa.</p>`);
 }
 function next(){quiz.step++;quiz.step<=QUIZ.length?renderQuestion():renderForm()}
 function renderForm(){
@@ -318,9 +322,9 @@ card.addEventListener('click',e=>{
   }
   if(rt){
     const x=QUIZ[quiz.step-1];quiz.notas[x.id+'|'+rt.dataset.rate]=+rt.dataset.v;
-    rt.parentNode.querySelectorAll('.q-num').forEach(n=>n.classList.toggle('on',n===rt));
+    rt.closest('.q-rate').querySelectorAll('.q-num,.q-ns').forEach(n=>n.classList.toggle('on',n===rt));
     if(x.itens.length===1)setTimeout(next,180);
-    else $('[data-q=next]').disabled=!x.itens.every((_,i)=>nota(x,i));
+    else $('[data-q=next]').disabled=!x.itens.every((_,i)=>nota(x,i)!==undefined);
   }
   if(!b||b.disabled)return;
   if(b.dataset.q==='start'){quiz.step=0;renderPerfil()}
@@ -350,7 +354,7 @@ card.addEventListener('submit',e=>{
   // Colunas da planilha "Leads evento", na ordem (o script cria as que faltarem)
   const campos={'Cargo':quiz.perfil,'Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
     'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos};
-  if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)}));
+  if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)===0?'Não sei':nota(x,i)}));
   const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
   const pagina=location.origin+location.pathname, website=$('#qWebsite').value;
   const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
