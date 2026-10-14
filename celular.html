@@ -136,6 +136,9 @@ body.locked .quiz{display:block}
 .q-btn:disabled{opacity:.4;cursor:default;box-shadow:none}
 .q-ok{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;margin:16px auto 8px}
 .q-ok svg{width:38px;height:38px}
+.q-card p.q-teaser{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;font-size:.86rem;font-weight:700;color:#8b4a24}
+.q-teaser svg{width:18px;height:18px;flex:none}
+.phone-wrap .q-sorteio{width:100%;margin:6px 0 0}
 .q-res .q-garg{list-style:none;margin-top:16px;display:grid;gap:10px;text-align:left}
 .q-garg li{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:12px}
 .q-garg .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
@@ -180,7 +183,7 @@ body.locked .quiz{display:block}
   </div>
   <div class="grid">
     <div>
-      <div class="res-chips"><div class="res-chip" id="resChip"><i data-lucide="badge-check"></i><span></span></div><div class="res-chip" id="senhaChip"><i data-lucide="gift"></i><span></span></div></div>
+      <div class="res-chips"><div class="res-chip" id="resChip"><i data-lucide="badge-check"></i><span></span></div></div>
       <span class="eyebrow">Experimente</span>
       <h1>Toque em um módulo e veja <span>o app funcionando</span></h1>
       <p class="lead">Este é o App eProtege no celular do seu colaborador. Bata o ponto, envie um atestado, solicite um EPI: tudo funciona aqui.</p>
@@ -307,24 +310,26 @@ const gerarSenha=()=>{const c='ACDEFGHJKMNPQRTUVWXY34679';let t='';for(let i=0;i
 function renderResult(r){
   if(r.pct==null){
     show(`<div class="q-res"><span class="eyebrow">Obrigado por participar!</span>
-      ${sorteioHTML(r.senha)}
+      <div class="q-ok"><i data-lucide="party-popper"></i></div>
       <h2>Agora é com você: <span>teste o app</span></h2><p>Veja como o App eProtege cuida da saúde e da segurança de quem trabalha.</p>
-      <button class="q-btn" data-q="app">Ver o app funcionando <i data-lucide="arrow-right"></i></button></div>`);
+      <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app.</p>
+      <button class="q-btn" data-q="app">Ver o app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
     return;
   }
   const recs=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec);
   const mods=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id));
-  show(`<div class="q-res">${sorteioHTML(r.senha)}<span class="eyebrow">Seu diagnóstico</span>
+  show(`<div class="q-res"><span class="eyebrow">Seu diagnóstico</span>
     <h2>Onde a eProtege age nos <span>gargalos da sua empresa</span></h2>
     <p>Com base nas suas respostas, estes são os pontos que mais pedem atenção:</p>
     <ul class="q-garg">${recs.map((x,i)=>`<li><span class="ic" style="background:${gradOf(x)}"><i data-lucide="${x.icon}"></i></span><div><b>${i+1}. ${x.nome}</b><small>${x.t}</small></div></li>`).join('')}</ul>
     <div class="q-mods-t">Seu app personalizado</div>
     <div class="q-chips">${mods.map(m=>`<span><i data-lucide="${m.icon}"></i>${m.name}</span>`).join('')}</div>
-    <button class="q-btn" data-q="app">Ver o meu app <i data-lucide="arrow-right"></i></button></div>`);
+    <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app.</p>
+    <button class="q-btn" data-q="app">Ver o meu app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
 }
 function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
-  if(r&&r.senha){$('#senhaChip span').textContent=`Senha do sorteio: ${r.senha}`;$('#senhaChip').classList.add('show')}
+  if(r&&r.senha&&!$('.phone-wrap .q-sorteio')){$('.phone-hint').insertAdjacentHTML('afterend',sorteioHTML(r.senha));icons()}
   const mods=modsDe(r&&r.recs);
   if(!mods.length)return;
   document.body.classList.add('personal');
