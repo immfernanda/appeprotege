@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=4">
+<link rel="stylesheet" href="assets/app-phone.css?v=5">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -197,7 +197,7 @@ body.locked .quiz{display:block}
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js?v=4"></script>
+<script src="assets/app-phone.js?v=5"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
@@ -285,8 +285,8 @@ function next(){quiz.step++;quiz.step<=QUIZ.length?renderQuestion():renderForm()
 function renderForm(){
   const est=estudante();
   show(`${qHead(100,'Pronto!')}
-    <h2>${est?'Falta pouco para <span>testar o app</span>':'Seu diagnóstico <span>está pronto</span>'}</h2>
-    <div class="q-lock"><div><b><i data-lucide="lock"></i>${est?'Desbloqueie o app eProtege':'Desbloqueie sua futura solução'}</b><small>${est?'Preencha para desbloquear o app':'Preencha para ver onde a eProtege age nos seus gargalos e o seu app personalizado'} e concorra a uma cesta Kopenhagen.</small></div></div>
+    <h2>${est?'Falta pouco para <span>testar o app</span>':'Saiba quais soluções a eProtege <span>faz para a sua empresa</span>'}</h2>
+    <div class="q-lock"><div><b><i data-lucide="lock"></i>${est?'Desbloqueie o app eProtege':'Desbloqueie a futura solução da sua empresa'}</b><small>${est?'Preencha para desbloquear o app':'Preencha para ver onde a eProtege age nos seus gargalos e o seu app personalizado'} e concorra a uma cesta Kopenhagen.</small></div></div>
     <form id="quizForm" novalidate>
       <div class="q-fields">
         <div class="f"><label for="qNome">Nome*</label><input id="qNome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome</small></div>
@@ -306,19 +306,19 @@ function renderResult(r){
     show(`<div class="q-res"><span class="eyebrow">Obrigado por participar!</span>
       <div class="q-ok"><i data-lucide="party-popper"></i></div>
       <h2>Agora é com você: <span>teste o app</span></h2><p>Veja como o App eProtege cuida da saúde e da segurança de quem trabalha.</p>
-      <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está escondida no app.</p>
+      <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app: toque no ícone Sorteio.</p>
       <button class="q-btn" data-q="app">Ver o app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
     return;
   }
   const recs=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec);
   const mods=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id));
-  show(`<div class="q-res"><span class="eyebrow">Seu diagnóstico</span>
+  show(`<div class="q-res"><span class="eyebrow">Soluções para a sua empresa</span>
     <h2>Onde a eProtege age nos <span>gargalos da sua empresa</span></h2>
     <p>Com base nas suas respostas, estes são os pontos que mais pedem atenção:</p>
     <ul class="q-garg">${recs.map((x,i)=>`<li><span class="ic" style="background:${gradOf(x)}"><i data-lucide="${x.icon}"></i></span><div><b>${i+1}. ${x.nome}</b><small>${x.t}</small></div></li>`).join('')}</ul>
     <div class="q-mods-t">Seu app personalizado</div>
     <div class="q-chips">${mods.map(m=>`<span><i data-lucide="${m.icon}"></i>${m.name}</span>`).join('')}</div>
-    <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está escondida no app.</p>
+    <p class="q-teaser"><i data-lucide="gift"></i>Sua senha do sorteio da cesta Kopenhagen está no app: toque no ícone Sorteio.</p>
     <button class="q-btn" data-q="app">Ver o meu app e minha senha <i data-lucide="arrow-right"></i></button></div>`);
 }
 function unlock(r){

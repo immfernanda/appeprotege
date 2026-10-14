@@ -139,7 +139,7 @@ const SCREENS = {
       <b>Tem um presente para você!</b><span class="s-muted">Toque no presente para revelar a sua senha do sorteio da cesta Kopenhagen.</span>
       <button class="sorteio-box" data-act="abrirPresente" aria-label="Abrir presente"><i data-lucide="gift"></i></button>
       <span class="sorteio-toque">Toque para abrir</span></div>`;
-    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="party-popper"></i></span>
+    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
       <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Sua senha do sorteio</span>
       <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
       <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>`;
