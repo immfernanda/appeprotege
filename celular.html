@@ -155,8 +155,9 @@ icons();
 /* ============ QUIZ ============ */
 // Planilha "Leads evento" (script google-apps-script/CodigoEvento.gs)
 const PLANILHA_EVENTO='https://script.google.com/macros/s/AKfycbxKlSDv_mgqBMqlMkZapUvrPEsSFor7d5XCa28IqAX0JwbrXWPIjz54WFd_lWl05Vea/exec';
-// Script dos leads da LP, que repassa ao CRM com a campanha do evento
-const PLANILHA_CRM='https://script.google.com/macros/s/AKfycbw9caXVJHM7HKOctr4VkDLBmBwbMZ34YkKQS2z7-aZogrlVzPuXERQN1hl9dYagw9XZkg/exec';
+// CRM base44: campanha própria do evento (token público de captação, feito para ficar na página)
+const CRM='https://protege-core-hub.base44.app/functions/captarLeadLanding';
+const CRM_TOKEN='cmp_8e2efbc99e3641099f56139177e1242c';
 const CAMPANHA='Evento QR Code';
 // Cada opção: [texto, pontos]. 3 = precisa muito do módulo, 0 = já resolvido
 const QUIZ=[
@@ -268,7 +269,10 @@ card.addEventListener('submit',e=>{
     campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode',
     pagina:location.origin+location.pathname,website:$('#qWebsite').value};
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
-  [PLANILHA_EVENTO,PLANILHA_CRM].forEach(u=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{}));
+  fetch(PLANILHA_EVENTO,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
+  fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina:payload.pagina,nome,telefone:tel,email,empresa,funcionarios:r.tamanho,consentimento:true,
+    mensagem:`Quiz do evento: ${r.pct}%`+(nomes?` | Onde o app mais ajuda: ${nomes}`:''),
+    utm_source:payload.origem,utm_medium:payload.midia,utm_campaign:payload.campanha,utm_content:payload.criativo,utm_term:params.get('utm_term')||'',website:payload.website}),keepalive:true}).catch(()=>{});
   store.set({pct:r.pct,mods:r.mods});
   renderResult(r);
 });
