@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css">
+<link rel="stylesheet" href="assets/app-phone.css?v=2">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -202,7 +202,7 @@ body.locked .quiz{display:block}
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js"></script>
+<script src="assets/app-phone.js?v=2"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
@@ -329,6 +329,8 @@ function renderResult(r){
 }
 function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
+  // O celular passa a cumprimentar a pessoa pelo nome
+  if(r&&r.nome){NOME_USUARIO=r.nome.replace(/[<>"&]/g,'').trim()||NOME_USUARIO;rerender()}
   if(r&&r.senha&&!$('.phone-wrap .q-sorteio')){$('.phone-hint').insertAdjacentHTML('afterend',sorteioHTML(r.senha));icons()}
   const mods=modsDe(r&&r.recs);
   if(!mods.length)return;
@@ -339,7 +341,7 @@ function unlock(r){
   // Módulos dos gargalos vão para o começo, com o selo "Para você"
   const tabs=$('#modTabs');
   mods.slice().reverse().forEach(id=>{const t=tabs.querySelector(`[data-tab="${id}"]`);if(t){t.classList.add('rec');tabs.prepend(t)}});
-  $('#resChip span').textContent='Seu app personalizado';$('#resChip').classList.add('show');
+  $('#resChip span').textContent=r.nome?`App personalizado para ${primeiroNome()}`:'Seu app personalizado';$('#resChip').classList.add('show');
   document.querySelector('.lead').textContent='Separamos os módulos que mais ajudam nos gargalos da sua empresa. Comece por eles e teste no celular.';
   selectTab(mods[0],false);
 }
@@ -394,7 +396,7 @@ card.addEventListener('submit',e=>{
   post(PLANILHA_LP,{nome,telefone:tel,email,empresa,cargo:quiz.perfil,tamanho:'',interesse:resumo,...utm,pagina,website});
   fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
     utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
-  store.set({pct:r.pct,recs:r.recs,senha:r.senha});
+  store.set({pct:r.pct,recs:r.recs,senha:r.senha,nome});
   renderResult(r);
 });
 

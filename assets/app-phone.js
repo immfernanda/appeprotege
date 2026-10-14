@@ -116,6 +116,9 @@ Object.assign(state,{docAberto:null, docsPessoais:{'RG ou CNH':'enviado','Compro
 Object.assign(state,{sugestoes:[], solicitacoes:[], novaSolic:false, busca:''});
 const SOLIC_STEPS = ['Aberto','Em Análise','Aprovado','Finalizado'];
 const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','Finalizado':'p-ok','Rejeitado':'p-bad'};
+// Nome de quem usa o celular de demonstração (o quiz troca pelo nome da pessoa)
+let NOME_USUARIO = 'Ana Souza';
+const primeiroNome = () => NOME_USUARIO.split(' ')[0];
 const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
 const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
 function comunicadosHTML(){
@@ -125,7 +128,7 @@ function comunicadosHTML(){
 
 const SCREENS = {
   home(){
-    return `<div class="hello"><h4>Bem-vindo(a), Ana!</h4><p>Escolha uma área para começar.</p></div>
+    return `<div class="hello"><h4>Bem-vindo(a), ${esc(primeiroNome())}!</h4><p>Escolha uma área para começar.</p></div>
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
     <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
   },
@@ -212,7 +215,7 @@ const SCREENS = {
     <div style="margin-top:12px">${state.feedbacks.map(f=>`<div class="s-card fade-in"><div class="s-row"><b>Para: ${f.p}</b><span class="pill p-ok">Enviado</span></div><div class="s-muted" style="margin-top:4px">${esc(f.t)}</div></div>`).join('')}</div>`;
   },
   ps_game(){
-    const r=[['Ana Souza',state.pontos],['Carlos Lima',1180],['Juliana Prado',990]].sort((a,b)=>b[1]-a[1]);
+    const r=[[NOME_USUARIO,state.pontos],['Carlos Lima',1180],['Juliana Prado',990]].sort((a,b)=>b[1]-a[1]);
     return topBar('Gameficação','psicossocial','Risco Psicossocial')+`<div class="s-card" style="text-align:center"><span class="s-muted">Seus pontos</span><b style="display:block;font-size:1.6rem;color:#fb923c">${state.pontos}</b><span class="pill p-info">Nível 5 · Guardião da Segurança</span></div>
     <div class="s-card"><b>Desafio da semana</b><div class="s-muted" style="margin:4px 0 8px">Responda o questionário de bem-estar e ganhe 50 pontos.</div><button class="s-btn s-btn-sm" data-act="desafio" style="--g:linear-gradient(90deg,#fb923c,#ea580c)"><i data-lucide="zap"></i> Fazer agora</button></div>
     <div class="s-card"><b>Ranking da equipe</b>${r.map((x,i)=>`<div class="s-row" style="margin-top:6px"><span>${['🥇','🥈','🥉'][i]} ${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>`;
@@ -242,7 +245,7 @@ const SCREENS = {
     <textarea class="s-input" id="sugTexto" rows="3" placeholder="Descreva sua sugestão..." maxlength="300"></textarea>
     <label class="s-check"><input type="checkbox" id="sugAnon"> Enviar anonimamente</label>
     <button class="s-btn" data-act="sugerir"><i data-lucide="send"></i> Enviar</button>
-    <div style="margin-top:14px">${state.sugestoes.map(s=>`<div class="s-card fade-in"><div class="s-row"><b>${esc(s.t)}</b><span class="pill p-info">Recebida</span></div><div class="s-muted" style="margin-top:4px">${esc(s.x)}</div><div class="s-muted" style="margin-top:6px">${s.a?'Anônimo':'Ana Souza'} · agora</div></div>`).join('')||'<div class="empty"><i data-lucide="lightbulb"></i>Nenhuma sugestão ainda.</div>'}</div>`;
+    <div style="margin-top:14px">${state.sugestoes.map(s=>`<div class="s-card fade-in"><div class="s-row"><b>${esc(s.t)}</b><span class="pill p-info">Recebida</span></div><div class="s-muted" style="margin-top:4px">${esc(s.x)}</div><div class="s-muted" style="margin-top:6px">${s.a?'Anônimo':esc(NOME_USUARIO)} · agora</div></div>`).join('')||'<div class="empty"><i data-lucide="lightbulb"></i>Nenhuma sugestão ainda.</div>'}</div>`;
   },
   col_solicitacoes(){
     const steps=`<div class="steps-mini">${SOLIC_STEPS.map(s=>`<span>${s}</span>`).join('<i>›</i>')}<i>ou</i><span class="rej">Rejeitado</span></div>`;
