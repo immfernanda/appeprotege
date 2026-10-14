@@ -53,9 +53,73 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
   .mod-detail ul{grid-template-columns:1fr}
   .top .btn span{display:none}
 }
+/* ---------- Quiz (porta de entrada do QR code) ---------- */
+body.locked{overflow:hidden}
+body.locked .wrap{display:none}
+.quiz{position:fixed;inset:0;z-index:50;overflow-y:auto;display:none;padding:24px 16px 40px}
+body.locked .quiz{display:block}
+.q-in{width:min(480px,100%);margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:22px}
+.q-brand{display:flex;align-items:center;justify-content:center;gap:10px;padding-top:6px}
+.q-brand img{height:34px}.q-brand .wm{height:27px}
+.q-card{background:#fff;color:var(--navy);border-radius:24px;padding:28px 22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);margin:auto 0}
+.q-card h2{font-size:clamp(1.45rem,6vw,1.8rem);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin:8px 0 10px}
+.q-card h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.q-card p{color:var(--muted);font-size:.94rem;line-height:1.55}
+.q-card .eyebrow{color:var(--teal)}
+.q-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;cursor:pointer;margin-top:20px;padding:15px 22px;border-radius:999px;font-weight:700;font-size:1rem;background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(18,176,182,.7)}
+.q-btn svg{width:18px;height:18px}
+.q-perks{list-style:none;margin-top:16px;display:grid;gap:9px}
+.q-perks li{display:flex;gap:9px;align-items:center;font-size:.88rem;font-weight:600;color:#0B1F3A}
+.q-perks svg{width:18px;height:18px;color:var(--teal);flex:none}
+.q-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.q-back{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--slate);display:grid;place-items:center;cursor:pointer;flex:none}
+.q-back svg{width:18px;height:18px}
+.q-prog{flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.q-prog i{display:block;height:100%;border-radius:999px;background:var(--grad);transition:width .35s}
+.q-count{font-size:.76rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.q-opts{display:grid;gap:10px;margin-top:18px}
+.q-opts.two{grid-template-columns:1fr 1fr}
+.q-opt{text-align:left;border:1.5px solid var(--line);background:var(--bg);color:var(--navy);border-radius:14px;padding:14px 16px;font-weight:600;font-size:.94rem;cursor:pointer;transition:.2s;line-height:1.3}
+.q-opt:hover,.q-opt.on{border-color:var(--teal);background:rgba(18,176,182,.1)}
+.q-lock{display:flex;align-items:center;gap:14px;background:var(--bg);border:1.5px dashed var(--aqua);border-radius:16px;padding:14px 16px;margin:16px 0 4px}
+.q-lock .n{font-size:2rem;font-weight:800;color:var(--blue);filter:blur(7px);user-select:none}
+.q-lock b{display:flex;align-items:center;gap:6px;font-size:.9rem}
+.q-lock b svg{width:16px;height:16px;color:var(--teal)}
+.q-lock small{color:var(--muted);font-size:.78rem}
+.q-fields{display:grid;gap:12px;margin-top:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label{font-size:.78rem;font-weight:700;color:var(--slate)}
+.f input{font:inherit;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--bg);font-size:1rem;outline:none;width:100%;color:var(--navy)}
+.f input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px rgba(18,176,182,.12)}
+.f.err input{border-color:#e11d48}
+.f small.e{color:#e11d48;font-size:.72rem;display:none}
+.f.err small.e{display:block}
+.consent{display:flex;gap:10px;font-size:.76rem;color:var(--muted);margin-top:16px;align-items:flex-start;line-height:1.45}
+.consent input{margin-top:3px;accent-color:var(--teal);flex:none}
+.q-res{text-align:center}
+.q-ring{position:relative;width:170px;height:170px;margin:4px auto 14px}
+.q-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.q-ring circle{fill:none;stroke-width:12}
+.q-ring .bg{stroke:var(--line)}
+.q-ring .fg{stroke:url(#qGrad);stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.q-ring .v{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;font-weight:800;color:var(--navy);letter-spacing:-.03em}
+.q-mods-t{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-top:20px;text-align:left}
+.q-mods{list-style:none;margin-top:10px;display:grid;gap:8px;text-align:left}
+.q-mods li{display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:600;color:#0B1F3A;background:var(--bg);border-radius:12px;padding:9px 12px}
+.q-mods .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none}
+.q-mods .ic svg{width:16px;height:16px}
+.res-chip{display:none;align-items:center;gap:8px;width:fit-content;background:rgba(255,255,255,.1);border:1.5px solid rgba(100,198,204,.5);border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:700;margin-bottom:14px}
+.res-chip svg{width:16px;height:16px;color:var(--aqua)}
+.res-chip.show{display:flex}
 </style>
 </head>
-<body>
+<body class="locked">
+<div class="quiz" id="quiz">
+  <div class="q-in">
+    <div class="q-brand"><img src="assets/simbolo.png" alt=""><img class="wm" src="assets/wordmark-branco.png" alt="eProtege"></div>
+    <div class="q-card" id="qCard"></div>
+  </div>
+</div>
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><img src="assets/simbolo.png" alt=""><img class="wm" src="assets/wordmark-branco.png" alt="eProtege"></a>
@@ -63,6 +127,7 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
   </div>
   <div class="grid">
     <div>
+      <div class="res-chip" id="resChip"><i data-lucide="badge-check"></i><span></span></div>
       <span class="eyebrow">Experimente</span>
       <h1>Toque em um módulo e veja <span>o app funcionando</span></h1>
       <p class="lead">Este é o App eProtege no celular do seu colaborador. Bata o ponto, envie um atestado, solicite um EPI: tudo funciona aqui.</p>
@@ -86,6 +151,133 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
 icons();
+
+/* ============ QUIZ ============ */
+// Planilha "Leads evento" (script google-apps-script/CodigoEvento.gs)
+const PLANILHA_EVENTO='https://script.google.com/macros/s/AKfycbxKlSDv_mgqBMqlMkZapUvrPEsSFor7d5XCa28IqAX0JwbrXWPIjz54WFd_lWl05Vea/exec';
+// Script dos leads da LP, que repassa ao CRM com a campanha do evento
+const PLANILHA_CRM='https://script.google.com/macros/s/AKfycbw9caXVJHM7HKOctr4VkDLBmBwbMZ34YkKQS2z7-aZogrlVzPuXERQN1hl9dYagw9XZkg/exec';
+const CAMPANHA='Evento QR Code';
+// Cada opção: [texto, pontos]. 3 = precisa muito do módulo, 0 = já resolvido
+const QUIZ=[
+  {q:'Quantos funcionários a sua empresa tem?', two:true, opts:SIZES.map(s=>[s,0])},
+  {mod:'ponto', dica:'Ponto pelo celular com espelho digital', q:'Como o ponto da equipe é registrado hoje?',
+   opts:[['No papel ou em planilha',3],['Em relógio de ponto na parede',2],['Em aplicativo ou sistema digital',0]]},
+  {mod:'atestados', dica:'Atestados enviados por foto direto ao RH', q:'Quando um colaborador entrega um atestado, o que acontece?',
+   opts:[['Chega por WhatsApp ou em papel para o gestor',3],['O RH recebe, mas sem um controle organizado',2],['Fica registrado em um sistema',0]]},
+  {mod:'epi', dica:'Solicitação e assinatura de EPI no app', q:'Como a sua empresa controla a entrega de EPI?',
+   opts:[['Ficha de papel assinada',3],['Planilha',2],['Sistema com assinatura digital',0],['Não usamos EPI',0]]},
+  {mod:'denuncias', dica:'Canal de denúncias anônimo e seguro', q:'Sua empresa tem um canal de denúncias anônimo?',
+   opts:[['Ainda não temos',3],['Temos caixa de sugestões ou um e-mail',2],['Sim, um canal anônimo estruturado',0]]},
+  {mod:'psicossocial', dica:'Avaliação de risco psicossocial da equipe', q:'Sua empresa já avalia os riscos psicossociais da equipe?',
+   opts:[['Ainda não',3],['Estamos começando',2],['Sim, com registros e acompanhamento',0]]}
+];
+const KEY='eprotegeQuiz', params=new URLSearchParams(location.search);
+const quiz={step:-1, ans:[]};
+const card=$('#qCard');
+const store={get(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},del(){try{localStorage.removeItem(KEY)}catch(e){}}};
+
+function quizResult(){
+  const scored=QUIZ.map((x,i)=>({...x,pts:x.opts[quiz.ans[i]][1]})).filter(x=>x.mod);
+  const pct=Math.round(scored.reduce((t,x)=>t+x.pts,0)/(scored.length*3)*100);
+  return {pct, mods:scored.filter(x=>x.pts>=2).map(x=>x.mod), tamanho:QUIZ[0].opts[quiz.ans[0]][0]};
+}
+function show(html){card.innerHTML=`<div class="fade-in">${html}</div>`;icons();$('#quiz').scrollTop=0}
+const qHead=(w,label)=>`<div class="q-head"><button class="q-back" data-q="back" aria-label="Voltar"><i data-lucide="chevron-left"></i></button><div class="q-prog"><i style="width:${w}%"></i></div><span class="q-count">${label}</span></div>`;
+
+function renderIntro(){
+  show(`<span class="eyebrow">Quiz eProtege</span>
+    <h2>Quanto a sua empresa <span>precisa da eProtege?</span></h2>
+    <p>Responda e descubra o seu percentual.</p>
+    <ul class="q-perks">
+      <li><i data-lucide="list-checks"></i>${QUIZ.length} perguntas rápidas</li>
+      <li><i data-lucide="percent"></i>Resultado na hora</li>
+      <li><i data-lucide="smartphone"></i>No final, teste o app no seu celular</li>
+    </ul>
+    <button class="q-btn" data-q="start">Começar <i data-lucide="arrow-right"></i></button>`);
+}
+function renderQuestion(){
+  const x=QUIZ[quiz.step];
+  show(`${qHead((quiz.step+1)/QUIZ.length*100,`${quiz.step+1} de ${QUIZ.length}`)}
+    <h2>${x.q}</h2>
+    <div class="q-opts${x.two?' two':''}">${x.opts.map((o,i)=>`<button class="q-opt${quiz.ans[quiz.step]===i?' on':''}" data-opt="${i}">${o[0]}</button>`).join('')}</div>`);
+}
+function renderForm(){
+  show(`${qHead(100,'Pronto!')}
+    <h2>Seu resultado <span>está pronto</span></h2>
+    <div class="q-lock"><span class="n" aria-hidden="true">00%</span><div><b><i data-lucide="lock"></i>Desbloqueie sua futura solução</b><small>Preencha para desbloquear o resultado e o app.</small></div></div>
+    <form id="quizForm" novalidate>
+      <div class="q-fields">
+        <div class="f"><label for="qNome">Nome*</label><input id="qNome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome</small></div>
+        <div class="f"><label for="qTel">Telefone*</label><input id="qTel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000 0000" required><small class="e">Telefone inválido</small></div>
+        <div class="f"><label for="qEmail">E-mail*</label><input id="qEmail" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required><small class="e">E-mail inválido</small></div>
+        <div class="f"><label for="qEmpresa">Empresa*</label><input id="qEmpresa" autocomplete="organization" placeholder="Nome da empresa" required><small class="e">Informe a empresa</small></div>
+      </div>
+      <input type="text" id="qWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <label class="consent"><input type="checkbox" id="qLgpd" required> <span>Concordo em ser contatado(a) pela eProtege e com o tratamento dos meus dados conforme a LGPD.</span></label>
+      <button type="submit" class="q-btn">Desbloquear resultado <i data-lucide="lock-open"></i></button>
+    </form>`);
+}
+function renderResult(r){
+  const txt=r.pct>=70?['Sua empresa precisa muito da eProtege','Boa parte da sua gestão ainda depende de papel, planilha e WhatsApp. O app resolve tudo isso em um só lugar.']
+    :r.pct>=40?['Sua empresa já deu os primeiros passos','Alguns processos ainda estão soltos. Veja como o app organiza o que falta.']
+    :['Sua gestão já é bem digital','O app reúne tudo em um só lugar e simplifica a rotina. Veja na prática.'];
+  const mods=r.mods.map(id=>({m:MODULES.find(m=>m.id===id),d:QUIZ.find(x=>x.mod===id).dica}));
+  show(`<div class="q-res"><span class="eyebrow">Seu resultado</span>
+    <div class="q-ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="qGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2864B0"/><stop offset="1" stop-color="#12B0B6"/></linearGradient></defs><circle class="bg" cx="60" cy="60" r="52"/><circle class="fg" id="qFg" cx="60" cy="60" r="52"/></svg><div class="v" id="qPct">0%</div></div>
+    <h2>${txt[0]}</h2><p>${txt[1]}</p>
+    ${mods.length?`<div class="q-mods-t">Onde o app mais ajuda você</div><ul class="q-mods">${mods.map(x=>`<li><span class="ic" style="background:${gradOf(x.m)}"><i data-lucide="${x.m.icon}"></i></span>${x.d}</li>`).join('')}</ul>`:''}
+    <button class="q-btn" data-q="app">Ver o app funcionando <i data-lucide="arrow-right"></i></button></div>`);
+  const t0=performance.now(), dur=1400;
+  requestAnimationFrame(()=>{$('#qFg').style.strokeDashoffset=327*(1-r.pct/100)});
+  (function tick(t){const k=Math.min(1,(t-t0)/dur);$('#qPct').textContent=Math.round(r.pct*k)+'%';if(k<1)requestAnimationFrame(tick)})(t0);
+}
+function unlock(r){
+  document.body.classList.remove('locked');scrollTo(0,0);
+  if(r&&r.pct!=null){$('#resChip span').textContent=`Seu resultado: ${r.pct}%`;$('#resChip').classList.add('show')}
+  if(r&&r.mods&&r.mods[0])selectTab(r.mods[0],false);
+}
+
+card.addEventListener('click',e=>{
+  const o=e.target.closest('[data-opt]'), b=e.target.closest('[data-q]');
+  if(o){
+    quiz.ans[quiz.step]=+o.dataset.opt;o.classList.add('on');
+    setTimeout(()=>{quiz.step++;quiz.step<QUIZ.length?renderQuestion():renderForm()},180);
+  }
+  if(!b)return;
+  if(b.dataset.q==='start'){quiz.step=0;renderQuestion()}
+  if(b.dataset.q==='back'){quiz.step--;quiz.step<0?renderIntro():renderQuestion()}
+  if(b.dataset.q==='app')unlock(store.get());
+});
+card.addEventListener('input',e=>{
+  if(e.target.id!=='qTel')return;
+  const i=e.target, d=i.value.replace(/\D/g,'').slice(0,11);
+  i.value=d.length>10?`(${d.slice(0,2)}) ${d.slice(2,7)} ${d.slice(7)}`:d.length>6?`(${d.slice(0,2)}) ${d.slice(2,6)} ${d.slice(6)}`:d.length>2?`(${d.slice(0,2)}) ${d.slice(2)}`:d.length?`(${d}`:'';
+});
+card.addEventListener('submit',e=>{
+  e.preventDefault();
+  const check=(el,ok)=>{el.closest('.f').classList.toggle('err',!ok);return ok};
+  const nome=$('#qNome').value.trim(), tel=$('#qTel').value, email=$('#qEmail').value.trim(), empresa=$('#qEmpresa').value.trim();
+  const ok=[check($('#qNome'),nome.length>1),check($('#qTel'),tel.replace(/\D/g,'').length>=10),check($('#qEmail'),/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)),check($('#qEmpresa'),empresa.length>1)].every(Boolean);
+  const lg=$('#qLgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
+  if(!ok||!lg.checked)return;
+  const r=quizResult();
+  const nomes=r.mods.map(id=>MODULES.find(m=>m.id===id).name).join(', ');
+  const respostas={};QUIZ.forEach((x,i)=>{if(x.mod)respostas[x.mod]=x.opts[quiz.ans[i]][0]});
+  const payload={nome,telefone:tel,email,empresa,tamanho:r.tamanho,pct:r.pct,modulos:nomes,respostas,interesse:`Quiz ${r.pct}%`+(nomes?`: ${nomes}`:''),
+    campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode',
+    pagina:location.origin+location.pathname,website:$('#qWebsite').value};
+  if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
+  [PLANILHA_EVENTO,PLANILHA_CRM].forEach(u=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{}));
+  store.set({pct:r.pct,mods:r.mods});
+  renderResult(r);
+});
+
+// ?app pula o quiz (apresentações); ?quiz recomeça do zero; quem já respondeu vai direto ao app
+if(params.has('quiz'))store.del();
+if(params.has('app'))unlock();
+else if(store.get())unlock(store.get());
+else renderIntro();
 </script>
 </body>
 </html>
