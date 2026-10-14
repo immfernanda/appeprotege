@@ -348,7 +348,7 @@ card.addEventListener('submit',e=>{
   const modulos=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id).name).join(', ');
   const resumo=r.pct==null?`Quiz (${quiz.perfil})`:`Quiz (${quiz.perfil}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`;
   // Colunas da planilha "Leads evento", na ordem (o script cria as que faltarem)
-  const campos={'Perfil':quiz.perfil,'Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
+  const campos={'Cargo':quiz.perfil,'Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
     'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos};
   if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)}));
   const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
