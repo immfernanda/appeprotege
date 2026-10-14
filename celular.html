@@ -206,8 +206,6 @@ icons();
 /* ============ QUIZ ============ */
 // Planilha "Leads evento" (script google-apps-script/CodigoEvento.gs)
 const PLANILHA_EVENTO='https://script.google.com/macros/s/AKfycbxKlSDv_mgqBMqlMkZapUvrPEsSFor7d5XCa28IqAX0JwbrXWPIjz54WFd_lWl05Vea/exec';
-// Script dos leads da LP: grava na planilha da LP e manda à campanha da LP no CRM
-const PLANILHA_LP='https://script.google.com/macros/s/AKfycbz-noA4lD-XBobJyZaoIKQk4o-MhhiQnThX0rf4clBw2eb8CSuWZILIvPOkkHW5LIAYnQ/exec';
 // CRM base44: campanha própria do evento (token público de captação, feito para ficar na página)
 const CRM='https://protege-core-hub.base44.app/functions/captarLeadLanding';
 const CRM_TOKEN='cmp_8e2efbc99e3641099f56139177e1242c';
@@ -386,8 +384,8 @@ card.addEventListener('submit',e=>{
   const pagina=location.origin+location.pathname, website=$('#qWebsite').value;
   const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
-  post(PLANILHA_EVENTO,{campos,website});
-  post(PLANILHA_LP,{aba:'Evento',nome,telefone:tel,email,empresa,cargo:quiz.perfil,tamanho:'',interesse:resumo,...utm,pagina,website});
+  // A planilha do evento grava o lead e repassa à campanha da LP no CRM (a planilha comercial não recebe o quiz)
+  post(PLANILHA_EVENTO,{campos,website,crm:{nome,telefone:tel,email,empresa,cargo:quiz.perfil,interesse:resumo,...utm,pagina}});
   fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
     utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
   store.set({pct:r.pct,recs:r.recs,senha:r.senha,nome});
