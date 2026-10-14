@@ -116,7 +116,10 @@ body.locked .quiz{display:block}
 .q-perfil b{display:block;font-size:.98rem}
 .q-perfil small{display:block;font-weight:500;color:var(--muted);font-size:.8rem;margin-top:2px}
 .q-card h2.q-q{font-size:clamp(1.2rem,5vw,1.45rem)}
-.q-card p.q-cons{font-size:.84rem;line-height:1.45;margin-top:-4px;margin-bottom:10px}
+.q-card p.q-cons-t{font-size:.78rem;font-weight:700;color:var(--slate);margin-top:-2px}
+.q-cons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:8px 0 12px}
+.q-cons li{position:relative;padding-left:16px;font-size:.84rem;line-height:1.35;color:var(--muted)}
+.q-cons li::before{content:'';position:absolute;left:0;top:.4em;width:8px;height:8px;border-radius:50%;background:var(--aqua)}
 .q-card p.q-sig{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600}
 .q-sig svg{width:14px;height:14px;color:var(--teal);flex:none}
 .q-scale{display:flex;justify-content:space-between;gap:10px;margin-top:14px;font-size:.72rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.04em}
@@ -194,19 +197,19 @@ const CAMPANHA='Evento QR Code';
 const PERFIS=[['Profissional','Trabalho em uma empresa','briefcase'],['Estagiário','Faço estágio em uma empresa','badge-check'],['Estudante','Ainda não trabalho em uma empresa','graduation-cap']];
 // Perguntas com nota de 1 a 5. inv: nota alta = precisa de mais ajuda. rec: sugestão quando a nota indica necessidade
 const QUIZ=[
-  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:'Considerando agendamento, localização, agilidade, proximidade e clareza.', lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade','Clareza'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Medicina do trabalho', icon:'stethoscope', g:['#d946ef','#db2777'], mods:['atestados','colaborador'],
      t:'Exames e ASOs com agendamento fácil, atendimento perto da sua equipe e atestados enviados pelo app direto ao RH.'}},
-  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:'Considerando conhecimento técnico, clareza, apoio técnico e documentação bem feita.', lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:['Conhecimento técnico','Clareza','Apoio técnico','Documentação bem feita'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
      t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
-  {id:'documentos', col:'Documentos de SST', q:'Como você avalia a guarda dos documentos de segurança do trabalho da sua empresa?', cons:'Considerando a segurança e a concentração dos documentos e o registro digital dos EPIs.', lo:'Muito ruim', hi:'Excelente',
+  {id:'documentos', col:'Documentos de SST', q:'Como você avalia a guarda dos documentos de segurança do trabalho da sua empresa?', cons:['Segurança e concentração dos documentos','Registro digital dos EPIs'], lo:'Muito ruim', hi:'Excelente',
    rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
      t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
-  {id:'psicossocial', col:'Risco psicossocial', q:'O quanto a sua empresa já avançou na gestão do risco psicossocial?', cons:'Considerando a aplicação de questionário e o plano de ação.', lo:'Nada', hi:'Totalmente',
+  {id:'psicossocial', col:'Risco psicossocial', q:'O quanto a sua empresa já avançou na gestão do risco psicossocial?', cons:['Aplicação de questionário','Plano de ação'], lo:'Nada', hi:'Totalmente',
    rec:{nome:'Risco psicossocial', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial'],
      t:'Questionário aplicado pelo app, com sigilo para o colaborador, e plano de ação acompanhado de perto.'}},
-  {id:'pessoas', col:'Treinamentos e pessoas', q:'Como você avalia a sua empresa no cuidado com as pessoas?', cons:'Considerando registro dos treinamentos, desenvolvimento de liderança e canal de denúncias.', lo:'Muito ruim', hi:'Excelente',
+  {id:'pessoas', col:'Treinamentos e pessoas', q:'Como você avalia a sua empresa no cuidado com as pessoas?', cons:['Registro dos treinamentos','Desenvolvimento de liderança','Canal de denúncias'], lo:'Muito ruim', hi:'Excelente',
    rec:{nome:'Treinamentos e pessoas', icon:'graduation-cap', g:['#10b981','#16a34a'], mods:['cursos','denuncias'],
      t:'Treinamentos e integração registrados no app, desenvolvimento de liderança e canal de denúncias anônimo.'}},
   {id:'geral', col:'Pode melhorar (geral)', q:'De forma geral, o quanto a sua empresa ainda pode melhorar em saúde e segurança do trabalho?', lo:'Pouco', hi:'Muito', inv:true}
@@ -253,7 +256,7 @@ function renderQuestion(){
   const done=x.itens.every((_,i)=>nota(x,i));
   show(`${qHead(n/QUIZ.length*100,`${n} de ${QUIZ.length}`)}
     <h2 class="q-q">${x.q}</h2>
-    ${x.cons?`<p class="q-cons">${x.cons}</p>`:''}
+    ${x.cons?`<p class="q-cons-t">Considerando:</p><ul class="q-cons">${x.cons.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}
     <p class="q-sig"><i data-lucide="lock"></i>Sigiloso: suas respostas não são enviadas à sua empresa.</p>
     <div class="q-scale"><span>1 = ${x.lo}</span><span>5 = ${x.hi}</span></div>
     <div class="q-rates">${x.itens.map((it,i)=>`<div class="q-rate">${multi?`<b>${it}</b>`:''}<div class="q-nums">${[1,2,3,4,5].map(v=>`<button class="q-num${nota(x,i)===v?' on':''}" data-rate="${i}" data-v="${v}" aria-label="${it}: ${v}">${v}</button>`).join('')}</div></div>`).join('')}</div>
