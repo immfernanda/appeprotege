@@ -132,10 +132,14 @@ const SCREENS = {
   home(){
     return `<div class="hello"><h4>Bem-vindo(a), ${esc(primeiroNome())}!</h4><p>Escolha uma área para começar.</p></div>
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
-    <div class="app-grid">${SENHA_SORTEIO?`<button class="app-ic sorteio-ic" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span>Sorteio</button>`:''}${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
+    <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}${SENHA_SORTEIO?`<button class="app-ic sorteio-ic" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span>Sorteio</button>`:''}</div>`;
   },
   sorteio(){
-    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
+    if(!state.presenteAberto) return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card">
+      <b>Tem um presente para você!</b><span class="s-muted">Toque no presente para revelar a sua senha do sorteio da cesta Kopenhagen.</span>
+      <button class="sorteio-box" data-act="abrirPresente" aria-label="Abrir presente"><i data-lucide="gift"></i></button>
+      <span class="sorteio-toque">Toque para abrir</span></div>`;
+    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="party-popper"></i></span>
       <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Sua senha do sorteio</span>
       <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
       <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>`;
@@ -372,6 +376,7 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='pedir'){const i=$('#pedItem').value.trim();if(!i){toast('Informe o material');return}state.pedidos.unshift({i,q:Math.max(1,+$('#pedQtd').value||1),h:nowHM()});rerender();toast('Pedido enviado')}
   if(act==='melhoria'){const t=$('#melTexto').value.trim();if(!t){toast('Descreva a melhoria');return}state.melhorias.unshift({a:$('#melArea').value,t});rerender();toast('Melhoria enviada')}
   if(act==='feedback'){const t=$('#fbTexto').value.trim();if(!t){toast('Escreva seu feedback');return}state.feedbacks.unshift({p:$('#fbPara').value,t});rerender();toast($('#fbAnon')?.checked===false?'Feedback enviado':'Feedback enviado com sigilo')}
+  if(act==='abrirPresente'){a.classList.add('abrindo');setTimeout(()=>{state.presenteAberto=true;rerender();toast('Senha revelada!')},550)}
   if(act==='perfil'){state.perfil=true;rerender();toast('Análise concluída')}
   if(act==='trilha')toast('Retomando: Gestão do tempo');
   if(act==='desafio'){state.pontos+=50;rerender();toast('+50 pontos!')}

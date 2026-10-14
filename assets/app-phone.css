@@ -53,6 +53,14 @@
 .sorteio-card .s-muted{color:#f3dccb}
 .sorteio-gift{width:52px;height:52px;border-radius:50%;background:#F4BB0E;color:#3b1d0e;display:grid;place-items:center}
 .sorteio-gift svg{width:26px;height:26px}
+.sorteio-box{width:96px;height:96px;margin:10px 0 2px;border:0;border-radius:24px;background:linear-gradient(135deg,#F4BB0E,#e08a1e);color:#3b1d0e;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 28px -10px rgba(244,187,14,.8);animation:sorteioShake 1.8s ease-in-out infinite}
+.sorteio-box svg{width:48px;height:48px}
+.sorteio-box.abrindo{animation:sorteioOpen .55s ease-in forwards}
+@keyframes sorteioShake{0%,60%,100%{transform:rotate(0)}65%{transform:rotate(-10deg)}72%{transform:rotate(10deg)}79%{transform:rotate(-7deg)}86%{transform:rotate(5deg)}}
+@keyframes sorteioOpen{40%{transform:scale(1.15) rotate(-6deg)}100%{transform:scale(1.6);opacity:0}}
+.sorteio-toque{font-size:.7rem;font-weight:700;color:#F4BB0E;text-transform:uppercase;letter-spacing:.08em}
+.sorteio-card.revelado{animation:sorteioPop .45s ease-out}
+@keyframes sorteioPop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
 .sorteio-senha{background:#fff;color:#3b1d0e;font-weight:800;font-size:1.6rem;letter-spacing:.2em;padding:6px 12px 6px 18px;border-radius:12px}
 /* inner screens */
 .s-card{background:#0e1530;border:1px solid #1a2347;border-radius:14px;padding:12px;margin-bottom:10px;font-size:.74rem}
