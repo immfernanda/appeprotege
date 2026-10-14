@@ -36,6 +36,9 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
 .mod-tab .ic svg{width:21px;height:21px}
 .mod-tab:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
 .mod-tab.active{background:#fff;border-color:var(--teal);color:var(--navy)}
+.mod-tab{position:relative}
+.mod-tab.rec{border-color:rgba(244,187,14,.75)}
+.mod-tab.rec::before{content:'Para você';position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:#F4BB0E;color:#001B4A;font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:999px;white-space:nowrap}
 .mod-detail{margin-top:18px;background:#fff;color:var(--navy);border-radius:20px;padding:24px 26px;min-height:190px}
 .mod-detail h3{font-size:1.35rem;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .mod-detail h3 .tag{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:rgba(244,187,14,.18);color:#9a7300;padding:4px 10px;border-radius:999px}
@@ -108,6 +111,36 @@ body.locked .quiz{display:block}
 .q-mods li{display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:600;color:#0B1F3A;background:var(--bg);border-radius:12px;padding:9px 12px}
 .q-mods .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none}
 .q-mods .ic svg{width:16px;height:16px}
+.q-perfil{display:flex;align-items:center;gap:12px}
+.q-perfil svg{width:22px;height:22px;color:var(--teal);flex:none}
+.q-perfil b{display:block;font-size:.98rem}
+.q-perfil small{display:block;font-weight:500;color:var(--muted);font-size:.8rem;margin-top:2px}
+.q-card h2.q-q{font-size:clamp(1.2rem,5vw,1.45rem)}
+.q-card p.q-cons-t{font-size:.78rem;font-weight:700;color:var(--slate);margin-top:-2px}
+.q-cons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:8px 0 12px}
+.q-cons li{position:relative;padding-left:16px;font-size:.84rem;line-height:1.35;color:var(--muted)}
+.q-cons li::before{content:'';position:absolute;left:0;top:.4em;width:8px;height:8px;border-radius:50%;background:var(--aqua)}
+.q-card p.q-sig{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600}
+.q-sig svg{width:14px;height:14px;color:var(--teal);flex:none}
+.q-scale{display:flex;justify-content:space-between;gap:10px;margin-top:14px;font-size:.72rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.04em}
+.q-rates{display:grid;gap:14px;margin-top:10px}
+.q-rate b{display:block;font-size:.88rem;margin-bottom:7px}
+.q-nums{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.q-num{border:1.5px solid var(--line);background:var(--bg);color:var(--navy);border-radius:12px;padding:11px 0;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;transition:.15s}
+.q-num:hover{border-color:var(--teal)}
+.q-num.on{background:var(--grad);border-color:transparent;color:#fff}
+.q-btn:disabled{opacity:.4;cursor:default;box-shadow:none}
+.q-ok{width:84px;height:84px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;margin:16px auto 8px}
+.q-ok svg{width:38px;height:38px}
+.q-res .q-garg{list-style:none;margin-top:16px;display:grid;gap:10px;text-align:left}
+.q-garg li{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:12px}
+.q-garg .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
+.q-garg .ic svg{width:18px;height:18px}
+.q-garg b{display:block;font-size:.92rem;color:var(--navy)}
+.q-garg small{display:block;font-size:.82rem;line-height:1.45;color:var(--muted);margin-top:3px}
+.q-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.q-chips span{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;background:rgba(18,176,182,.12);color:var(--navy);padding:7px 12px;border-radius:999px}
+.q-chips svg{width:15px;height:15px;color:var(--teal)}
 .res-chip{display:none;align-items:center;gap:8px;width:fit-content;background:rgba(255,255,255,.1);border:1.5px solid rgba(100,198,204,.5);border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:700;margin-bottom:14px}
 .res-chip svg{width:16px;height:16px;color:var(--aqua)}
 .res-chip.show{display:flex}
@@ -161,95 +194,141 @@ const PLANILHA_LP='https://script.google.com/macros/s/AKfycbz-noA4lD-XBobJyZaoIK
 const CRM='https://protege-core-hub.base44.app/functions/captarLeadLanding';
 const CRM_TOKEN='cmp_8e2efbc99e3641099f56139177e1242c';
 const CAMPANHA='Evento QR Code';
-// Cada opção: [texto, pontos]. 3 = precisa muito do módulo, 0 = já resolvido
+const PERFIS=[['Profissional','Trabalho em uma empresa','briefcase'],['Estagiário','Faço estágio em uma empresa','badge-check'],['Estudante','Ainda não trabalho em uma empresa','graduation-cap']];
+// Perguntas com nota de 1 a 5. inv: nota alta = precisa de mais ajuda. rec: sugestão quando a nota indica necessidade
 const QUIZ=[
-  {q:'Quantos funcionários a sua empresa tem?', two:true, opts:SIZES.map(s=>[s,0])},
-  {mod:'ponto', dica:'Ponto pelo celular com espelho digital', q:'Como o ponto da equipe é registrado hoje?',
-   opts:[['No papel ou em planilha',3],['Em relógio de ponto na parede',2],['Em aplicativo ou sistema digital',0]]},
-  {mod:'atestados', dica:'Atestados enviados por foto direto ao RH', q:'Quando um colaborador entrega um atestado, o que acontece?',
-   opts:[['Chega por WhatsApp ou em papel para o gestor',3],['O RH recebe, mas sem um controle organizado',2],['Fica registrado em um sistema',0]]},
-  {mod:'epi', dica:'Solicitação e assinatura de EPI no app', q:'Como a sua empresa controla a entrega de EPI?',
-   opts:[['Ficha de papel assinada',3],['Planilha',2],['Sistema com assinatura digital',0],['Não usamos EPI',0]]},
-  {mod:'denuncias', dica:'Canal de denúncias anônimo e seguro', q:'Sua empresa tem um canal de denúncias anônimo?',
-   opts:[['Ainda não temos',3],['Temos caixa de sugestões ou um e-mail',2],['Sim, um canal anônimo estruturado',0]]},
-  {mod:'psicossocial', dica:'Avaliação de risco psicossocial da equipe', q:'Sua empresa já avalia os riscos psicossociais da equipe?',
-   opts:[['Ainda não',3],['Estamos começando',2],['Sim, com registros e acompanhamento',0]]}
+  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade','Clareza'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+   rec:{nome:'Medicina do trabalho', icon:'stethoscope', g:['#d946ef','#db2777'], mods:['atestados','colaborador'],
+     t:'Exames e ASOs com agendamento fácil, atendimento perto da sua equipe e atestados enviados pelo app direto ao RH.'}},
+  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:['Conhecimento técnico','Clareza','Apoio técnico','Documentação bem feita'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+   rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
+     t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
+  {id:'documentos', col:'Documentos de SST', q:'Como você avalia a guarda dos documentos de segurança do trabalho da sua empresa?', cons:['Segurança e concentração dos documentos','Registro digital dos EPIs'], lo:'Muito ruim', hi:'Excelente',
+   rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
+     t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
+  {id:'psicossocial', col:'Risco psicossocial', q:'O quanto a sua empresa já avançou na gestão do risco psicossocial?', cons:['Aplicação de questionário','Plano de ação'], lo:'Nada', hi:'Totalmente',
+   rec:{nome:'Risco psicossocial', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial'],
+     t:'Questionário aplicado pelo app, com sigilo para o colaborador, e plano de ação acompanhado de perto.'}},
+  {id:'pessoas', col:'Treinamentos e pessoas', q:'Como você avalia a sua empresa no cuidado com as pessoas?', cons:['Registro dos treinamentos','Desenvolvimento de liderança','Canal de denúncias'], lo:'Muito ruim', hi:'Excelente',
+   rec:{nome:'Treinamentos e pessoas', icon:'graduation-cap', g:['#10b981','#16a34a'], mods:['cursos','denuncias'],
+     t:'Treinamentos e integração registrados no app, desenvolvimento de liderança e canal de denúncias anônimo.'}},
+  {id:'geral', col:'Pode melhorar (geral)', q:'De forma geral, o quanto a sua empresa ainda pode melhorar em saúde e segurança do trabalho?', lo:'Pouco', hi:'Muito', inv:true}
 ];
+QUIZ.forEach(x=>{x.itens=[x.col]});  // uma nota geral por pergunta
 const KEY='eprotegeQuiz', params=new URLSearchParams(location.search);
-const quiz={step:-1, ans:[]};
+const quiz={step:-1, perfil:null, notas:{}};  // step -1 = abertura, 0 = perfil, 1..N = perguntas
 const card=$('#qCard');
 const store={get(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},del(){try{localStorage.removeItem(KEY)}catch(e){}}};
+const estudante=()=>quiz.perfil==='Estudante';
+const nota=(x,i)=>quiz.notas[x.id+'|'+i];
 
 function quizResult(){
-  const scored=QUIZ.map((x,i)=>({...x,pts:x.opts[quiz.ans[i]][1]})).filter(x=>x.mod);
-  const pct=Math.round(scored.reduce((t,x)=>t+x.pts,0)/(scored.length*3)*100);
-  return {pct, mods:scored.filter(x=>x.pts>=2).map(x=>x.mod), tamanho:QUIZ[0].opts[quiz.ans[0]][0]};
+  const nec=QUIZ.map(x=>{const v=x.itens.map((_,i)=>nota(x,i));return {x,n:v.reduce((t,n)=>t+(x.inv?n-1:5-n),0)/(v.length*4)}});
+  const pct=Math.round(nec.reduce((t,o)=>t+o.n,0)/nec.length*100);
+  // Os 3 maiores gargalos (menores notas), mesmo que a empresa esteja bem avaliada
+  const recs=nec.filter(o=>o.x.rec).sort((a,b)=>b.n-a.n).slice(0,3).map(o=>o.x.id);
+  return {pct, recs};
 }
+// Módulos do app ligados aos gargalos, sem repetir, na ordem de prioridade
+const modsDe=recs=>[...new Set((recs||[]).flatMap(id=>QUIZ.find(x=>x.id===id).rec.mods))];
 function show(html){card.innerHTML=`<div class="fade-in">${html}</div>`;icons();$('#quiz').scrollTop=0}
 const qHead=(w,label)=>`<div class="q-head"><button class="q-back" data-q="back" aria-label="Voltar"><i data-lucide="chevron-left"></i></button><div class="q-prog"><i style="width:${w}%"></i></div><span class="q-count">${label}</span></div>`;
 
 function renderIntro(){
   show(`<span class="eyebrow">Quiz eProtege</span>
     <h2>Quanto a sua empresa <span>precisa da eProtege?</span></h2>
-    <p>Responda e descubra o seu percentual.</p>
+    <p>Responda e veja onde a eProtege age nos gargalos da sua empresa.</p>
     <ul class="q-perks">
       <li><i data-lucide="list-checks"></i>${QUIZ.length} perguntas rápidas</li>
-      <li><i data-lucide="percent"></i>Resultado na hora</li>
-      <li><i data-lucide="smartphone"></i>No final, teste o app no seu celular</li>
+      <li><i data-lucide="lock"></i>Respostas sigilosas</li>
+      <li><i data-lucide="sparkles"></i>Diagnóstico na hora</li>
+      <li><i data-lucide="smartphone"></i>No final, teste o app com os módulos para você</li>
     </ul>
     <button class="q-btn" data-q="start">Começar <i data-lucide="arrow-right"></i></button>`);
 }
-function renderQuestion(){
-  const x=QUIZ[quiz.step];
-  show(`${qHead((quiz.step+1)/QUIZ.length*100,`${quiz.step+1} de ${QUIZ.length}`)}
-    <h2>${x.q}</h2>
-    <div class="q-opts${x.two?' two':''}">${x.opts.map((o,i)=>`<button class="q-opt${quiz.ans[quiz.step]===i?' on':''}" data-opt="${i}">${o[0]}</button>`).join('')}</div>`);
+function renderPerfil(){
+  show(`${qHead(4,'Antes de começar')}
+    <h2>Você é:</h2>
+    <div class="q-opts">${PERFIS.map(p=>`<button class="q-opt q-perfil${quiz.perfil===p[0]?' on':''}" data-perfil="${p[0]}"><i data-lucide="${p[2]}"></i><span><b>${p[0]}</b><small>${p[1]}</small></span></button>`).join('')}</div>`);
 }
+function renderQuestion(){
+  const x=QUIZ[quiz.step-1], n=quiz.step, multi=x.itens.length>1;
+  const done=x.itens.every((_,i)=>nota(x,i));
+  show(`${qHead(n/QUIZ.length*100,`${n} de ${QUIZ.length}`)}
+    <h2 class="q-q">${x.q}</h2>
+    ${x.cons?`<p class="q-cons-t">Considerando:</p><ul class="q-cons">${x.cons.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}
+    <p class="q-sig"><i data-lucide="lock"></i>Sigiloso: suas respostas não são enviadas à sua empresa.</p>
+    <div class="q-scale"><span>1 = ${x.lo}</span><span>5 = ${x.hi}</span></div>
+    <div class="q-rates">${x.itens.map((it,i)=>`<div class="q-rate">${multi?`<b>${it}</b>`:''}<div class="q-nums">${[1,2,3,4,5].map(v=>`<button class="q-num${nota(x,i)===v?' on':''}" data-rate="${i}" data-v="${v}" aria-label="${it}: ${v}">${v}</button>`).join('')}</div></div>`).join('')}</div>
+    ${multi?`<button class="q-btn" data-q="next"${done?'':' disabled'}>Próxima <i data-lucide="arrow-right"></i></button>`:''}`);
+}
+function next(){quiz.step++;quiz.step<=QUIZ.length?renderQuestion():renderForm()}
 function renderForm(){
+  const est=estudante();
   show(`${qHead(100,'Pronto!')}
-    <h2>Seu resultado <span>está pronto</span></h2>
-    <div class="q-lock"><span class="n" aria-hidden="true">00%</span><div><b><i data-lucide="lock"></i>Desbloqueie sua futura solução</b><small>Preencha para desbloquear o resultado e o app.</small></div></div>
+    <h2>${est?'Falta pouco para <span>testar o app</span>':'Seu diagnóstico <span>está pronto</span>'}</h2>
+    <div class="q-lock"><div><b><i data-lucide="lock"></i>${est?'Desbloqueie o app eProtege':'Desbloqueie sua futura solução'}</b><small>${est?'Preencha para desbloquear o app.':'Preencha para ver onde a eProtege age nos seus gargalos e o seu app personalizado.'}</small></div></div>
     <form id="quizForm" novalidate>
       <div class="q-fields">
         <div class="f"><label for="qNome">Nome*</label><input id="qNome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome</small></div>
         <div class="f"><label for="qTel">Telefone*</label><input id="qTel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000 0000" required><small class="e">Telefone inválido</small></div>
-        <div class="f"><label for="qEmail">E-mail*</label><input id="qEmail" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required><small class="e">E-mail inválido</small></div>
-        <div class="f"><label for="qEmpresa">Empresa*</label><input id="qEmpresa" autocomplete="organization" placeholder="Nome da empresa" required><small class="e">Informe a empresa</small></div>
+        <div class="f"><label for="qEmail">E-mail*</label><input id="qEmail" type="email" autocomplete="email" placeholder="voce@email.com.br" required><small class="e">E-mail inválido</small></div>
+        <div class="f"><label for="qEmpresa">${est?'Onde você estuda?*':'Empresa onde você trabalha*'}</label><input id="qEmpresa" autocomplete="organization" placeholder="${est?'Instituição de ensino':'Nome da empresa'}" required><small class="e">${est?'Informe onde você estuda':'Informe a empresa'}</small></div>
       </div>
       <input type="text" id="qWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <label class="consent"><input type="checkbox" id="qLgpd" required> <span>Concordo em ser contatado(a) pela eProtege e com o tratamento dos meus dados conforme a LGPD.</span></label>
-      <button type="submit" class="q-btn">Desbloquear resultado <i data-lucide="lock-open"></i></button>
+      <button type="submit" class="q-btn">${est?'Desbloquear o app':'Desbloquear resultado'} <i data-lucide="lock-open"></i></button>
     </form>`);
 }
 function renderResult(r){
-  const txt=r.pct>=70?['Sua empresa precisa muito da eProtege','Boa parte da sua gestão ainda depende de papel, planilha e WhatsApp. O app resolve tudo isso em um só lugar.']
-    :r.pct>=40?['Sua empresa já deu os primeiros passos','Alguns processos ainda estão soltos. Veja como o app organiza o que falta.']
-    :['Sua gestão já é bem digital','O app reúne tudo em um só lugar e simplifica a rotina. Veja na prática.'];
-  const mods=r.mods.map(id=>({m:MODULES.find(m=>m.id===id),d:QUIZ.find(x=>x.mod===id).dica}));
-  show(`<div class="q-res"><span class="eyebrow">Seu resultado</span>
-    <div class="q-ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="qGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2864B0"/><stop offset="1" stop-color="#12B0B6"/></linearGradient></defs><circle class="bg" cx="60" cy="60" r="52"/><circle class="fg" id="qFg" cx="60" cy="60" r="52"/></svg><div class="v" id="qPct">0%</div></div>
-    <h2>${txt[0]}</h2><p>${txt[1]}</p>
-    ${mods.length?`<div class="q-mods-t">Onde o app mais ajuda você</div><ul class="q-mods">${mods.map(x=>`<li><span class="ic" style="background:${gradOf(x.m)}"><i data-lucide="${x.m.icon}"></i></span>${x.d}</li>`).join('')}</ul>`:''}
-    <button class="q-btn" data-q="app">Ver o app funcionando <i data-lucide="arrow-right"></i></button></div>`);
-  const t0=performance.now(), dur=1400;
-  requestAnimationFrame(()=>{$('#qFg').style.strokeDashoffset=327*(1-r.pct/100)});
-  (function tick(t){const k=Math.min(1,(t-t0)/dur);$('#qPct').textContent=Math.round(r.pct*k)+'%';if(k<1)requestAnimationFrame(tick)})(t0);
+  if(r.pct==null){
+    show(`<div class="q-res"><span class="eyebrow">Obrigado por participar!</span>
+      <div class="q-ok"><i data-lucide="party-popper"></i></div>
+      <h2>Agora é com você: <span>teste o app</span></h2><p>Veja como o App eProtege cuida da saúde e da segurança de quem trabalha.</p>
+      <button class="q-btn" data-q="app">Ver o app funcionando <i data-lucide="arrow-right"></i></button></div>`);
+    return;
+  }
+  const recs=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec);
+  const mods=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id));
+  show(`<div class="q-res"><span class="eyebrow">Seu diagnóstico</span>
+    <h2>Onde a eProtege age nos <span>gargalos da sua empresa</span></h2>
+    <p>Com base nas suas respostas, estes são os pontos que mais pedem atenção:</p>
+    <ul class="q-garg">${recs.map((x,i)=>`<li><span class="ic" style="background:${gradOf(x)}"><i data-lucide="${x.icon}"></i></span><div><b>${i+1}. ${x.nome}</b><small>${x.t}</small></div></li>`).join('')}</ul>
+    <div class="q-mods-t">Seu app personalizado</div>
+    <div class="q-chips">${mods.map(m=>`<span><i data-lucide="${m.icon}"></i>${m.name}</span>`).join('')}</div>
+    <button class="q-btn" data-q="app">Ver o meu app <i data-lucide="arrow-right"></i></button></div>`);
 }
 function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
-  if(r&&r.pct!=null){$('#resChip span').textContent=`Seu resultado: ${r.pct}%`;$('#resChip').classList.add('show')}
-  if(r&&r.mods&&r.mods[0])selectTab(r.mods[0],false);
+  const mods=modsDe(r&&r.recs);
+  if(!mods.length)return;
+  // Módulos dos gargalos vão para o começo, com o selo "Para você"
+  const tabs=$('#modTabs');
+  mods.slice().reverse().forEach(id=>{const t=tabs.querySelector(`[data-tab="${id}"]`);if(t){t.classList.add('rec');tabs.prepend(t)}});
+  $('#resChip span').textContent='Seu app personalizado';$('#resChip').classList.add('show');
+  document.querySelector('.lead').textContent='Separamos os módulos que mais ajudam nos gargalos da sua empresa. Comece por eles e teste no celular.';
+  selectTab(mods[0],false);
 }
 
 card.addEventListener('click',e=>{
-  const o=e.target.closest('[data-opt]'), b=e.target.closest('[data-q]');
-  if(o){
-    quiz.ans[quiz.step]=+o.dataset.opt;o.classList.add('on');
-    setTimeout(()=>{quiz.step++;quiz.step<QUIZ.length?renderQuestion():renderForm()},180);
+  const p=e.target.closest('[data-perfil]'), rt=e.target.closest('[data-rate]'), b=e.target.closest('[data-q]');
+  if(p){
+    quiz.perfil=p.dataset.perfil;p.classList.add('on');
+    setTimeout(()=>{if(estudante()){quiz.step=QUIZ.length+1;renderForm()}else next()},180);
   }
-  if(!b)return;
-  if(b.dataset.q==='start'){quiz.step=0;renderQuestion()}
-  if(b.dataset.q==='back'){quiz.step--;quiz.step<0?renderIntro():renderQuestion()}
+  if(rt){
+    const x=QUIZ[quiz.step-1];quiz.notas[x.id+'|'+rt.dataset.rate]=+rt.dataset.v;
+    rt.parentNode.querySelectorAll('.q-num').forEach(n=>n.classList.toggle('on',n===rt));
+    if(x.itens.length===1)setTimeout(next,180);
+    else $('[data-q=next]').disabled=!x.itens.every((_,i)=>nota(x,i));
+  }
+  if(!b||b.disabled)return;
+  if(b.dataset.q==='start'){quiz.step=0;renderPerfil()}
+  if(b.dataset.q==='next')next();
+  if(b.dataset.q==='back'){
+    if(quiz.step>QUIZ.length&&estudante())quiz.step=0;else quiz.step--;
+    quiz.step<0?renderIntro():quiz.step===0?renderPerfil():renderQuestion();
+  }
   if(b.dataset.q==='app')unlock(store.get());
 });
 card.addEventListener('input',e=>{
@@ -264,18 +343,23 @@ card.addEventListener('submit',e=>{
   const ok=[check($('#qNome'),nome.length>1),check($('#qTel'),tel.replace(/\D/g,'').length>=10),check($('#qEmail'),/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)),check($('#qEmpresa'),empresa.length>1)].every(Boolean);
   const lg=$('#qLgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
   if(!ok||!lg.checked)return;
-  const r=quizResult();
-  const nomes=r.mods.map(id=>MODULES.find(m=>m.id===id).name).join(', ');
-  const respostas={};QUIZ.forEach((x,i)=>{if(x.mod)respostas[x.mod]=x.opts[quiz.ans[i]][0]});
-  const payload={nome,telefone:tel,email,empresa,tamanho:r.tamanho,pct:r.pct,modulos:nomes,respostas,interesse:`Quiz ${r.pct}%`+(nomes?`: ${nomes}`:''),
-    campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode',
-    pagina:location.origin+location.pathname,website:$('#qWebsite').value};
+  const r=estudante()?{pct:null,recs:[]}:quizResult();
+  const ajuda=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec.nome).join(', ');
+  const modulos=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id).name).join(', ');
+  const resumo=r.pct==null?`Quiz (${quiz.perfil})`:`Quiz (${quiz.perfil}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`;
+  // Colunas da planilha "Leads evento", na ordem (o script cria as que faltarem)
+  const campos={'Perfil':quiz.perfil,'Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
+    'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos};
+  if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)}));
+  const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
+  const pagina=location.origin+location.pathname, website=$('#qWebsite').value;
+  const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
-  [PLANILHA_EVENTO,PLANILHA_LP].forEach(u=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{}));
-  fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina:payload.pagina,nome,telefone:tel,email,empresa,funcionarios:r.tamanho,consentimento:true,
-    mensagem:`Quiz do evento: ${r.pct}%`+(nomes?` | Onde o app mais ajuda: ${nomes}`:''),
-    utm_source:payload.origem,utm_medium:payload.midia,utm_campaign:payload.campanha,utm_content:payload.criativo,utm_term:params.get('utm_term')||'',website:payload.website}),keepalive:true}).catch(()=>{});
-  store.set({pct:r.pct,mods:r.mods});
+  post(PLANILHA_EVENTO,{campos,website});
+  post(PLANILHA_LP,{nome,telefone:tel,email,empresa,cargo:quiz.perfil,tamanho:'',interesse:resumo,...utm,pagina,website});
+  fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
+    utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
+  store.set({pct:r.pct,recs:r.recs});
   renderResult(r);
 });
 
