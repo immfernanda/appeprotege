@@ -387,7 +387,7 @@ card.addEventListener('submit',e=>{
   const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
   post(PLANILHA_EVENTO,{campos,website});
-  post(PLANILHA_LP,{nome,telefone:tel,email,empresa,cargo:quiz.perfil,tamanho:'',interesse:resumo,...utm,pagina,website});
+  post(PLANILHA_LP,{aba:'Evento',nome,telefone:tel,email,empresa,cargo:quiz.perfil,tamanho:'',interesse:resumo,...utm,pagina,website});
   fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
     utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
   store.set({pct:r.pct,recs:r.recs,senha:r.senha,nome});
