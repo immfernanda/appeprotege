@@ -257,19 +257,17 @@ const qHead=(w,label)=>`<div class="q-head"><button class="q-back" data-q="back"
 function renderIntro(){
   show(`<div class="q-cesta"><span class="q-gift"><i data-lucide="gift"></i></span><div><small>Responda e concorra a uma</small><b>Cesta Kopenhagen</b></div></div>
     <span class="eyebrow">Quiz eProtege</span>
-    <h2>Quanto a sua empresa <span>precisa da eProtege?</span></h2>
-    <p>Responda e veja onde a eProtege age nos gargalos da sua empresa.</p>
+    <h2>Vamos avaliar como está a <span>Saúde e Segurança do Trabalho</span> da sua empresa?</h2>
+    <p>Responda e veja o app eProtege montado para a sua empresa.</p>
     <ul class="q-perks">
       <li><i data-lucide="list-checks"></i>${QUIZ.length} perguntas rápidas</li>
       <li><i data-lucide="lock"></i>Respostas sigilosas</li>
-      <li><i data-lucide="sparkles"></i>Diagnóstico na hora</li>
       <li><i data-lucide="smartphone"></i>No final, teste o app com os módulos para você</li>
     </ul>
     <button class="q-btn" data-q="start">Começar <i data-lucide="arrow-right"></i></button>`);
 }
 function renderPerfil(){
   show(`${qHead(4,'Antes de começar')}
-    <h2>Você é:</h2>
     <div class="q-opts">${PERFIS.map(p=>`<button class="q-opt q-perfil${quiz.perfil===p[0]?' on':''}" data-perfil="${p[0]}"><i data-lucide="${p[3]}"></i><span><b>${p[1]}</b><small>${p[2]}</small></span></button>`).join('')}</div>`);
 }
 function renderQuestion(){
