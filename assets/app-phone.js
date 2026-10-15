@@ -119,7 +119,7 @@ const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','
 // Nome de quem usa o celular de demonstração (o quiz troca pelo nome da pessoa)
 let NOME_USUARIO = 'Ana Souza';
 const primeiroNome = () => NOME_USUARIO.split(' ')[0];
-// Senha do sorteio (o quiz preenche): aparece como ícone extra na tela inicial
+// Número da sorte do sorteio (o quiz preenche): aparece como faixa dourada e ícone na tela inicial
 let SENHA_SORTEIO = '';
 const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
 const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
@@ -131,16 +131,17 @@ function comunicadosHTML(){
 const SCREENS = {
   home(){
     return `<div class="hello"><h4>Bem-vindo(a), ${esc(primeiroNome())}!</h4><p>Escolha uma área para começar.</p></div>
+    ${SENHA_SORTEIO?`<button class="sorteio-bar" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span><span>Seu número da sorte está aqui!<small>Toque no presente e concorra à cesta Kopenhagen</small></span><i data-lucide="chevron-right" class="chev"></i></button>`:''}
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
     <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}${SENHA_SORTEIO?`<button class="app-ic sorteio-ic" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span>Sorteio</button>`:''}</div>`;
   },
   sorteio(){
     if(!state.presenteAberto) return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card">
-      <b>Tem um presente para você!</b><span class="s-muted">Toque no presente para revelar a sua senha do sorteio da cesta Kopenhagen.</span>
+      <b>Tem um presente para você!</b><span class="s-muted">Toque no presente para revelar o seu número da sorte da cesta Kopenhagen.</span>
       <button class="sorteio-box" data-act="abrirPresente" aria-label="Abrir presente"><i data-lucide="gift"></i></button>
       <span class="sorteio-toque">Toque para abrir</span></div>`;
     return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
-      <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Sua senha do sorteio</span>
+      <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Seu número da sorte</span>
       <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
       <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>`;
   },
@@ -376,7 +377,7 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='pedir'){const i=$('#pedItem').value.trim();if(!i){toast('Informe o material');return}state.pedidos.unshift({i,q:Math.max(1,+$('#pedQtd').value||1),h:nowHM()});rerender();toast('Pedido enviado')}
   if(act==='melhoria'){const t=$('#melTexto').value.trim();if(!t){toast('Descreva a melhoria');return}state.melhorias.unshift({a:$('#melArea').value,t});rerender();toast('Melhoria enviada')}
   if(act==='feedback'){const t=$('#fbTexto').value.trim();if(!t){toast('Escreva seu feedback');return}state.feedbacks.unshift({p:$('#fbPara').value,t});rerender();toast($('#fbAnon')?.checked===false?'Feedback enviado':'Feedback enviado com sigilo')}
-  if(act==='abrirPresente'){a.classList.add('abrindo');setTimeout(()=>{state.presenteAberto=true;rerender();toast('Senha revelada!')},550)}
+  if(act==='abrirPresente'){a.classList.add('abrindo');setTimeout(()=>{state.presenteAberto=true;rerender();toast('Número da sorte revelado!')},550)}
   if(act==='perfil'){state.perfil=true;rerender();toast('Análise concluída')}
   if(act==='trilha')toast('Retomando: Gestão do tempo');
   if(act==='desafio'){state.pontos+=50;rerender();toast('+50 pontos!')}

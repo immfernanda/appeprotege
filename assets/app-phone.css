@@ -45,6 +45,12 @@
 .app-ic .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;box-shadow:0 8px 16px -8px var(--c);transition:transform .2s}
 .app-ic:hover .ic{transform:scale(1.08)}
 .app-ic svg{width:22px;height:22px}
+.sorteio-bar{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;background:linear-gradient(90deg,#F4BB0E,#e08a1e);border:0;border-radius:14px;padding:12px;color:#3b1d0e;cursor:pointer;font-weight:800;font-size:.85rem;text-align:left;animation:sorteioGlow 1.6s ease-in-out infinite}
+.sorteio-bar small{display:block;font-weight:600;font-size:.66rem;opacity:.85;margin-top:2px}
+.sorteio-bar .ic{width:38px;height:38px;border-radius:10px;background:#3b1d0e;color:#F4BB0E;display:grid;place-items:center;flex:none;animation:sorteioShake 1.8s ease-in-out infinite}
+.sorteio-bar svg{width:20px;height:20px}
+.sorteio-bar .chev{margin-left:auto;flex:none}
+@keyframes sorteioGlow{0%,100%{box-shadow:0 0 0 0 rgba(244,187,14,.55)}50%{box-shadow:0 0 0 8px rgba(244,187,14,0)}}
 .sorteio-ic{color:#F4BB0E;font-weight:700}
 .sorteio-ic .ic{background:linear-gradient(135deg,#8b4a24,#F4BB0E);--c:#F4BB0E;animation:sorteioPulse 1.6s ease-in-out infinite}
 @keyframes sorteioPulse{0%,100%{box-shadow:0 0 0 0 rgba(244,187,14,.6)}50%{box-shadow:0 0 0 9px rgba(244,187,14,0)}}
