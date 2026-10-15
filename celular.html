@@ -215,10 +215,10 @@ const CAMPANHA='Evento QR Code';
 const PERFIS=[['Profissional','Trabalho em uma empresa','Profissional / estagiário','briefcase'],['Estudante','Ainda não trabalho em uma empresa','Apenas estudante','graduation-cap']];
 // Perguntas com nota de 1 a 5. inv: nota alta = precisa de mais ajuda. rec: sugestão quando a nota indica necessidade
 const QUIZ=[
-  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de <span>medicina do trabalho</span> da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Medicina do trabalho', icon:'stethoscope', g:['#d946ef','#db2777'], mods:['atestados','colaborador'],
      t:'Exames e ASOs com agendamento fácil, atendimento perto da sua equipe e atestados enviados pelo app direto ao RH.'}},
-  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:['Conhecimento técnico','Apoio técnico','Documentação bem feita','Visita técnica'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de <span>segurança do trabalho</span> da sua empresa?', cons:['Conhecimento técnico','Apoio técnico','Documentação bem feita','Visita técnica'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
      t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
   {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à guarda dos documentos de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
