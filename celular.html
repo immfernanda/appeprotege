@@ -224,16 +224,21 @@ const QUIZ=[
   {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à guarda dos documentos de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
    rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
      t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
-  {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos riscos psicossociais?', cons:['Aplicação do questionário','Execução do plano de ação','Desenvolvimento de liderança','Canal de denúncias','Comunicação com os colaboradores','Reuniões de equipe / feedback'], lo:'Nada', hi:'Totalmente',
+  {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos riscos psicossociais?', cons:['Aplicação do questionário','Execução do plano de ação','Desenvolvimento de liderança','Canal de denúncias'], lo:'Nada', hi:'Totalmente',
    rec:{nome:'Riscos psicossociais', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial','denuncias','comunicados','cursos'],
      t:'Questionário aplicado pelo app com sigilo, plano de ação acompanhado, canal de denúncias e comunicação com a equipe.'}},
-  {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, de forma geral, em relação à saúde e segurança do trabalho?', cons:['Organização','Cuidado com as pessoas','Registro das ações'], lo:'Muito ruim', hi:'Excelente'}
+  {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, de forma geral, em relação à saúde e segurança do trabalho?', lo:'Muito ruim', hi:'Excelente'}
 ];
 QUIZ.forEach(x=>{x.itens=[x.col]});  // uma nota geral por pergunta
 const KEY='eprotegeQuiz', params=new URLSearchParams(location.search);
 const quiz={step:-1, perfil:null, notas:{}};  // step -1 = abertura, 0 = perfil, 1..N = perguntas
 const card=$('#qCard');
-const store={get(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},del(){try{localStorage.removeItem(KEY)}catch(e){}}};
+// Resposta guardada no navegador e em cookie (1 ano), para a pessoa não responder de novo e não perder o número da sorte
+const cookie={get(){const m=document.cookie.match(new RegExp('(?:^|; )'+KEY+'=([^;]*)'));return m?decodeURIComponent(m[1]):null},
+  set(v){document.cookie=`${KEY}=${encodeURIComponent(v)};max-age=31536000;path=/;SameSite=Lax`},del(){document.cookie=`${KEY}=;max-age=0;path=/`}};
+const store={get(){let v=null;try{v=localStorage.getItem(KEY)}catch(e){}v=v||cookie.get();try{return v?JSON.parse(v):null}catch(e){return null}},
+  set(v){const t=JSON.stringify(v);try{localStorage.setItem(KEY,t)}catch(e){}cookie.set(t)},
+  del(){try{localStorage.removeItem(KEY)}catch(e){}cookie.del()}};
 const estudante=()=>quiz.perfil==='Estudante';
 const nota=(x,i)=>quiz.notas[x.id+'|'+i];
 
@@ -384,8 +389,9 @@ card.addEventListener('submit',e=>{
   unlock(salvo);
 });
 
-// ?app pula o quiz (apresentações); ?quiz recomeça do zero; quem já respondeu vai direto ao app
-if(params.has('quiz'))store.del();
+// Cada celular responde uma vez só: quem já respondeu vai direto ao app, com o mesmo número da sorte.
+// ?app pula o quiz (apresentações); ?novo=ferzzz apaga a resposta deste celular (só para testes da equipe)
+if(params.get('novo')==='ferzzz')store.del();
 if(params.has('app'))unlock();
 else if(store.get())unlock(store.get());
 else renderIntro();
