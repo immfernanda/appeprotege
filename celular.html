@@ -212,25 +212,22 @@ const PLANILHA_EVENTO='https://script.google.com/macros/s/AKfycbxKlSDv_mgqBMqlMk
 const CRM='https://protege-core-hub.base44.app/functions/captarLeadLanding';
 const CRM_TOKEN='cmp_8e2efbc99e3641099f56139177e1242c';
 const CAMPANHA='Evento QR Code';
-const PERFIS=[['Profissional','Trabalho em uma empresa','briefcase'],['Estagiário','Faço estágio em uma empresa','badge-check'],['Estudante','Ainda não trabalho em uma empresa','graduation-cap']];
+const PERFIS=[['Profissional','Trabalho em uma empresa','Profissional / estagiário','briefcase'],['Estudante','Ainda não trabalho em uma empresa','Apenas estudante','graduation-cap']];
 // Perguntas com nota de 1 a 5. inv: nota alta = precisa de mais ajuda. rec: sugestão quando a nota indica necessidade
 const QUIZ=[
-  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade','Clareza'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de medicina do trabalho da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Medicina do trabalho', icon:'stethoscope', g:['#d946ef','#db2777'], mods:['atestados','colaborador'],
      t:'Exames e ASOs com agendamento fácil, atendimento perto da sua equipe e atestados enviados pelo app direto ao RH.'}},
-  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:['Conhecimento técnico','Clareza','Apoio técnico','Documentação bem feita'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de segurança do trabalho da sua empresa?', cons:['Conhecimento técnico','Apoio técnico','Documentação bem feita','Visita técnica'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
      t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
-  {id:'documentos', col:'Documentos de SST', q:'Como você avalia a guarda dos documentos de segurança do trabalho da sua empresa?', cons:['Segurança e concentração dos documentos','Registro digital dos EPIs'], lo:'Muito ruim', hi:'Excelente',
+  {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à guarda dos documentos de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
    rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
      t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
-  {id:'psicossocial', col:'Risco psicossocial', q:'O quanto a sua empresa já avançou na gestão do risco psicossocial?', cons:['Aplicação de questionário','Plano de ação'], lo:'Nada', hi:'Totalmente',
-   rec:{nome:'Risco psicossocial', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial'],
-     t:'Questionário aplicado pelo app, com sigilo para o colaborador, e plano de ação acompanhado de perto.'}},
-  {id:'pessoas', col:'Treinamentos e pessoas', q:'Como você avalia a sua empresa no cuidado com as pessoas?', cons:['Registro dos treinamentos','Desenvolvimento de liderança','Canal de denúncias'], lo:'Muito ruim', hi:'Excelente',
-   rec:{nome:'Treinamentos e pessoas', icon:'graduation-cap', g:['#10b981','#16a34a'], mods:['cursos','denuncias'],
-     t:'Treinamentos e integração registrados no app, desenvolvimento de liderança e canal de denúncias anônimo.'}},
-  {id:'geral', col:'Pode melhorar (geral)', q:'De forma geral, o quanto a sua empresa ainda pode melhorar em saúde e segurança do trabalho?', lo:'Pouco', hi:'Muito', inv:true}
+  {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos riscos psicossociais?', cons:['Aplicação do questionário','Execução do plano de ação','Desenvolvimento de liderança','Canal de denúncias','Comunicação com os colaboradores','Reuniões de equipe / feedback'], lo:'Nada', hi:'Totalmente',
+   rec:{nome:'Riscos psicossociais', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial','denuncias','comunicados','cursos'],
+     t:'Questionário aplicado pelo app com sigilo, plano de ação acompanhado, canal de denúncias e comunicação com a equipe.'}},
+  {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, de forma geral, em relação à saúde e segurança do trabalho?', cons:['Organização','Cuidado com as pessoas','Registro das ações'], lo:'Muito ruim', hi:'Excelente'}
 ];
 QUIZ.forEach(x=>{x.itens=[x.col]});  // uma nota geral por pergunta
 const KEY='eprotegeQuiz', params=new URLSearchParams(location.search);
@@ -268,7 +265,7 @@ function renderIntro(){
 function renderPerfil(){
   show(`${qHead(4,'Antes de começar')}
     <h2>Você é:</h2>
-    <div class="q-opts">${PERFIS.map(p=>`<button class="q-opt q-perfil${quiz.perfil===p[0]?' on':''}" data-perfil="${p[0]}"><i data-lucide="${p[2]}"></i><span><b>${p[0]}</b><small>${p[1]}</small></span></button>`).join('')}</div>`);
+    <div class="q-opts">${PERFIS.map(p=>`<button class="q-opt q-perfil${quiz.perfil===p[0]?' on':''}" data-perfil="${p[0]}"><i data-lucide="${p[3]}"></i><span><b>${p[1]}</b><small>${p[2]}</small></span></button>`).join('')}</div>`);
 }
 function renderQuestion(){
   const x=QUIZ[quiz.step-1], n=quiz.step, multi=x.itens.length>1;
@@ -286,41 +283,32 @@ function renderForm(){
   const est=estudante();
   show(`${qHead(100,'Pronto!')}
     <h2>${est?'Falta pouco para <span>testar o app</span>':'Saiba quais soluções a eProtege <span>faz para a sua empresa</span>'}</h2>
-    <div class="q-lock"><div><b><i data-lucide="lock"></i>${est?'Desbloqueie o app eProtege':'Desbloqueie a futura solução da sua empresa'}</b><small>${est?'Preencha para desbloquear o app':'Preencha para ver onde a eProtege age nos seus gargalos e o seu app personalizado'} e concorra a uma cesta Kopenhagen.</small></div></div>
+    <div class="q-lock"><div><b><i data-lucide="gift"></i>Preencha seus dados e concorra a uma cesta Kopenhagen</b><small>${est?'Em seguida você testa o app eProtege.':'Em seguida você vê o app eProtege montado para a sua empresa.'}</small></div></div>
     <form id="quizForm" novalidate>
       <div class="q-fields">
-        <div class="f"><label for="qNome">Nome*</label><input id="qNome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome</small></div>
-        <div class="f"><label for="qTel">Telefone*</label><input id="qTel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000 0000" required><small class="e">Telefone inválido</small></div>
+        <div class="f"><label for="qNome">Nome*</label><input id="qNome" autocomplete="name" placeholder="Seu nome" required><small class="e">Informe seu nome de verdade</small></div>
+        <div class="f"><label for="qTel">Telefone*</label><input id="qTel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000 0000" required><small class="e">Informe um telefone válido com DDD</small></div>
         <div class="f"><label for="qEmail">E-mail*</label><input id="qEmail" type="email" autocomplete="email" placeholder="voce@email.com.br" required><small class="e">E-mail inválido</small></div>
         <div class="f"><label for="qEmpresa">${est?'Onde você estuda?*':'Empresa onde você trabalha*'}</label><input id="qEmpresa" autocomplete="organization" placeholder="${est?'Instituição de ensino':'Nome da empresa'}" required><small class="e">${est?'Informe onde você estuda':'Informe a empresa'}</small></div>
+        ${est?'':'<div class="f"><label for="qCargo">Seu cargo*</label><input id="qCargo" autocomplete="organization-title" placeholder="Ex.: técnico de segurança, RH, sócio" required><small class="e">Informe o seu cargo</small></div>'}
       </div>
       <input type="text" id="qWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <label class="consent"><input type="checkbox" id="qLgpd" required> <span>Concordo em ser contatado(a) pela eProtege e com o tratamento dos meus dados conforme a LGPD.</span></label>
-      <button type="submit" class="q-btn">${est?'Desbloquear o app':'Desbloquear resultado'} <i data-lucide="lock-open"></i></button>
+      <button type="submit" class="q-btn">${est?'Ver o app':'Ver meu app personalizado'} <i data-lucide="arrow-right"></i></button>
     </form>`);
 }
+// Validação contra cadastro de mentira (00000, aaaa, 1234...)
+const semAcento=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const repetido=t=>/^(.)\1+$/.test(t.replace(/\s/g,''));
+const nomeOk=t=>{const n=semAcento(t);return (n.match(/[a-z]/g)||[]).length>=2&&/[aeiouy]/.test(n)&&!repetido(n)&&!/\d/.test(n)};
+const textoOk=t=>{const n=semAcento(t);return n.length>=2&&/[a-z]/.test(n)&&!repetido(n)};
+const telOk=t=>{const d=t.replace(/\D/g,'');if(d.length<10||d.length>11||repetido(d))return false;
+  if(!/^[1-9][1-9]/.test(d))return false;            // DDD sem zero
+  if(d.length===11&&d[2]!=='9')return false;          // celular começa com 9
+  return !['0123456789','1234567890','9876543210'].some(q=>d.includes(q.slice(0,8)))};
+const emailOk=t=>/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(t)&&!repetido(t.split('@')[0]);
 // Número da sorte: 6 dígitos (100000 a 999999)
 const gerarSenha=()=>String(100000+Math.floor(Math.random()*900000));
-function renderResult(r){
-  if(r.pct==null){
-    show(`<div class="q-res"><span class="eyebrow">Obrigado por participar!</span>
-      <div class="q-ok"><i data-lucide="party-popper"></i></div>
-      <h2>Agora é com você: <span>teste o app</span></h2><p>Veja como o App eProtege cuida da saúde e da segurança de quem trabalha.</p>
-      <p class="q-teaser"><i data-lucide="gift"></i>Procure o seu número da sorte da cesta Kopenhagen dentro do app: toque no presente.</p>
-      <button class="q-btn" data-q="app">Ver o app e meu número da sorte <i data-lucide="arrow-right"></i></button></div>`);
-    return;
-  }
-  const recs=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec);
-  const mods=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id));
-  show(`<div class="q-res"><span class="eyebrow">Soluções para a sua empresa</span>
-    <h2>Onde a eProtege age nos <span>gargalos da sua empresa</span></h2>
-    <p>Com base nas suas respostas, estes são os pontos que mais pedem atenção:</p>
-    <ul class="q-garg">${recs.map((x,i)=>`<li><span class="ic" style="background:${gradOf(x)}"><i data-lucide="${x.icon}"></i></span><div><b>${i+1}. ${x.nome}</b><small>${x.t}</small></div></li>`).join('')}</ul>
-    <div class="q-mods-t">Seu app personalizado</div>
-    <div class="q-chips">${mods.map(m=>`<span><i data-lucide="${m.icon}"></i>${m.name}</span>`).join('')}</div>
-    <p class="q-teaser"><i data-lucide="gift"></i>Procure o seu número da sorte da cesta Kopenhagen dentro do app: toque no presente.</p>
-    <button class="q-btn" data-q="app">Ver o meu app e meu número da sorte <i data-lucide="arrow-right"></i></button></div>`);
-}
 function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
   // O celular passa a cumprimentar a pessoa pelo nome
@@ -369,17 +357,18 @@ card.addEventListener('input',e=>{
 card.addEventListener('submit',e=>{
   e.preventDefault();
   const check=(el,ok)=>{el.closest('.f').classList.toggle('err',!ok);return ok};
-  const nome=$('#qNome').value.trim(), tel=$('#qTel').value, email=$('#qEmail').value.trim(), empresa=$('#qEmpresa').value.trim();
-  const ok=[check($('#qNome'),nome.length>1),check($('#qTel'),tel.replace(/\D/g,'').length>=10),check($('#qEmail'),/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)),check($('#qEmpresa'),empresa.length>1)].every(Boolean);
+  const nome=$('#qNome').value.trim(), tel=$('#qTel').value, email=$('#qEmail').value.trim(), empresa=$('#qEmpresa').value.trim(), cargo=estudante()?'Estudante':$('#qCargo').value.trim();
+  const ok=[check($('#qNome'),nomeOk(nome)),check($('#qTel'),telOk(tel)),check($('#qEmail'),emailOk(email)),check($('#qEmpresa'),textoOk(empresa))]
+    .concat(estudante()?[]:[check($('#qCargo'),textoOk(cargo))]).every(Boolean);
   const lg=$('#qLgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
   if(!ok||!lg.checked)return;
   const r=estudante()?{pct:null,recs:[]}:quizResult();
   r.senha=gerarSenha();
   const ajuda=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec.nome).join(', ');
   const modulos=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id).name).join(', ');
-  const resumo=(r.pct==null?`Quiz (${quiz.perfil})`:`Quiz (${quiz.perfil}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`)+` | Número da sorte: ${r.senha}`;
+  const resumo=(r.pct==null?`Quiz (Estudante)`:`Quiz (${cargo}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`)+` | Número da sorte: ${r.senha}`;
   // Colunas da planilha "Leads evento", na ordem (o script cria as que faltarem)
-  const campos={'Cargo':quiz.perfil,'Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
+  const campos={'Cargo':cargo,'Situação':estudante()?'Estudante':'Trabalha em empresa','Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
     'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos,'Número da sorte':r.senha};
   if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)===0?'Não sei':nota(x,i)}));
   const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
@@ -387,11 +376,12 @@ card.addEventListener('submit',e=>{
   const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
   // A planilha do evento grava o lead e repassa à campanha da LP no CRM (a planilha comercial não recebe o quiz)
-  post(PLANILHA_EVENTO,{campos,website,crm:{nome,telefone:tel,email,empresa,cargo:quiz.perfil,interesse:resumo,...utm,pagina}});
+  post(PLANILHA_EVENTO,{campos,website,crm:{nome,telefone:tel,email,empresa,cargo,interesse:resumo,...utm,pagina}});
   fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
     utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
-  store.set({pct:r.pct,recs:r.recs,senha:r.senha,nome});
-  renderResult(r);
+  const salvo={pct:r.pct,recs:r.recs,senha:r.senha,nome};
+  store.set(salvo);
+  unlock(salvo);
 });
 
 // ?app pula o quiz (apresentações); ?quiz recomeça do zero; quem já respondeu vai direto ao app
