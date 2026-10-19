@@ -115,6 +115,7 @@ body.locked .quiz{display:block}
 .q-perfil svg{width:22px;height:22px;color:var(--teal);flex:none}
 .q-perfil b{display:block;font-size:.98rem}
 .q-perfil small{display:block;font-weight:500;color:var(--muted);font-size:.8rem;margin-top:2px}
+.q-card h2.q-q span{background:none;-webkit-text-fill-color:#64C6CC;color:#64C6CC}
 .q-card h2.q-q{font-size:clamp(1.2rem,5vw,1.45rem)}
 .q-card p.q-cons-t{font-size:.78rem;font-weight:700;color:var(--slate);margin-top:-2px}
 .q-cons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin:8px 0 12px}
@@ -215,19 +216,19 @@ const CAMPANHA='Evento QR Code';
 const PERFIS=[['Profissional','Trabalho em uma empresa','Profissional / estagiário','briefcase'],['Estudante','Ainda não trabalho em uma empresa','Apenas estudante','graduation-cap']];
 // Perguntas com nota de 1 a 5. inv: nota alta = precisa de mais ajuda. rec: sugestão quando a nota indica necessidade
 const QUIZ=[
-  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de <span>medicina do trabalho</span> da sua empresa?', cons:['Agendamento','Localização','Agilidade','Proximidade'], lo:'Nada satisfeito', hi:'Muito satisfeito',
+  {id:'medicina', col:'Medicina do trabalho', q:'Qual o seu nível de satisfação com os serviços de <span>medicina do trabalho</span> da sua empresa?', cons:['Agendamento','Localização','Agilidade na entrega do ASO','Proximidade'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Medicina do trabalho', icon:'stethoscope', g:['#d946ef','#db2777'], mods:['atestados','colaborador'],
      t:'Exames e ASOs com agendamento fácil, atendimento perto da sua equipe e atestados enviados pelo app direto ao RH.'}},
   {id:'seguranca', col:'Segurança do trabalho', q:'Qual o seu nível de satisfação com os serviços de <span>segurança do trabalho</span> da sua empresa?', cons:['Conhecimento técnico','Apoio técnico','Documentação bem feita','Visita técnica'], lo:'Nada satisfeito', hi:'Muito satisfeito',
    rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
      t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
-  {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à guarda dos documentos de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
+  {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à <span>guarda dos documentos</span> de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
    rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
      t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
-  {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos riscos psicossociais?', cons:['Aplicação do questionário','Execução do plano de ação','Desenvolvimento de liderança','Canal de denúncias'], lo:'Nada', hi:'Totalmente',
+  {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos <span>riscos psicossociais</span>?', cons:['Aplicação do questionário','Execução do plano de ação','Treinamento de liderança e feedback','Canal de denúncias','Documentação pronta para uma fiscalização'], lo:'Nada', hi:'Totalmente',
    rec:{nome:'Riscos psicossociais', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial','denuncias','comunicados','cursos'],
      t:'Questionário aplicado pelo app com sigilo, plano de ação acompanhado, canal de denúncias e comunicação com a equipe.'}},
-  {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, de forma geral, em relação à saúde e segurança do trabalho?', lo:'Muito ruim', hi:'Excelente'}
+  {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, <span>de forma geral</span>, em relação à saúde e segurança do trabalho?', lo:'Muito ruim', hi:'Excelente'}
 ];
 QUIZ.forEach(x=>{x.itens=[x.col]});  // uma nota geral por pergunta
 const KEY='eprotegeQuiz', params=new URLSearchParams(location.search);
