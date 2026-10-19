@@ -27,9 +27,9 @@ const MODULES = [
   {id:'denuncias', name:'Canal de Denúncias', icon:'shield-alert', g:['#f43f5e','#e11d48'], tag:'Anônimo',
    desc:'Canal 100% anônimo e seguro para relatos de assédio, conduta e segurança, com acompanhamento por protocolo.',
    items:['Denúncia anônima','Protocolo de acompanhamento','Apoio à Lei 14.457/22','Sigilo das informações']},
-  {id:'cursos', name:'Integração e Cursos', icon:'graduation-cap', g:['#14b8a6','#0891b2'],
-   desc:'Integração de novos colaboradores e trilhas de cursos e treinamentos com acompanhamento de progresso.',
-   items:['Integração digital','Trilhas de NRs','Progresso por colaborador','Certificados']},
+  {id:'terceiros', name:'Gestão de Terceiros', icon:'building-2', g:['#14b8a6','#0891b2'],
+   desc:'Empresas terceirizadas e prestadores com documentos de SST conferidos e alertas de vencimento antes de entrarem na sua empresa.',
+   items:['Cadastro de terceirizadas','Documentos e ASOs dos prestadores','Alertas de vencimento','Liberação de acesso']},
   {id:'comercial', name:'Área Comercial', icon:'briefcase', g:['#38bdf8','#2563eb'],
    desc:'Acompanhe leads, propostas e metas da equipe comercial com indicadores em tempo real.',
    items:['Funil de vendas','Propostas e metas','Indicadores em tempo real','Relatórios da equipe']},
@@ -239,9 +239,9 @@ const SCREENS = {
     <div class="s-row s-muted"><span>Muito pesada</span><span>Tranquila</span></div></div>
     <div class="s-card s-row" style="gap:10px"><i data-lucide="lock" style="width:18px;color:#fb923c;flex:none"></i><span class="s-muted">Respostas anônimas e confidenciais. Só resultados agregados são analisados.</span></div>`;
   },
-  cursos(){
-    const c=[['Integração eProtege',100],['NR-35 · Trabalho em altura',60],['NR-06 · Uso de EPI',20]];
-    return topBar('Integração e Cursos')+c.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill ${x[1]===100?'p-ok':'p-info'}">${x[1]===100?'Concluído':x[1]+'%'}</span></div><div class="bar"><i style="width:${x[1]}%"></i></div></div>`).join('')+`<button class="s-btn" style="--g:linear-gradient(90deg,#14b8a6,#0891b2)" data-act="curso"><i data-lucide="play"></i> Continuar curso</button>`;
+  terceiros(){
+    const t=[['Elétrica Silva Ltda','Manutenção elétrica · 4 prestadores','Documentos em dia','p-ok'],['Limpeza Brilho','Limpeza · 6 prestadores','ASO vence em 12 dias','p-warn'],['Construtora Alfa','Obra · 9 prestadores','NR-35 pendente','p-bad']];
+    return topBar('Gestão de Terceiros')+t.map(x=>`<div class="s-card"><div class="s-row"><b>${x[0]}</b><span class="pill ${x[3]}">${x[2]}</span></div><div class="s-muted" style="margin-top:4px">${x[1]}</div></div>`).join('')+`<button class="s-btn" style="--g:linear-gradient(90deg,#14b8a6,#0891b2)" data-act="terceiros"><i data-lucide="send"></i> Solicitar documentos</button>`;
   },
   colaborador(){
     return topBar('Gestão do Colaborador')+`<p class="s-muted" style="margin:-4px 0 16px">Cadastro, sugestões, solicitações e comunicados dos colaboradores da sua empresa.</p>
@@ -383,7 +383,7 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='desafio'){state.pontos+=50;rerender();toast('+50 pontos!')}
   if(act==='read'){state.read.add(+a.dataset.i);rerender()}
   if(act==='face'){state.face=+a.dataset.i;rerender();toast('Resposta registrada com sigilo')}
-  if(act==='curso')toast('Retomando NR-35 · Aula 4');
+  if(act==='terceiros')toast('Solicitação enviada às terceirizadas');
   if(act==='holerite')toast('Holerite de setembro baixado');
   if(act==='ferias')toast('Solicitação enviada ao RH');
   if(act==='sugerir'){

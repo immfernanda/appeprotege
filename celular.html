@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=6">
+<link rel="stylesheet" href="assets/app-phone.css?v=7">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -199,7 +199,7 @@ body.locked .quiz{display:block}
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js?v=6"></script>
+<script src="assets/app-phone.js?v=7"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
@@ -222,10 +222,10 @@ const QUIZ=[
    rec:{nome:'Segurança do trabalho', icon:'shield-check', g:['#0ea5e9','#2864B0'], mods:['seguranca','tratativas'],
      t:'Engenheiro e técnicos de segurança próximos da sua empresa, com apoio técnico e documentação bem feita, sempre à mão no app.'}},
   {id:'documentos', col:'Guarda de documentos', q:'Como você avalia a organização da sua empresa em relação à <span>guarda dos documentos</span> de segurança do trabalho?', cons:['Organização da documentação centralizada','Registro digitalizado dos EPIs','Guarda segura em rede ou em nuvem'], lo:'Muito ruim', hi:'Excelente',
-   rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi'],
+   rec:{nome:'Documentos e EPIs', icon:'folder-lock', g:['#f97316','#dc2626'], mods:['seguranca','epi','terceiros'],
      t:'Todos os documentos de SST guardados em um só lugar e a entrega de EPI assinada pelo celular, com histórico digital.'}},
   {id:'psicossocial', col:'Riscos psicossociais', q:'Quanto a sua empresa já avançou na gestão dos <span>riscos psicossociais</span>?', cons:['Aplicação do questionário','Execução do plano de ação','Treinamento de liderança e feedback','Canal de denúncias','Documentação pronta para uma fiscalização'], lo:'Nada', hi:'Totalmente',
-   rec:{nome:'Riscos psicossociais', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial','denuncias','comunicados','cursos'],
+   rec:{nome:'Riscos psicossociais', icon:'brain', g:['#8b5cf6','#6366f1'], mods:['psicossocial','denuncias','comunicados'],
      t:'Questionário aplicado pelo app com sigilo, plano de ação acompanhado, canal de denúncias e comunicação com a equipe.'}},
   {id:'geral', col:'Avaliação geral', q:'Como você avalia a sua empresa, <span>de forma geral</span>, em relação à saúde e segurança do trabalho?', lo:'Muito ruim', hi:'Excelente'}
 ];
