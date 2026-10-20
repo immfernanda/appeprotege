@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=8">
+<link rel="stylesheet" href="assets/app-phone.css?v=9">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -199,7 +199,7 @@ body.locked .quiz{display:block}
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js?v=8"></script>
+<script src="assets/app-phone.js?v=9"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
@@ -316,6 +316,7 @@ function unlock(r){
   document.body.classList.remove('locked');scrollTo(0,0);
   // O celular passa a cumprimentar a pessoa pelo nome
   if(r&&r.nome){NOME_USUARIO=r.nome.replace(/[<>"&]/g,'').trim()||NOME_USUARIO;rerender()}
+  if(r&&!r.senha&&r.pendente){SORTEIO_PENDENTE=r.pendente;if(!$('.sorte-dica'))$('.phone-wrap').insertAdjacentHTML('afterbegin','<div class="sorte-dica"><i data-lucide="gift"></i><span>Você está inscrito no <b>sorteio da cesta Kopenhagen</b>! Seu número da sorte é liberado durante o evento, no estande da eProtege.</span></div>');rerender()}
   if(r&&r.senha){SENHA_SORTEIO=r.senha;if(!$('.sorte-dica'))$('.phone-wrap').insertAdjacentHTML('afterbegin','<div class="sorte-dica"><i data-lucide="gift"></i><span>Procure seu <b>número da sorte</b> no aplicativo: toque no presente e concorra à cesta Kopenhagen!</span></div>');rerender()}
   const mods=modsDe(r&&r.recs);
   if(!mods.length)return;
@@ -357,7 +358,21 @@ card.addEventListener('input',e=>{
   const i=e.target, d=i.value.replace(/\D/g,'').slice(0,11);
   i.value=d.length>10?`(${d.slice(0,2)}) ${d.slice(2,7)} ${d.slice(7)}`:d.length>6?`(${d.slice(0,2)}) ${d.slice(2,6)} ${d.slice(6)}`:d.length>2?`(${d.slice(0,2)}) ${d.slice(2)}`:d.length?`(${d}`:'';
 });
-card.addEventListener('submit',e=>{
+// Fala com o script da planilha e devolve a resposta (ou null se não der para ler)
+async function chamarPlanilha(body){
+  try{const r=await fetch(PLANILHA_EVENTO,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});return await r.json()}catch(e){return null}
+}
+// Botão "Estou no evento": pede o número para quem se inscreveu fora do horário
+window.pegarNumero=async()=>{
+  const s=store.get();if(!s)return;
+  const res=await chamarPlanilha({acao:'numero',telefone:s.tel,email:s.email,nome:s.nome});
+  if(res&&res.numero){s.senha=res.numero;s.pendente='';store.set(s);SENHA_SORTEIO=res.numero;SORTEIO_PENDENTE='';state.presenteAberto=false;
+    const d=$('.sorte-dica span');if(d)d.innerHTML='Procure seu <b>número da sorte</b> no aplicativo: toque no presente e concorra à cesta Kopenhagen!';
+    rerender();toast('Número liberado! Toque no presente.')}
+  else if(res&&res.fora){s.pendente=res.proxima||'encerrado';store.set(s);SORTEIO_PENDENTE=s.pendente;rerender();toast(res.proxima?`Ainda fora do horário. Volte ${res.proxima}.`:'O sorteio já foi encerrado.')}
+  else toast('Não foi possível buscar agora. Tente de novo.');
+};
+card.addEventListener('submit',async e=>{
   e.preventDefault();
   const check=(el,ok)=>{el.closest('.f').classList.toggle('err',!ok);return ok};
   const nome=$('#qNome').value.trim(), tel=$('#qTel').value, email=$('#qEmail').value.trim(), empresa=$('#qEmpresa').value.trim(), cargo=estudante()?'Estudante':$('#qCargo').value.trim();
@@ -366,25 +381,29 @@ card.addEventListener('submit',e=>{
   const lg=$('#qLgpd');lg.closest('.consent').style.color=lg.checked?'':'#e11d48';
   if(!ok||!lg.checked)return;
   const r=estudante()?{pct:null,recs:[]}:quizResult();
-  r.senha=gerarSenha();
+  const numeroLocal=gerarSenha(); // só usado se o script não responder
   const ajuda=r.recs.map(id=>QUIZ.find(x=>x.id===id).rec.nome).join(', ');
   const modulos=modsDe(r.recs).map(id=>MODULES.find(m=>m.id===id).name).join(', ');
-  const resumo=(r.pct==null?`Quiz (Estudante)`:`Quiz (${cargo}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`)+` | Número da sorte: ${r.senha}`;
+  const resumo=(r.pct==null?`Quiz (Estudante)`:`Quiz (${cargo}) | Necessidade ${r.pct}% | Gargalos: ${ajuda} | Módulos: ${modulos}`);
   // Colunas da planilha "Leads evento", na ordem (o script cria as que faltarem)
   const campos={'Cargo':cargo,'Situação':estudante()?'Estudante':'Trabalha em empresa','Nome':nome,'Telefone':tel,'E-mail':email,'Empresa ou instituição':empresa,
-    'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos,'Número da sorte':r.senha};
+    'Necessidade (%)':r.pct==null?'':r.pct+'%','Principais gargalos':ajuda,'Módulos indicados':modulos,'Número da sorte':numeroLocal};
   if(!estudante())QUIZ.forEach(x=>x.itens.forEach((it,i)=>{campos[x.itens.length>1?`${x.col}: ${it}`:x.col]=nota(x,i)===0?'Não sei':nota(x,i)}));
   const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
   const pagina=location.origin+location.pathname, website=$('#qWebsite').value;
-  const post=(u,body)=>fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
   // A planilha do evento grava o lead e repassa à campanha da LP no CRM (a planilha comercial não recebe o quiz)
-  post(PLANILHA_EVENTO,{campos,website,crm:{nome,telefone:tel,email,empresa,cargo,interesse:resumo,...utm,pagina}});
-  fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo,
+  const btn=$('#quizForm .q-btn');btn.disabled=true;btn.textContent='Gerando seu número da sorte...';
+  const res=await chamarPlanilha({campos,website,nome,telefone:tel,email,crm:{nome,telefone:tel,email,empresa,cargo,interesse:resumo,...utm,pagina}});
+  // Script antigo ou sem resposta: segue com o número gerado aqui
+  const numero=res&&'numero' in res?res.numero:numeroLocal;
+  const pendente=res&&res.fora?(res.proxima||'encerrado'):'';
+  const salvo={pct:r.pct,recs:r.recs,senha:numero,pendente,nome,tel,email};
+  store.set(salvo);unlock(salvo);
+  // Já participou com este telefone ou e-mail: não manda de novo ao CRM
+  if(res&&res.duplicado){toast('Você já participou com este telefone ou e-mail. Seu número continua o mesmo.');return}
+  fetch(CRM,{method:'POST',body:JSON.stringify({token:CRM_TOKEN,pagina,nome,telefone:tel,email,empresa,consentimento:true,mensagem:resumo+(numero?` | Número da sorte: ${numero}`:' | Sem número (fora do horário)'),
     utm_source:utm.origem,utm_medium:utm.midia,utm_campaign:utm.campanha,utm_content:utm.criativo,utm_term:params.get('utm_term')||'',website}),keepalive:true}).catch(()=>{});
-  const salvo={pct:r.pct,recs:r.recs,senha:r.senha,nome};
-  store.set(salvo);
-  unlock(salvo);
 });
 
 // Cada celular responde uma vez só: quem já respondeu vai direto ao app, com o mesmo número da sorte.
