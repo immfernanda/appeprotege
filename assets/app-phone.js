@@ -143,7 +143,8 @@ const SCREENS = {
     return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
       <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Seu número da sorte</span>
       <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
-      <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>`;
+      <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>
+      <a class="insta-btn" href="https://www.instagram.com/eprotege.sst/" target="_blank" rel="noopener"><span class="insta-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.9" fill="currentColor" stroke="none"/></svg></span><span><b>Clique aqui e siga @eprotege.sst</b><small>Acompanhe o sorteio ao vivo no dia 23/10. Só quem segue concorre!</small></span></a>`;
   },
   rh_relogio(){ return SCREENS.ponto('rh','Relógio Ponto','Recursos Humanos'); },
   ponto(back='home',title='Registrar Ponto',crumb=''){
