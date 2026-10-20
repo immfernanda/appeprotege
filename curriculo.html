@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Técnico de Segurança do Trabalho | eProtege</title>
+<meta name="description" content="Vaga de Técnico de Segurança do Trabalho na eProtege. Envie seu currículo.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#001B4A; --blue:#2864B0; --teal:#12B0B6; --yellow:#F4BB0E;
+  --ink:#0B1F3A; --muted:#5B6B80; --line:#E3EAF2; --bg:#F5F9FC;
+  --erro:#C62828;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Montserrat',system-ui,sans-serif;color:var(--ink);min-height:100vh;
+  background:linear-gradient(160deg,var(--navy) 0%,var(--blue) 55%,var(--teal) 100%) fixed;
+  display:flex;flex-direction:column;align-items:center;padding:28px 16px 40px;
+}
+.logo{width:190px;max-width:60%;margin-bottom:22px}
+.card{background:#fff;border-radius:20px;width:100%;max-width:520px;padding:28px 22px;box-shadow:0 24px 60px -24px rgba(0,0,0,.45)}
+.tag{display:inline-block;background:#FFF4CF;color:#7A5A00;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;border-radius:999px;margin-bottom:12px}
+h1{font-size:26px;line-height:1.2;font-weight:800;color:var(--navy);margin-bottom:10px}
+h2{font-size:15px;font-weight:700;color:var(--navy);margin:22px 0 10px}
+p{font-size:14px;color:var(--muted);line-height:1.55}
+ul{list-style:none;display:grid;gap:9px}
+li{font-size:14px;color:var(--ink);line-height:1.45;padding-left:22px;position:relative}
+li::before{content:"";position:absolute;left:4px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.envio{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.arquivo{position:relative;border:2px dashed #B9D3E6;border-radius:14px;background:var(--bg);padding:22px 14px;text-align:center;cursor:pointer;transition:.15s}
+.arquivo:hover,.arquivo.cheio{border-color:var(--teal);background:#EEFAFA}
+.arquivo input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.arquivo strong{display:block;font-size:15px;color:var(--navy);margin-bottom:4px;word-break:break-word}
+.arquivo span{font-size:12px;color:var(--muted)}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:16px;font-weight:500}
+.aceite input{width:18px;height:18px;margin-top:1px;accent-color:var(--teal);flex-shrink:0}
+button{width:100%;margin-top:18px;font:inherit;font-size:16px;font-weight:700;color:#fff;border:0;border-radius:12px;padding:15px;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--teal))}
+button:disabled{opacity:.6;cursor:wait}
+.msg{font-size:13px;color:var(--erro);margin-top:12px;min-height:1em;text-align:center}
+.ok{text-align:center;padding:12px 0}
+.ok .check{width:64px;height:64px;border-radius:50%;background:#E3F7F4;color:var(--teal);display:grid;place-items:center;margin:0 auto 16px;font-size:34px;font-weight:800}
+.ok p{margin-top:8px}
+[hidden]{display:none!important}
+footer{color:rgba(255,255,255,.75);font-size:12px;margin-top:22px;text-align:center}
+</style>
+</head>
+<body>
+
+<img class="logo" src="assets/logo-nova-branca.png" alt="eProtege Saúde e Segurança do Trabalho">
+
+<main class="card">
+  <div id="vaga">
+    <span class="tag">Vaga aberta</span>
+    <h1>Técnico de Segurança do Trabalho</h1>
+    <p>A eProtege cuida da saúde e da segurança dos colaboradores de empresas de todos os portes. Procuramos um técnico que goste de estar em campo, orientar pessoas e prevenir acidentes antes que eles aconteçam.</p>
+
+    <h2>O que você vai fazer</h2>
+    <ul>
+      <li>Fazer inspeções de segurança e identificar riscos nos ambientes de trabalho dos clientes</li>
+      <li>Apoiar a elaboração e o acompanhamento do PGR e dos planos de ação</li>
+      <li>Aplicar treinamentos, DDS e integrações conforme as Normas Regulamentadoras</li>
+      <li>Orientar sobre a escolha, a entrega e o uso correto de EPIs e EPCs</li>
+      <li>Investigar acidentes e incidentes e ajudar a evitar que se repitam</li>
+      <li>Acompanhar a CIPA e manter registros e documentos de SST em dia</li>
+    </ul>
+
+    <h2>O que buscamos</h2>
+    <ul>
+      <li>Curso Técnico em Segurança do Trabalho concluído e registro profissional ativo</li>
+      <li>Conhecimento das NRs e boa comunicação para treinar equipes</li>
+      <li>Organização e disponibilidade para visitar clientes</li>
+      <li>CNH será um diferencial</li>
+    </ul>
+
+    <form class="envio" id="form" novalidate>
+      <h2 style="margin-top:0">Envie seu currículo</h2>
+      <div class="arquivo" id="caixa">
+        <input id="arquivo" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,image/*">
+        <strong id="arquivoNome">Toque para escolher o arquivo</strong>
+        <span>PDF, Word ou foto, até 8 MB</span>
+      </div>
+
+      <label class="aceite"><input id="aceite" type="checkbox"> Autorizo a eProtege a guardar meu currículo para processos seletivos.</label>
+
+      <button id="enviar" type="submit">Enviar currículo</button>
+      <p class="msg" id="msg" role="alert"></p>
+    </form>
+  </div>
+
+  <div class="ok" id="ok" hidden>
+    <div class="check">✓</div>
+    <h1>Currículo recebido!</h1>
+    <p>Obrigado pelo interesse em fazer parte da eProtege. Se o seu perfil combinar com a vaga, a gente chama você pelo contato do currículo.</p>
+  </div>
+</main>
+
+<footer>eProtege · Saúde e Segurança do Trabalho</footer>
+
+<script>
+const CONFIG = {
+  // URL da implantação do script CodigoCurriculos.gs (Apps Script → Implantar → App da Web)
+  script: 'https://script.google.com/macros/s/AKfycbwvYiaSU1dhVOfMP0P-0g-iHx1KFhg2YQl38N6NN7Fptd7fqjaDnczgZvq2mZ9tanKj/exec'
+};
+const MAX_MB = 8;
+
+const $ = id => document.getElementById(id);
+const arquivo = $('arquivo'), msg = $('msg'), botao = $('enviar');
+
+arquivo.addEventListener('change', () => {
+  const f = arquivo.files[0];
+  $('arquivoNome').textContent = f ? f.name : 'Toque para escolher o arquivo';
+  $('caixa').classList.toggle('cheio', !!f);
+  msg.textContent = '';
+});
+
+const lerBase64 = f => new Promise((ok, falha) => {
+  const r = new FileReader();
+  r.onload = () => ok(String(r.result).split(',')[1]);
+  r.onerror = falha;
+  r.readAsDataURL(f);
+});
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  msg.textContent = '';
+  const f = arquivo.files[0];
+  if (!f) return msg.textContent = 'Escolha o arquivo do currículo.';
+  if (f.size > MAX_MB * 1024 * 1024) return msg.textContent = `O arquivo passa de ${MAX_MB} MB. Tente um PDF menor.`;
+  if (!$('aceite').checked) return msg.textContent = 'Marque a autorização para enviar.';
+
+  botao.disabled = true;
+  botao.textContent = 'Enviando...';
+  try {
+    const resp = await fetch(CONFIG.script, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        arquivoNome: f.name, arquivoTipo: f.type || 'application/octet-stream',
+        arquivoBase64: await lerBase64(f)
+      })
+    });
+    const dados = await resp.json();
+    if (!dados.ok) throw new Error(dados.erro || 'falha');
+    $('vaga').hidden = true;
+    $('ok').hidden = false;
+    window.scrollTo(0, 0);
+  } catch (err) {
+    msg.textContent = 'Não conseguimos enviar agora. Confira sua internet e tente de novo.';
+    botao.disabled = false;
+    botao.textContent = 'Enviar currículo';
+  }
+});
+</script>
+</body>
+</html>
