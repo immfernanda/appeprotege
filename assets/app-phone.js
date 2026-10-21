@@ -123,7 +123,7 @@ const primeiroNome = () => NOME_USUARIO.split(' ')[0];
 let SENHA_SORTEIO = '';
 // Fora do horário do evento: texto do próximo horário ('encerrado' quando o evento acabou)
 let SORTEIO_PENDENTE = '';
-const SORTEIO_HORARIOS = ['21/10, das 19h às 21h','22/10, das 8h às 18h','23/10, das 8h às 18h'];
+const SORTEIO_HORARIOS = ['21/10, até as 21h','22/10, das 8h às 18h','23/10, das 8h às 18h'];
 const temSorteio = () => !!(SENHA_SORTEIO || SORTEIO_PENDENTE);
 const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
 const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
