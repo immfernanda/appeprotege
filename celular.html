@@ -392,9 +392,9 @@ card.addEventListener('submit',async e=>{
   const utm={campanha:params.get('utm_campaign')||CAMPANHA,criativo:params.get('utm_content')||'Quiz',origem:params.get('utm_source')||'evento',midia:params.get('utm_medium')||'qrcode'};
   const pagina=location.origin+location.pathname, website=$('#qWebsite').value;
   if(window.dataLayer) dataLayer.push({event:'lead_eprotege_quiz'});
-  // A planilha do evento grava o lead e repassa à campanha da LP no CRM (a planilha comercial não recebe o quiz)
   const btn=$('#quizForm .q-btn');btn.disabled=true;btn.textContent='Gerando seu número da sorte...';
-  const res=await chamarPlanilha({campos,website,nome,telefone:tel,email,crm:{nome,telefone:tel,email,empresa,cargo,interesse:resumo,...utm,pagina}});
+  // Só a campanha do evento no CRM ("Evento APES"): sem o campo crm, o script não repassa à campanha da LP
+  const res=await chamarPlanilha({campos,website,nome,telefone:tel,email});
   // Script antigo ou sem resposta: segue com o número gerado aqui
   const numero=res&&'numero' in res?res.numero:numeroLocal;
   const pendente=res&&res.fora?(res.proxima||'encerrado'):'';
