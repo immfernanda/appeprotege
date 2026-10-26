@@ -116,15 +116,9 @@ Object.assign(state,{docAberto:null, docsPessoais:{'RG ou CNH':'enviado','Compro
 Object.assign(state,{sugestoes:[], solicitacoes:[], novaSolic:false, busca:''});
 const SOLIC_STEPS = ['Aberto','Em Análise','Aprovado','Finalizado'];
 const SOLIC_PILL = {'Aberto':'p-info','Em Análise':'p-warn','Aprovado':'p-ok','Finalizado':'p-ok','Rejeitado':'p-bad'};
-// Nome de quem usa o celular de demonstração (o quiz troca pelo nome da pessoa)
+// Nome de quem usa o celular de demonstração
 let NOME_USUARIO = 'Ana Souza';
 const primeiroNome = () => NOME_USUARIO.split(' ')[0];
-// Número da sorte do sorteio (o quiz preenche): aparece como faixa dourada e ícone na tela inicial
-let SENHA_SORTEIO = '';
-// Fora do horário do evento: texto do próximo horário ('encerrado' quando o evento acabou)
-let SORTEIO_PENDENTE = '';
-const SORTEIO_HORARIOS = ['21/10, até as 22h','22/10, das 8h às 18h','23/10, das 8h às 18h'];
-const temSorteio = () => !!(SENHA_SORTEIO || SORTEIO_PENDENTE);
 const FUNCIONARIOS = [['Ana Souza','Operadora · Produção','ASO em dia','p-ok'],['Carlos Lima','Técnico de Segurança','ASO em dia','p-ok'],['Juliana Prado','Assistente de RH','ASO vence em 20 dias','p-warn'],['Marcos Alves','Motorista','ASO vencido','p-bad'],['Patrícia Reis','Analista Comercial','ASO em dia','p-ok']];
 const comunicadosList = () => [...comunicadosFeriados(),['Exames periódicos','Agende seu exame com a eProtege até o fim do mês.']];
 function comunicadosHTML(){
@@ -135,27 +129,8 @@ function comunicadosHTML(){
 const SCREENS = {
   home(){
     return `<div class="hello"><h4>Bem-vindo(a), ${esc(primeiroNome())}!</h4><p>Escolha uma área para começar.</p></div>
-    ${temSorteio()?`<button class="sorteio-bar" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span><span>${SENHA_SORTEIO?'Seu número da sorte está aqui!':'Sorteio da cesta Kopenhagen'}<small>${SENHA_SORTEIO?'Toque no presente e concorra à cesta Kopenhagen':'Seu número é liberado durante o evento'}</small></span><i data-lucide="chevron-right" class="chev"></i></button>`:''}
     <button class="ponto-bar" data-go="ponto"><span class="ic"><i data-lucide="clock"></i></span>Registrar Ponto<i data-lucide="chevron-right" class="chev"></i></button>
-    <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}${temSorteio()?`<button class="app-ic sorteio-ic" data-go="sorteio"><span class="ic"><i data-lucide="gift"></i></span>Sorteio</button>`:''}</div>`;
-  },
-  sorteio(){
-    if(!SENHA_SORTEIO) return topBar('Sorteio Kopenhagen')+(SORTEIO_PENDENTE==='encerrado'
-      ?`<div class="sorteio-card"><span class="sorteio-gift"><i data-lucide="gift"></i></span><b>O sorteio já foi encerrado.</b><span class="s-muted">Obrigado por participar!</span></div>`
-      :`<div class="sorteio-card"><span class="sorteio-gift"><i data-lucide="lock"></i></span><b>Seu número da sorte é liberado durante o evento</b>
-      <span class="s-muted">Os números saem só nos horários do evento, no estande da eProtege:</span>
-      <ul class="sorteio-horas">${SORTEIO_HORARIOS.map(h=>`<li>${h}</li>`).join('')}</ul>
-      <button class="s-btn sorteio-liberar" data-act="pegarNumero"><i data-lucide="gift"></i> Estou no evento: liberar meu número</button></div>`)
-      +`<a class="insta-btn" href="https://www.instagram.com/eprotege.sst/" target="_blank" rel="noopener"><span class="insta-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.9" fill="currentColor" stroke="none"/></svg></span><span><b>Clique aqui e siga @eprotege.sst</b><small>Acompanhe o sorteio ao vivo no dia 23/10. Só quem segue concorre!</small></span></a>`;
-    if(!state.presenteAberto) return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card">
-      <b>Tem um presente para você!</b><span class="s-muted">Toque no presente para revelar o seu número da sorte da cesta Kopenhagen.</span>
-      <button class="sorteio-box" data-act="abrirPresente" aria-label="Abrir presente"><i data-lucide="gift"></i></button>
-      <span class="sorteio-toque">Toque para abrir</span></div>`;
-    return topBar('Sorteio Kopenhagen')+`<div class="sorteio-card revelado"><span class="sorteio-gift"><i data-lucide="gift"></i></span>
-      <b>Você está concorrendo a uma cesta Kopenhagen!</b><span class="s-muted">Seu número da sorte</span>
-      <div class="sorteio-senha">${esc(SENHA_SORTEIO)}</div>
-      <span class="s-muted">Tire um print desta tela. O ganhador será avisado pelo telefone informado.</span></div>
-      <a class="insta-btn" href="https://www.instagram.com/eprotege.sst/" target="_blank" rel="noopener"><span class="insta-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.9" fill="currentColor" stroke="none"/></svg></span><span><b>Clique aqui e siga @eprotege.sst</b><small>Acompanhe o sorteio ao vivo no dia 23/10. Só quem segue concorre!</small></span></a>`;
+    <div class="app-grid">${MODULES.filter(m=>m.id!=='ponto').map(m=>`<button class="app-ic" data-go="${m.id}"><span class="ic" style="background:${gradOf(m)};--c:${m.g[0]}"><i data-lucide="${m.icon}"></i></span>${m.name}</button>`).join('')}</div>`;
   },
   rh_relogio(){ return SCREENS.ponto('rh','Relógio Ponto','Recursos Humanos'); },
   ponto(back='home',title='Registrar Ponto',crumb=''){
@@ -389,8 +364,6 @@ $('#appBody').addEventListener('click',e=>{
   if(act==='pedir'){const i=$('#pedItem').value.trim();if(!i){toast('Informe o material');return}state.pedidos.unshift({i,q:Math.max(1,+$('#pedQtd').value||1),h:nowHM()});rerender();toast('Pedido enviado')}
   if(act==='melhoria'){const t=$('#melTexto').value.trim();if(!t){toast('Descreva a melhoria');return}state.melhorias.unshift({a:$('#melArea').value,t});rerender();toast('Melhoria enviada')}
   if(act==='feedback'){const t=$('#fbTexto').value.trim();if(!t){toast('Escreva seu feedback');return}state.feedbacks.unshift({p:$('#fbPara').value,t});rerender();toast($('#fbAnon')?.checked===false?'Feedback enviado':'Feedback enviado com sigilo')}
-  if(act==='pegarNumero'&&window.pegarNumero){a.disabled=true;toast('Buscando seu número...');window.pegarNumero().finally(()=>{a.disabled=false})}
-  if(act==='abrirPresente'){a.classList.add('abrindo');setTimeout(()=>{state.presenteAberto=true;rerender();toast('Número da sorte revelado!')},550)}
   if(act==='perfil'){state.perfil=true;rerender();toast('Análise concluída')}
   if(act==='trilha')toast('Retomando: Gestão do tempo');
   if(act==='desafio'){state.pontos+=50;rerender();toast('+50 pontos!')}
