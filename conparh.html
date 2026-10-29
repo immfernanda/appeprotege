@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cut">
+<meta name="theme-color" content="#001B4A">
+<meta name="robots" content="noindex">
+<title>eProtege | Cadastro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--yellow:#F4BB0E;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Montserrat,system-ui,sans-serif;min-height:100vh;color:var(--navy);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 70% at 100% 0%,rgba(18,176,182,.35),transparent 60%),radial-gradient(90% 60% at 0% 100%,rgba(40,100,176,.45),transparent 60%),#001B4A}
+button,input,select,textarea{font:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px 40px;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+header img{height:46px;width:auto}
+.badge{font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--yellow);color:var(--navy);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.hero{color:#fff;margin-bottom:18px}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua)}
+.hero h1{font-size:clamp(1.55rem,6vw,2rem);font-weight:800;line-height:1.12;letter-spacing:-.02em;margin:8px 0 8px}
+.hero h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#c9d7ea;font-size:.92rem;line-height:1.5}
+.card{background:#fff;border-radius:24px;padding:24px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.f label{font-size:.78rem;font-weight:700;color:var(--slate)}
+.f label i{font-style:normal;font-weight:500;color:var(--muted)}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--bg);font-size:1rem;outline:none;width:100%;color:var(--navy);-webkit-appearance:none;appearance:none}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%233E5A70' stroke-width='2.5' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.f textarea{min-height:84px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--teal);background-color:#fff;box-shadow:0 0 0 4px rgba(18,176,182,.12)}
+.f.err input,.f.err select{border-color:#e11d48}
+.f small.e{color:#e11d48;font-size:.72rem;display:none}
+.f.err small.e{display:block}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:420px){.row{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--bg);color:var(--navy);border-radius:999px;padding:9px 14px;font-weight:600;font-size:.84rem;cursor:pointer;transition:.15s;user-select:none}
+.chip.on{border-color:var(--teal);background:rgba(18,176,182,.12);color:var(--navy)}
+.chip.on::before{content:'✓ ';color:var(--teal);font-weight:800}
+.temp .chip[data-v="Quente"].on{border-color:#e11d48;background:rgba(225,29,72,.08)}
+.temp .chip[data-v="Morno"].on{border-color:var(--yellow);background:rgba(244,187,14,.14)}
+.temp .chip[data-v="Frio"].on{border-color:var(--blue);background:rgba(40,100,176,.1)}
+.team{border:1.5px dashed var(--aqua);border-radius:16px;padding:16px 14px 4px;margin:4px 0 16px;background:linear-gradient(180deg,rgba(100,198,204,.08),transparent)}
+.team-t{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.consent{display:flex;gap:10px;font-size:.76rem;color:var(--muted);align-items:flex-start;line-height:1.45;cursor:pointer}
+.consent input{margin-top:2px;accent-color:var(--teal);flex:none;width:18px;height:18px}
+.consent.err{color:#e11d48}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;cursor:pointer;margin-top:18px;padding:16px 22px;border-radius:999px;font-weight:700;font-size:1.02rem;background:var(--grad);color:#fff;box-shadow:0 12px 30px -10px rgba(18,176,182,.7)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line);box-shadow:none;margin-top:10px}
+.ok{text-align:center;padding:12px 4px}
+.ok .ic{width:76px;height:76px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:4px auto 16px;box-shadow:0 14px 30px -12px rgba(18,176,182,.8)}
+.ok .ic svg{width:38px;height:38px;color:#fff}
+.ok h2{font-size:1.45rem;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.ok p{color:var(--muted);font-size:.94rem;line-height:1.55}
+.ok .note{margin-top:12px;font-size:.8rem;background:rgba(244,187,14,.16);color:#7a5c00;border-radius:12px;padding:10px 12px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;color:#9fb3d1;font-size:.76rem;flex-wrap:wrap}
+.bar b{color:#fff}
+.bar button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:999px;padding:7px 12px;font-size:.74rem;font-weight:600;cursor:pointer}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:6px;vertical-align:middle}
+.dot.off{background:#e11d48}
+.foot{margin-top:auto;padding-top:22px;text-align:center;color:#7f95b5;font-size:.72rem;line-height:1.5}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="assets/logo-horizontal-branco.svg" alt="eProtege Saúde e Segurança do Trabalho">
+    <span class="badge" id="badge">Equipe eProtege</span>
+  </header>
+
+  <div class="hero" id="hero">
+    <div class="eyebrow" id="evNome">Evento</div>
+    <h1>Vamos conversar sobre a <span>SST da sua empresa</span></h1>
+    <p>Deixe seu contato e um especialista da eProtege retorna para você. Mais de 25 anos cuidando de Saúde e Segurança do Trabalho, com mais de 750 clínicas credenciadas no Brasil.</p>
+  </div>
+
+  <div class="card">
+    <form id="form" novalidate>
+      <div class="f"><label for="nome">Nome</label><input id="nome" name="nome" autocomplete="name" required><small class="e">Informe o nome</small></div>
+      <div class="row">
+        <div class="f"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required><small class="e">Telefone inválido</small></div>
+        <div class="f"><label for="email">E-mail</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" required><small class="e">E-mail inválido</small></div>
+      </div>
+      <div class="f"><label for="empresa">Nome da empresa</label><input id="empresa" name="empresa" autocomplete="organization" required><small class="e">Informe a empresa</small></div>
+      <div class="row">
+        <div class="f"><label for="cargo">Cargo <i>(opcional)</i></label><input id="cargo" name="cargo" autocomplete="organization-title"></div>
+        <div class="f"><label for="funcionarios">Quantidade de funcionários</label>
+          <select id="funcionarios" name="funcionarios" required>
+            <option value="">Selecione</option>
+            <option>1 a 10</option><option>11 a 50</option><option>51 a 100</option><option>101 a 500</option><option>Mais de 500</option>
+          </select><small class="e">Selecione uma opção</small></div>
+      </div>
+      <div class="f"><label>O que é mais interessante para você? <i>(pode marcar mais de um)</i></label>
+        <div class="chips" id="interesses">
+          <span class="chip" data-v="ASO">ASO</span>
+          <span class="chip" data-v="Gestão de atestados">Gestão de atestados</span>
+          <span class="chip" data-v="Sistema">Sistema</span>
+          <span class="chip" data-v="Documentação de terceiros">Documentação de terceiros</span>
+        </div>
+      </div>
+
+      <div class="team" id="team">
+        <div class="team-t">Só para a equipe</div>
+        <div class="f"><label>Temperatura do lead</label>
+          <div class="chips temp" id="temperatura">
+            <span class="chip" data-v="Quente">Quente</span><span class="chip" data-v="Morno">Morno</span><span class="chip" data-v="Frio">Frio</span>
+          </div>
+        </div>
+        <div class="f"><label for="atendente">Atendido por</label><input id="atendente" name="atendente" placeholder="Seu nome"></div>
+        <div class="f"><label for="obs">Observações da conversa</label><textarea id="obs" name="obs" placeholder="Ex.: já tem fornecedor, renova contrato em março"></textarea></div>
+      </div>
+
+      <label class="consent" id="consentBox"><input type="checkbox" id="consent"><span id="consentTxt">Autorizo a eProtege a entrar em contato comigo por telefone e e-mail e a tratar meus dados conforme a LGPD.</span></label>
+      <button class="btn" id="enviar" type="submit">Enviar cadastro</button>
+    </form>
+
+    <div class="ok hidden" id="ok">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h2 id="okT">Cadastro recebido!</h2>
+      <p id="okP">Obrigado pelo interesse. Em breve um especialista da eProtege entra em contato.</p>
+      <div class="note hidden" id="okNote">Sem internet agora. O cadastro ficou salvo neste aparelho e será enviado sozinho quando a conexão voltar.</div>
+      <button class="btn" id="novo" type="button">Novo cadastro</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <span><span class="dot" id="dot"></span><span id="netTxt">Online</span> · Pendentes: <b id="pend">0</b> · Enviados aqui: <b id="sent">0</b></span>
+    <span><button type="button" id="retry">Reenviar</button> <button type="button" id="csv">Baixar CSV</button></span>
+  </div>
+
+  <div class="foot">eProtege Saúde e Segurança do Trabalho<br>Escale novos patamares com Saúde e Segurança.</div>
+</div>
+
+<script>
+const CONFIG = {
+  webhook: '',            // URL do webhook do sistema do Amauri
+  evento: 'CONPARH 2026', // nome do evento (também aceita ?evento=Nome na URL)
+  origem: 'Evento presencial'
+};
+
+const qs = new URLSearchParams(location.search);
+const EQUIPE = qs.has('equipe');
+const EVENTO = qs.get('evento') || CONFIG.evento;
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+};
+
+$('evNome').textContent = EVENTO;
+if (!EQUIPE) {
+  ['team','bar','badge'].forEach(id => $(id).classList.add('hidden'));
+} else {
+  $('hero').querySelector('h1').innerHTML = 'Novo lead do <span>evento</span>';
+  $('hero').querySelector('p').textContent = 'Preencha durante a conversa. O lead cai direto no sistema como novo lead.';
+  $('consentTxt').textContent = 'O contato autorizou a eProtege a falar com ele por telefone e e-mail e a tratar os dados conforme a LGPD.';
+  $('atendente').value = store.get('atendente', '');
+}
+
+// Chips de múltipla escolha (interesses) e escolha única (temperatura)
+$('interesses').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) c.classList.toggle('on'); });
+$('temperatura').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  const was = c.classList.contains('on');
+  $('temperatura').querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+  if (!was) c.classList.add('on');
+});
+
+// Máscara de telefone
+$('telefone').addEventListener('input', e => {
+  let d = e.target.value.replace(/\D/g, '').slice(0, 11);
+  e.target.value = d.length > 10 ? d.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
+    : d.length > 6 ? d.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
+    : d.length > 2 ? d.replace(/(\d{2})(\d{0,5})/, '($1) $2') : d.replace(/(\d{0,2})/, d ? '($1' : '');
+});
+
+function validar() {
+  let ok = true;
+  const check = (id, cond) => { const f = $(id).closest('.f'); f.classList.toggle('err', !cond); if (!cond && ok) $(id).focus(); ok = ok && cond; };
+  check('nome', $('nome').value.trim().length >= 2);
+  check('telefone', $('telefone').value.replace(/\D/g, '').length >= 10);
+  check('email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim()));
+  check('empresa', $('empresa').value.trim().length >= 2);
+  check('funcionarios', !!$('funcionarios').value);
+  $('consentBox').classList.toggle('err', !$('consent').checked);
+  return ok && $('consent').checked;
+}
+
+function montarLead() {
+  const sel = id => [...$(id).querySelectorAll('.chip.on')].map(c => c.dataset.v);
+  return {
+    id: (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(16).slice(2)),
+    nome: $('nome').value.trim(),
+    telefone: $('telefone').value.trim(),
+    email: $('email').value.trim().toLowerCase(),
+    empresa: $('empresa').value.trim(),
+    cargo: $('cargo').value.trim(),
+    funcionarios: $('funcionarios').value,
+    interesses: sel('interesses').join(', '),
+    temperatura: EQUIPE ? sel('temperatura').join('') : '',
+    atendente: EQUIPE ? $('atendente').value.trim() : '',
+    observacoes: EQUIPE ? $('obs').value.trim() : '',
+    preenchido_por: EQUIPE ? 'Equipe eProtege' : 'Próprio visitante',
+    evento: EVENTO,
+    origem: CONFIG.origem,
+    consentimento_lgpd: true,
+    data_hora: new Date().toISOString()
+  };
+}
+
+// Envio: tenta JSON normal; se o navegador bloquear por CORS, reenvia em modo simples (text/plain)
+async function enviar(lead) {
+  if (!CONFIG.webhook) throw new Error('webhook não configurado');
+  const body = JSON.stringify(lead);
+  try {
+    const r = await fetch(CONFIG.webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+  } catch (err) {
+    if (String(err.message).startsWith('HTTP')) throw err;
+    await fetch(CONFIG.webhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
+  }
+}
+
+// Fila offline: nada se perde se a internet do evento cair
+const fila = () => store.get('fila', []);
+const historico = () => store.get('historico', []);
+function atualizarBarra() {
+  $('pend').textContent = fila().length;
+  $('sent').textContent = historico().filter(l => l._enviado).length;
+  $('dot').classList.toggle('off', !navigator.onLine);
+  $('netTxt').textContent = navigator.onLine ? 'Online' : 'Sem internet';
+}
+let processando = false;
+async function processarFila() {
+  if (processando || !navigator.onLine) return atualizarBarra();
+  processando = true;
+  for (const lead of fila()) {
+    try {
+      await enviar(lead);
+      store.set('fila', fila().filter(l => l.id !== lead.id));
+      store.set('historico', historico().map(l => l.id === lead.id ? { ...l, _enviado: true } : l));
+    } catch { break; }
+  }
+  processando = false;
+  atualizarBarra();
+}
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validar()) return;
+  const lead = montarLead();
+  if (EQUIPE) store.set('atendente', lead.atendente);
+  store.set('historico', [...historico(), lead]);
+  $('enviar').disabled = true; $('enviar').textContent = 'Enviando...';
+  let enviado = false;
+  try { await enviar(lead); enviado = true; } catch { store.set('fila', [...fila(), lead]); }
+  if (enviado) store.set('historico', historico().map(l => l.id === lead.id ? { ...l, _enviado: true } : l));
+  $('enviar').disabled = false; $('enviar').textContent = 'Enviar cadastro';
+  $('okNote').classList.toggle('hidden', enviado);
+  $('okT').textContent = EQUIPE ? 'Lead cadastrado!' : 'Cadastro recebido!';
+  $('okP').textContent = EQUIPE ? lead.nome + ' (' + lead.empresa + ') foi enviado como novo lead.' : 'Obrigado pelo interesse. Em breve um especialista da eProtege entra em contato.';
+  $('form').classList.add('hidden'); $('ok').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  atualizarBarra();
+});
+
+$('novo').addEventListener('click', () => {
+  const atendente = $('atendente').value;
+  $('form').reset();
+  $('atendente').value = atendente;
+  document.querySelectorAll('.chip.on').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('.err').forEach(f => f.classList.remove('err'));
+  $('ok').classList.add('hidden'); $('form').classList.remove('hidden');
+  $('nome').focus();
+});
+
+$('retry').addEventListener('click', processarFila);
+$('csv').addEventListener('click', () => {
+  const rows = historico();
+  if (!rows.length) return alert('Nenhum cadastro neste aparelho ainda.');
+  const cols = ['data_hora','nome','telefone','email','empresa','cargo','funcionarios','interesses','temperatura','atendente','observacoes','preenchido_por','evento','_enviado'];
+  const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const csv = '﻿' + [cols.join(';'), ...rows.map(r => cols.map(c => esc(r[c])).join(';'))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'leads-' + EVENTO.replace(/\W+/g, '-').toLowerCase() + '.csv';
+  a.click();
+});
+
+window.addEventListener('online', processarFila);
+window.addEventListener('offline', atualizarBarra);
+setInterval(processarFila, 30000);
+processarFila();
+</script>
+</body>
+</html>
