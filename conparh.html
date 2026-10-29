@@ -139,7 +139,9 @@ header img{height:46px;width:auto}
 
 <script>
 const CONFIG = {
-  webhook: '',            // URL do webhook do sistema do Amauri
+  crm: 'https://protege-core-hub.base44.app/functions/captarLeadLanding', // sistema do Amauri
+  token: 'cmp_7a91d2808c4041c288afdb755c624a5e',                          // campanha CONPARH no CRM
+  planilha: '',           // URL do App da Web do Apps Script da planilha "Leads CONPARH"
   evento: 'CONPARH 2026', // nome do evento (também aceita ?evento=Nome na URL)
   origem: 'Evento presencial'
 };
@@ -214,17 +216,26 @@ function montarLead() {
   };
 }
 
-// Envio: tenta JSON normal; se o navegador bloquear por CORS, reenvia em modo simples (text/plain)
+// Envio para dois destinos (CRM e planilha); cada lead guarda o que já foi entregue em _crm e _planilha
+async function enviarCRM(lead) {
+  const { _crm, _planilha, ...dados } = lead;
+  const body = JSON.stringify({
+    ...dados, token: CONFIG.token, pagina: location.href, consentimento: true, website: '',
+    utm_source: qs.get('utm_source') || 'conparh', utm_medium: qs.get('utm_medium') || 'evento',
+    utm_campaign: qs.get('utm_campaign') || 'conparh-2026', utm_content: qs.get('utm_content') || '', utm_term: qs.get('utm_term') || ''
+  });
+  const j = await (await fetch(CONFIG.crm, { method: 'POST', body })).json();
+  if (!j.ok) throw new Error(j.error || 'CRM recusou');
+}
+async function enviarPlanilha(lead) {
+  if (!CONFIG.planilha) throw new Error('planilha não configurada');
+  const { _crm, _planilha, ...dados } = lead;
+  await fetch(CONFIG.planilha, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
+}
 async function enviar(lead) {
-  if (!CONFIG.webhook) throw new Error('webhook não configurado');
-  const body = JSON.stringify(lead);
-  try {
-    const r = await fetch(CONFIG.webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-  } catch (err) {
-    if (String(err.message).startsWith('HTTP')) throw err;
-    await fetch(CONFIG.webhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
-  }
+  if (!lead._crm) { try { await enviarCRM(lead); lead._crm = true; } catch {} }
+  if (!lead._planilha) { try { await enviarPlanilha(lead); lead._planilha = true; } catch {} }
+  return lead._crm && lead._planilha;
 }
 
 // Fila offline: nada se perde se a internet do evento cair
@@ -232,20 +243,19 @@ const fila = () => store.get('fila', []);
 const historico = () => store.get('historico', []);
 function atualizarBarra() {
   $('pend').textContent = fila().length;
-  $('sent').textContent = historico().filter(l => l._enviado).length;
+  $('sent').textContent = historico().filter(l => l._crm).length;
   $('dot').classList.toggle('off', !navigator.onLine);
   $('netTxt').textContent = navigator.onLine ? 'Online' : 'Sem internet';
 }
+const registrar = lead => store.set('historico', historico().map(l => l.id === lead.id ? lead : l));
 let processando = false;
 async function processarFila() {
   if (processando || !navigator.onLine) return atualizarBarra();
   processando = true;
   for (const lead of fila()) {
-    try {
-      await enviar(lead);
-      store.set('fila', fila().filter(l => l.id !== lead.id));
-      store.set('historico', historico().map(l => l.id === lead.id ? { ...l, _enviado: true } : l));
-    } catch { break; }
+    const pronto = await enviar(lead);
+    store.set('fila', pronto ? fila().filter(l => l.id !== lead.id) : fila().map(l => l.id === lead.id ? lead : l));
+    registrar(lead);
   }
   processando = false;
   atualizarBarra();
@@ -258,9 +268,10 @@ $('form').addEventListener('submit', async e => {
   if (EQUIPE) store.set('atendente', lead.atendente);
   store.set('historico', [...historico(), lead]);
   $('enviar').disabled = true; $('enviar').textContent = 'Enviando...';
-  let enviado = false;
-  try { await enviar(lead); enviado = true; } catch { store.set('fila', [...fila(), lead]); }
-  if (enviado) store.set('historico', historico().map(l => l.id === lead.id ? { ...l, _enviado: true } : l));
+  await enviar(lead);
+  registrar(lead);
+  if (!lead._crm || !lead._planilha) store.set('fila', [...fila(), lead]);
+  const enviado = lead._crm;
   $('enviar').disabled = false; $('enviar').textContent = 'Enviar cadastro';
   $('okNote').classList.toggle('hidden', enviado);
   $('okT').textContent = EQUIPE ? 'Lead cadastrado!' : 'Cadastro recebido!';
@@ -284,7 +295,7 @@ $('retry').addEventListener('click', processarFila);
 $('csv').addEventListener('click', () => {
   const rows = historico();
   if (!rows.length) return alert('Nenhum cadastro neste aparelho ainda.');
-  const cols = ['data_hora','nome','telefone','email','empresa','cargo','funcionarios','interesses','temperatura','atendente','observacoes','preenchido_por','evento','_enviado'];
+  const cols = ['data_hora','nome','telefone','email','empresa','cargo','funcionarios','interesses','temperatura','atendente','observacoes','preenchido_por','evento','_crm','_planilha'];
   const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
   const csv = '﻿' + [cols.join(';'), ...rows.map(r => cols.map(c => esc(r[c])).join(';'))].join('\n');
   const a = document.createElement('a');
