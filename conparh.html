@@ -41,11 +41,6 @@ header img{height:46px;width:auto}
 .chip{border:1.5px solid var(--line);background:var(--bg);color:var(--navy);border-radius:999px;padding:9px 14px;font-weight:600;font-size:.84rem;cursor:pointer;transition:.15s;user-select:none}
 .chip.on{border-color:var(--teal);background:rgba(18,176,182,.12);color:var(--navy)}
 .chip.on::before{content:'✓ ';color:var(--teal);font-weight:800}
-.temp .chip[data-v="Quente"].on{border-color:#e11d48;background:rgba(225,29,72,.08)}
-.temp .chip[data-v="Morno"].on{border-color:var(--yellow);background:rgba(244,187,14,.14)}
-.temp .chip[data-v="Frio"].on{border-color:var(--blue);background:rgba(40,100,176,.1)}
-.team{border:1.5px dashed var(--aqua);border-radius:16px;padding:16px 14px 4px;margin:4px 0 16px;background:linear-gradient(180deg,rgba(100,198,204,.08),transparent)}
-.team-t{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
 .consent{display:flex;gap:10px;font-size:.76rem;color:var(--muted);align-items:flex-start;line-height:1.45;cursor:pointer}
 .consent input{margin-top:2px;accent-color:var(--teal);flex:none;width:18px;height:18px}
 .consent.err{color:#e11d48}
@@ -105,16 +100,7 @@ header img{height:46px;width:auto}
         </div>
       </div>
 
-      <div class="team" id="team">
-        <div class="team-t">Só para a equipe</div>
-        <div class="f"><label>Temperatura do lead</label>
-          <div class="chips temp" id="temperatura">
-            <span class="chip" data-v="Quente">Quente</span><span class="chip" data-v="Morno">Morno</span><span class="chip" data-v="Frio">Frio</span>
-          </div>
-        </div>
-        <div class="f"><label for="atendente">Atendido por</label><input id="atendente" name="atendente" placeholder="Seu nome"></div>
-        <div class="f"><label for="obs">Observações da conversa</label><textarea id="obs" name="obs" placeholder="Ex.: já tem fornecedor, renova contrato em março"></textarea></div>
-      </div>
+      <div class="f" id="team"><label for="obs">Observações <i>(opcional)</i></label><textarea id="obs" name="obs" placeholder="Ex.: já tem fornecedor, renova contrato em março"></textarea></div>
 
       <label class="consent" id="consentBox"><input type="checkbox" id="consent"><span id="consentTxt">Autorizo a eProtege a entrar em contato comigo por telefone e e-mail e a tratar meus dados conforme a LGPD.</span></label>
       <button class="btn" id="enviar" type="submit">Enviar cadastro</button>
@@ -162,17 +148,10 @@ if (!EQUIPE) {
   $('hero').querySelector('h1').innerHTML = 'Novo lead do <span>evento</span>';
   $('hero').querySelector('p').textContent = 'Preencha durante a conversa. O lead cai direto no sistema como novo lead.';
   $('consentTxt').textContent = 'O contato autorizou a eProtege a falar com ele por telefone e e-mail e a tratar os dados conforme a LGPD.';
-  $('atendente').value = store.get('atendente', '');
 }
 
-// Chips de múltipla escolha (interesses) e escolha única (temperatura)
+// Chips de múltipla escolha (interesses)
 $('interesses').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) c.classList.toggle('on'); });
-$('temperatura').addEventListener('click', e => {
-  const c = e.target.closest('.chip'); if (!c) return;
-  const was = c.classList.contains('on');
-  $('temperatura').querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
-  if (!was) c.classList.add('on');
-});
 
 // Máscara de telefone
 $('telefone').addEventListener('input', e => {
@@ -205,8 +184,6 @@ function montarLead() {
     cargo: $('cargo').value.trim(),
     funcionarios: $('funcionarios').value,
     interesses: sel('interesses').join(', '),
-    temperatura: EQUIPE ? sel('temperatura').join('') : '',
-    atendente: EQUIPE ? $('atendente').value.trim() : '',
     observacoes: EQUIPE ? $('obs').value.trim() : '',
     preenchido_por: EQUIPE ? 'Equipe eProtege' : 'Próprio visitante',
     evento: EVENTO,
@@ -265,7 +242,6 @@ $('form').addEventListener('submit', async e => {
   e.preventDefault();
   if (!validar()) return;
   const lead = montarLead();
-  if (EQUIPE) store.set('atendente', lead.atendente);
   store.set('historico', [...historico(), lead]);
   $('enviar').disabled = true; $('enviar').textContent = 'Enviando...';
   await enviar(lead);
@@ -282,9 +258,7 @@ $('form').addEventListener('submit', async e => {
 });
 
 $('novo').addEventListener('click', () => {
-  const atendente = $('atendente').value;
   $('form').reset();
-  $('atendente').value = atendente;
   document.querySelectorAll('.chip.on').forEach(c => c.classList.remove('on'));
   document.querySelectorAll('.err').forEach(f => f.classList.remove('err'));
   $('ok').classList.add('hidden'); $('form').classList.remove('hidden');
@@ -295,7 +269,7 @@ $('retry').addEventListener('click', processarFila);
 $('csv').addEventListener('click', () => {
   const rows = historico();
   if (!rows.length) return alert('Nenhum cadastro neste aparelho ainda.');
-  const cols = ['data_hora','nome','telefone','email','empresa','cargo','funcionarios','interesses','temperatura','atendente','observacoes','preenchido_por','evento','_crm','_planilha'];
+  const cols = ['data_hora','nome','telefone','email','empresa','cargo','funcionarios','interesses','observacoes','preenchido_por','evento','_crm','_planilha'];
   const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
   const csv = '﻿' + [cols.join(';'), ...rows.map(r => cols.map(c => esc(r[c])).join(';'))].join('\n');
   const a = document.createElement('a');
