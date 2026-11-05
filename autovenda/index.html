@@ -173,8 +173,20 @@ button{font:inherit}
 .pk{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:2px solid var(--line);background:#fff;color:var(--fg);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s}
 .pk:hover{border-color:var(--teal-l)}
 .pk.on{border-color:var(--teal);background:var(--soft)}
-.pk .ck{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:#fff;color:#fff}
-.pk.on .ck{background:var(--teal);border-color:var(--teal)}
+.pk .ck,.ex .ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:#fff;color:#fff}
+.pk.on .ck,.ex.on .ck{background:var(--teal);border-color:var(--teal)}
+.ck.sq{border-radius:7px}
+.exs{display:grid;gap:7px;margin-top:14px}
+.ex-h{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.ex{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1.5px dashed var(--teal-l);background:#fff;color:var(--fg);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:13.5px}
+.ex.on{border-style:solid;border-color:var(--teal);background:var(--soft)}
+.ex-t{flex:1;min-width:0;font-weight:600;color:var(--navy)}
+.ex-v{font-weight:700;color:var(--blue);white-space:nowrap;font-size:13px}
+.ex-v s{color:var(--muted);font-weight:500;margin-right:4px}
+.soma small{display:block;font-size:12px;margin-top:2px}
+a.btn svg{flex:none}
+.pc .tag{position:absolute;top:0;right:22px;border-radius:0 0 10px 10px;padding:4px 12px}
+.pc li.plus{font-weight:700}
 .pk-t{flex:1;min-width:0}
 .pk-t b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px;color:var(--navy)}
 .pk-t small{color:var(--muted);font-size:12.5px}
@@ -281,7 +293,7 @@ footer img{height:38px;display:block}
   <div class="container hero-grid">
     <div>
       <h1>Sua empresa em conformidade com a <em>Saúde e Segurança</em> <em class="t">do Trabalho</em> em poucos minutos.</h1>
-      <p class="sub">Responda 4 perguntas, veja o plano certo para o seu negócio e receba sua proposta sem precisar marcar reunião. Simples assim.</p>
+      <p class="sub">Responda 4 perguntas, escolha seu plano e receba sua proposta em poucos minutos, sem precisar marcar reunião.</p>
       <ul class="hero-list">
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>PCMSO, PGR, exames e eSocial em um só lugar</li>
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Exames com enfermagem ágil e liberação no mesmo dia</li>
@@ -293,7 +305,7 @@ footer img{height:38px;display:block}
     </div>
 
     <div class="cfg" id="plano" aria-live="polite">
-      <div class="cfg-top"><b>Monte o plano da sua empresa</b><span id="stepLabel">Passo 1 de 4</span></div>
+      <div class="cfg-top"><b>Simule a proposta da sua empresa</b><span id="stepLabel">Passo 1 de 4</span></div>
       <div class="bar"><i id="barFill"></i></div>
       <form class="cfg-body" id="cfg" novalidate>
         <input class="hp" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -316,8 +328,8 @@ footer img{height:38px;display:block}
 <section id="planos">
   <div class="container">
     <div class="head center">
-      <h2>Escolha os planos que a sua empresa precisa.</h2>
-      <p class="lead">Contrate um ou junte mais de um. Da contratação do primeiro funcionário até a NR-01, a eProtege cuida de tudo para você.</p>
+      <h2>Escolha o plano ideal para a sua empresa.</h2>
+      <p class="lead">Do básico obrigatório até a gestão completa. Da contratação do primeiro funcionário até a NR-01, a eProtege cuida de tudo para você.</p>
     </div>
     <div class="pl" id="planCards"></div>
     <p class="pl-note">Para empresas de 2 a 20 funcionários. Pagamento: ativação + boleto faturado em até 12x. Exames fora de Curitiba: consultar valores.</p>
@@ -333,7 +345,7 @@ footer img{height:38px;display:block}
       <table class="cmp" id="cmp"></table>
     </div>
     <div class="cmp-cta">
-      <a href="#plano" class="btn" data-go="plano">Montar meu plano</a>
+      <a href="#plano" class="btn" data-go="plano">Simular minha proposta</a>
       <a href="#plano" class="btn out" data-go="consultor">Falar com um consultor</a>
     </div>
   </div>
@@ -359,7 +371,7 @@ footer img{height:38px;display:block}
       <div style="position:relative;z-index:1">
         <div class="eb">NR-01</div>
         <h2>A avaliação de riscos psicossociais agora também vale para a pequena empresa</h2>
-        <p>A NR-01 passou a exigir que a empresa identifique e acompanhe riscos como estresse, sobrecarga e assédio. Com o eProtege Mente a nossa equipe cuida disso para você.</p>
+        <p>A NR-01 passou a exigir que a empresa identifique e acompanhe riscos como estresse, sobrecarga e assédio. No eProtege Completo a nossa equipe cuida disso para você.</p>
         <a href="#plano" class="btn" data-go="plano">Ver se minha empresa precisa</a>
       </div>
       <ul>
@@ -413,26 +425,31 @@ const CONFIG = {
   gtm: '',
   // Número de parcelas exibido
   parcelas: 12,
-  // Planos (a empresa escolhe um ou mais). precos = valor da PARCELA por tipo de atividade e faixa de funcionários:
-  // a = 2 a 5, b = 6 a 10, c = 11 a 20. null = "Valor na proposta".
-  // ATENÇÃO: valores FICTÍCIOS de exemplo (referência de mercado), trocar pela tabela real antes de ir ao ar.
+  // WhatsApp do comercial com DDI e DDD, só números (ex.: '5541999999999').
+  // Preenchido: os botões "Falar com um consultor" abrem o WhatsApp. Vazio: abrem o formulário de contato.
+  whatsapp: '',
+  // Planos em níveis (a empresa escolhe um). precos = valor da PARCELA por tipo de atividade e faixa de funcionários:
+  // a = 2 a 5, b = 6 a 10, c = 11 a 20. null = "Valor na proposta". destaque = cartão em evidência.
+  // ATENÇÃO: valores FICTÍCIOS de exemplo (referência de mercado), trocar pela tabela real antes de rodar anúncio.
   planos: [
-    { id: 'saude', nome: 'eProtege Saúde', area: 'Medicina do Trabalho', icone: 'saude',
-      desc: 'Exames e saúde ocupacional da sua equipe.',
-      itens: ['PCMSO', 'Exames e ASO no mesmo dia', 'Mais de 750 clínicas no Brasil', 'Envio ao eSocial'],
-      precos: { baixo: { a: 89, b: 129, c: 189 }, alto: { a: 109, b: 159, c: 229 } } },
-    { id: 'seguranca', nome: 'eProtege Segurança', area: 'Segurança do Trabalho', icone: 'hard',
-      desc: 'Os riscos do ambiente de trabalho sob controle.',
-      itens: ['PGR', 'Visita técnica', 'LTCAT e laudos', 'Envio ao eSocial'],
-      precos: { baixo: { a: 79, b: 109, c: 159 }, alto: { a: 109, b: 149, c: 209 } } },
-    { id: 'mente', nome: 'eProtege Mente', area: 'Psicossocial · NR-01', icone: 'brain',
-      desc: 'Riscos psicossociais da NR-01 em dia.',
-      itens: ['Questionário com sigilo', 'Painel de risco da equipe', 'Plano de ação'],
-      precos: { baixo: { a: 49, b: 69, c: 99 }, alto: { a: 49, b: 69, c: 99 } } },
-    { id: 'app', ativo: false, nome: 'eProtege App', area: 'Aplicativo', icone: 'phone',
-      desc: 'A gestão das pessoas na palma da mão.',
-      itens: ['Ponto pelo celular', 'Atestados e EPI', 'Comunicados', 'Canal de denúncias'],
-      precos: { baixo: { a: 39, b: 59, c: 89 }, alto: { a: 39, b: 59, c: 89 } } }
+    { id: 'essencial', nome: 'eProtege Essencial', area: 'O básico obrigatório',
+      desc: 'Os programas e exames que toda empresa precisa.',
+      itens: ['PGR', 'PCMSO', 'Exames e ASO no mesmo dia', 'Envio ao eSocial'],
+      precos: { baixo: { a: 89, b: 129, c: 179 }, alto: { a: 109, b: 159, c: 219 } } },
+    { id: 'completo', nome: 'eProtege Completo', area: 'Tudo o que a lei exige', destaque: 'MAIS VANTAJOSO',
+      desc: 'A empresa toda em conformidade, inclusive com a NR-01.',
+      itens: ['Tudo do Essencial', 'Riscos psicossociais (NR-01)', 'LTCAT', 'PPP', 'Visita técnica'],
+      precos: { baixo: { a: 149, b: 199, c: 279 }, alto: { a: 179, b: 239, c: 329 } } },
+    { id: 'gestao', nome: 'eProtege Gestão', area: 'Conformidade e gestão',
+      desc: 'Tudo em dia e a gestão das pessoas na palma da mão.',
+      itens: ['Tudo do Completo', 'Aplicativo eProtege', 'Gestão de atestados', 'Documentos de SST guardados na nuvem'],
+      precos: { baixo: { a: 199, b: 259, c: 349 }, alto: { a: 229, b: 299, c: 399 } } }
+  ],
+  // Adicionais oferecidos no fim da escolha do plano (valor único, cobrado na ativação). de = preço riscado.
+  adicionais: [
+    { id: 'cipa', nome: 'Treinamento de CIPA (NR-05)', de: 180, por: 99 },
+    { id: 'lideranca', nome: 'Treinamento de liderança', de: 180, por: 99 },
+    { id: 'socorros', nome: 'Treinamento de primeiros socorros', de: 180, por: 99 }
   ]
 };
 /* ===================================== */
@@ -440,9 +457,8 @@ const CONFIG = {
 const FAIXAS=[{id:'a',t:'2 a 5 funcionários',s:'Microempresa',ic:'2+'},{id:'b',t:'6 a 10 funcionários',s:'Pequena equipe',ic:'6+'},{id:'c',t:'11 a 20 funcionários',s:'Equipe em crescimento',ic:'11+'},{id:'d',t:'Mais de 20',s:'Proposta sob medida com um consultor',ic:'20+'}];
 const RISCOS=[{id:'baixo',t:'Escritório, comércio ou serviços',s:'Atendimento, vendas, administrativo',ic:'svg:office'},{id:'alto',t:'Obra, indústria, oficina ou saúde',s:'Máquinas, altura, produtos químicos, pacientes',ic:'svg:hard'}];
 const NEEDS=[{id:'Contratando',t:'Estou em processo de contratação',s:'Preciso do exame admissional',ic:'svg:plus'},{id:'Regularizar',t:'Quero deixar a empresa em dia',s:'Programas, exames e eSocial',ic:'svg:check'},{id:'Notificação',t:'Recebi uma notificação',s:'Fiscalização, eSocial ou sindicato',ic:'svg:alert'},{id:'NR-01',t:'Riscos psicossociais da NR-01',s:'Ouvi falar e não sei por onde começar',ic:'svg:brain'},{id:'Trocar',t:'Quero trocar de empresa de SST',s:'Já tenho, mas não estou satisfeito',ic:'svg:swap'}];
-// planos com ativo: false ficam guardados, mas não aparecem na página
-CONFIG.planos=CONFIG.planos.filter(p=>p.ativo!==false);
 const PL=Object.fromEntries(CONFIG.planos.map(p=>[p.id,p]));
+const AD=Object.fromEntries(CONFIG.adicionais.map(a=>[a.id,a]));
 const ICONS={
   office:'<path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>',
   hard:'<path d="M2 18h20M4 18v-3a8 8 0 0 1 16 0v3M10 8V5h4v3"/>',
@@ -455,15 +471,16 @@ const ICONS={
   swap:'<path d="M17 3l4 4-4 4M21 7H9M7 21l-4-4 4-4M3 17h12"/>',
   ok:'<path d="M20 6 9 17l-5-5"/>',
   back:'<path d="m15 18-6-6 6-6"/>',
-  x:'<path d="M18 6 6 18M6 6l12 12"/>'
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  zap:'<path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 7.8 19.4z"/><path d="M9 10c0 3 2 5 5 5l1.2-1.2-2-1-1 .8c-.9-.4-1.6-1.1-2-2l.8-1-1-2z"/>'
 };
 const svg=(n,s=20,w=2.2)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const brl=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 
-// sel = planos marcados; escolheu = a pessoa já mexeu na seleção (a recomendação não sobrescreve)
-const S={step:0,cnpj:'',emp:null,empManual:'',semCnpj:false,faixa:null,risco:null,need:null,sel:[],escolheu:false,modo:null,direto:false,dados:{nome:'',tel:'',email:''},enviando:false};
+// sel = plano escolhido (um só); extras = adicionais; escolheu = a pessoa já mexeu (a recomendação não sobrescreve)
+const S={step:0,cnpj:'',emp:null,empManual:'',semCnpj:false,faixa:null,risco:null,need:null,sel:[],extras:[],escolheu:false,modo:null,direto:false,dados:{nome:'',tel:'',email:''},enviando:false};
 
 /* Campanha, criativo e cliques dos anúncios vêm do link (UTM, gclid, fbclid) */
 const UTM=(()=>{
@@ -484,17 +501,11 @@ function parcelaDe(id){
   const v=PL[id]?.precos?.[S.risco]?.[S.faixa];
   return typeof v==='number'?v:null;
 }
-// soma das parcelas dos planos marcados; null se algum ainda não tem valor tabelado
-function parcela(){
-  if(!S.sel.length)return null;
-  const v=S.sel.map(parcelaDe);
-  return v.some(n=>n==null)?null:v.reduce((a,b)=>a+b,0);
-}
-function recomendado(){
-  if(S.need==='Contratando')return S.risco==='alto'?['saude','seguranca']:['saude'];
-  if(S.need==='NR-01')return['saude','mente'];
-  return['saude','seguranca','mente'];
-}
+function parcela(){return S.sel.length?parcelaDe(S.sel[0]):null}
+// em contratação e atividade de menor risco: Essencial; nos demais casos: Completo
+const recomendado=()=>[S.need==='Contratando'&&S.risco!=='alto'?'essencial':'completo'];
+const extrasTxt=()=>S.extras.map(id=>AD[id].nome).join(', ');
+const extrasValor=()=>S.extras.reduce((t,id)=>t+AD[id].por,0);
 const precoTxt=()=>{const v=parcela();return v==null?'Valor na proposta':`${CONFIG.parcelas}x de R$ ${brl(v)}`};
 const nomesSel=()=>S.sel.map(id=>PL[id].nome).join(' + ');
 // menor parcela da tabela, para o "a partir de" dos cartões
@@ -538,6 +549,16 @@ async function buscarCNPJ(){
 }
 const empresaNome=()=>S.emp?.fantasia||S.emp?.razao||S.empManual.trim();
 
+/* ---------- WhatsApp ---------- */
+function linkZap(){
+  const plano=S.sel.length&&S.faixa?` Montei o ${PL[S.sel[0]].nome} para ${FAIXAS.find(f=>f.id===S.faixa).t.toLowerCase()}.`:'';
+  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Olá! Vim pelo site e quero falar com um consultor da eProtege.'+plano)}`;
+}
+// com WhatsApp configurado o botão abre a conversa; sem, abre o formulário de contato
+const botaoConsultor=cls=>CONFIG.whatsapp
+  ?`<a class="${cls}" data-zap href="${linkZap()}" target="_blank" rel="noopener">${svg('zap',18,2)}Falar com um consultor no WhatsApp</a>`
+  :`<button type="button" class="${cls}" data-act="modo" data-v="consultor">Prefiro falar com um consultor</button>`;
+
 /* ---------- Telas ---------- */
 const opt=(o,sel,key)=>`<button type="button" class="opt ${sel===o.id?'on':''}" data-k="${key}" data-v="${o.id}"><span class="ic">${o.ic.startsWith('svg:')?svg(o.ic.slice(4)):`<b style="font-size:13px">${o.ic}</b>`}</span><span><b>${o.t}</b><small>${o.s}</small></span></button>`;
 const back=()=>`<button type="button" class="back" data-act="back">${svg('back',16)}Voltar</button>`;
@@ -555,16 +576,20 @@ function render(){
     if(!S.escolheu)S.sel=recomendado();
     const rec=recomendado(),sob=S.faixa==='d';
     const linha=p=>{const on=S.sel.includes(p.id),v=parcelaDe(p.id);return `<button type="button" class="pk ${on?'on':''}" data-pl="${p.id}" aria-pressed="${on}">
-      <span class="ck">${on?svg('ok',14,3.4):''}</span>
+      <span class="ck">${on?svg('ok',13,3.6):''}</span>
       <span class="pk-t"><b>${esc(p.nome)}${rec.includes(p.id)?' <span class="tag">RECOMENDADO</span>':''}</b><small>${esc(p.area)}</small></span>
       <span class="pk-v">${v==null?'Na proposta':`${CONFIG.parcelas}x R$ ${brl(v)}`}</span></button>`};
-    h=`${back()}<div class="stp">Seus planos</div><div class="q">Marque o que a sua empresa precisa</div>
+    const extra=a=>{const on=S.extras.includes(a.id);return `<button type="button" class="ex ${on?'on':''}" data-ex="${a.id}" aria-pressed="${on}">
+      <span class="ck sq">${on?svg('ok',12,3.6):''}</span><span class="ex-t">${esc(a.nome)}</span>
+      <span class="ex-v"><s>R$ ${brl(a.de)}</s> R$ ${brl(a.por)}</span></button>`};
+    h=`${back()}<div class="stp">Seu plano</div><div class="q">Escolha o plano da sua empresa</div>
       <p class="terms" style="margin:-8px 0 12px">${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${S.risco==='alto'?'atividade de maior risco':'atividade de menor risco'}. Já deixamos marcado o que recomendamos.</p>
       <div class="pks">${CONFIG.planos.map(linha).join('')}</div>
-      <div class="soma"><span>${S.sel.length?`${S.sel.length} plano${S.sel.length>1?'s':''}`:'Nenhum plano marcado'}</span><b>${S.sel.length?esc(precoTxt()):''}</b></div>
+      <div class="exs"><span class="ex-h">Quer incluir? Preço especial na contratação</span>${CONFIG.adicionais.map(extra).join('')}</div>
+      <div class="soma"><span>${S.sel.length?esc(PL[S.sel[0]].nome):'Nenhum plano escolhido'}${S.extras.length?`<small>+ ${S.extras.length} ${S.extras.length>1?'adicionais':'adicional'}: R$ ${brl(extrasValor())} na ativação</small>`:''}</span><b>${S.sel.length?esc(precoTxt()):''}</b></div>
       ${sob?`<p class="terms">Para mais de 20 funcionários um consultor monta uma proposta sob medida.</p>`:''}
       <button type="button" class="btn" data-act="modo" data-v="contratar">Receber minha proposta</button><p class="hint" id="hint"></p>
-      <button type="button" class="btn out" data-act="modo" data-v="consultor">Prefiro falar com um consultor</button>
+      ${botaoConsultor('btn out')}
       <p class="terms" style="text-align:center">Pagamento: ativação + boleto em até ${CONFIG.parcelas}x</p>`;
   }
   if(S.step===4){
@@ -579,7 +604,7 @@ function render(){
       else if(e?.razao)emp+=`<div class="found"><span class="tag">ENCONTRAMOS</span><b>${esc(e.fantasia||e.razao)}</b><span>${esc([e.cidade,e.uf].filter(Boolean).join(', '))}${e.cnaeDesc?' · '+esc(e.cnaeDesc):''}</span></div>`;
       emp+=`<button type="button" class="link" data-act="semcnpj" style="margin:-4px 0 14px">Não tenho o CNPJ em mãos</button>`;
     }
-    const recap=S.sel.length&&S.faixa?`<div class="recap"><b>${esc(nomesSel())}</b> · ${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${esc(precoTxt())}</div>`:'';
+    const recap=S.sel.length&&S.faixa?`<div class="recap"><b>${esc(nomesSel())}</b> · ${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${esc(precoTxt())}${S.extras.length?`<br>+ ${esc(extrasTxt())}`:''}</div>`:'';
     h=`${S.direto?'':back()}<div class="stp">${contratar?'Proposta':'Falar com consultor'}</div><div class="q">${contratar?'Para quem enviamos a proposta?':'Como o consultor fala com você?'}</div>
       ${recap}
       ${field('nome','Seu nome','text',d.nome,'Informe seu nome','autocomplete="name"')}
@@ -622,7 +647,10 @@ function avancar(){
 function focarFim(id){const i=$(id);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
 view.addEventListener('click',e=>{
   const pl=e.target.closest('[data-pl]');
-  if(pl){const id=pl.dataset.pl;S.escolheu=true;S.sel=S.sel.includes(id)?S.sel.filter(x=>x!==id):CONFIG.planos.map(p=>p.id).filter(x=>x===id||S.sel.includes(x));render();return}
+  if(pl){S.escolheu=true;S.sel=[pl.dataset.pl];render();return}
+  const ex=e.target.closest('[data-ex]');
+  if(ex){const id=ex.dataset.ex;S.extras=S.extras.includes(id)?S.extras.filter(x=>x!==id):CONFIG.adicionais.map(a=>a.id).filter(x=>x===id||S.extras.includes(x));track('autovenda_adicional',{adicional:id});render();return}
+  if(e.target.closest('[data-zap]')){track('autovenda_whatsapp',{onde:'configurador'});return}
   const b=e.target.closest('[data-k],[data-act]');if(!b||b.disabled)return;
   if(b.dataset.k){
     S[b.dataset.k]=b.dataset.v;render();
@@ -636,7 +664,7 @@ view.addEventListener('click',e=>{
   if(a==='next'){avancar();return}
   if(a==='back')S.step--;
   if(a==='modo'){
-    if(b.dataset.v==='contratar'&&!S.sel.length){$('hint').textContent='Marque pelo menos um plano.';return}
+    if(b.dataset.v==='contratar'&&!S.sel.length){$('hint').textContent='Escolha um plano.';return}
     S.modo=b.dataset.v;S.step=4;track('autovenda_checkout',{modo:S.modo,planos:S.sel.join('+')})}
   if(a==='montar'){S.direto=false;S.modo=null;S.step=0}
   render();
@@ -685,17 +713,17 @@ function enviar(){
   const tipo=S.modo==='contratar'?'Quer proposta':'Falar com consultor';
   const atividade=S.risco==='alto'?'Maior risco (obra, indústria, oficina, saúde)':S.risco==='baixo'?'Menor risco (escritório, comércio, serviços)':'';
   const momento=NEEDS.find(n=>n.id===S.need)?.t||'';
-  const interesse=['Autovenda',tipo,planos,faixa,atividade,momento&&'Momento: '+momento,planos&&precoTxt()].filter(Boolean).join(' | ');
+  const interesse=['Autovenda',tipo,planos,faixa,atividade,momento&&'Momento: '+momento,planos&&precoTxt(),S.extras.length&&'Adicionais: '+extrasTxt()].filter(Boolean).join(' | ');
   const campos={
     'Tipo':tipo,'Nome':S.dados.nome.trim(),'Telefone':S.dados.tel,'E-mail':S.dados.email.trim(),
     'Empresa':empresaNome(),'Razão social':e.razao||'','CNPJ':S.semCnpj?'':S.cnpj,'Cidade':[e.cidade,e.uf].filter(Boolean).join('/'),
     'CNAE':e.cnae?`${e.cnae} ${e.cnaeDesc}`:'','Situação CNPJ':e.situacao||'',
-    'Funcionários':faixa,'Atividade':atividade,'Momento':momento,'Plano':planos,'Parcela exibida':planos?precoTxt():'',
+    'Funcionários':faixa,'Atividade':atividade,'Momento':momento,'Plano':planos,'Parcela exibida':planos?precoTxt():'','Adicionais':S.extras.map(id=>`${AD[id].nome} (R$ ${brl(AD[id].por)})`).join(', '),
     'Campanha':UTM.utm_campaign||'','Criativo':UTM.utm_content||UTM.utm_term||'','Origem':UTM.utm_source||'','Mídia':UTM.utm_medium||'',
     'gclid':UTM.gclid||'','fbclid':UTM.fbclid||'','Página':location.href
   };
   // proposta automática só quando o cliente montou o plano e pediu a proposta (uma linha por plano no slide)
-  const proposta=planos&&S.modo==='contratar'?{plano:planos,itens:S.sel.map(id=>`${PL[id].nome}: ${PL[id].itens.slice(0,3).join(', ').replace(/ \([^)]*\)/g,'')}`),
+  const proposta=planos&&S.modo==='contratar'?{plano:planos,itens:PL[S.sel[0]].itens.concat(S.extras.map(id=>`Adicional: ${AD[id].nome} (R$ ${brl(AD[id].por)} na ativação)`)),
     parcela:parcela(),parcelas:CONFIG.parcelas,funcionarios:faixa,empresa:campos['Empresa'],cnpj:campos['CNPJ'],sobMedida:S.faixa==='d',
     planos:S.sel,vidas:{a:5,b:10,c:20}[S.faixa]||null,setor:e.cnaeDesc||atividade,momento}:null;
   const payload={campos,proposta,website:$('website').value,crm:{nome:campos['Nome'],email:campos['E-mail'],telefone:campos['Telefone'],empresa:campos['Empresa'],interesse,pagina:location.href,origem:UTM.utm_source||'',midia:UTM.utm_medium||'',campanha:UTM.utm_campaign||'',criativo:campos['Criativo']}};
@@ -704,20 +732,20 @@ function enviar(){
 }
 
 /* ---------- Cartões de planos ---------- */
-$('planCards').innerHTML=CONFIG.planos.map(p=>{const v=aPartir(p.id);return `<div class="pc">
+$('planCards').innerHTML=CONFIG.planos.map(p=>{const v=aPartir(p.id);return `<div class="pc">${p.destaque?`<span class="tag">${esc(p.destaque)}</span>`:''}
   <h3>${esc(p.nome)}</h3>
   <div class="val">${v==null?'<b class="ask">Valor na proposta</b>':`<small>a partir de</small><b>R$ ${brl(v)}<span>/mês</span></b>`}</div>
   <p class="for">${esc(p.desc)}</p>
-  <ul>${p.itens.map(i=>`<li><span class="chk">${svg('ok',11,3.6)}</span>${esc(i)}</li>`).join('')}</ul>
+  <ul>${p.itens.map(i=>`<li${/^Tudo do/.test(i)?' class="plus"':''}><span class="chk">${svg('ok',11,3.6)}</span>${esc(i)}</li>`).join('')}</ul>
   <a href="#plano" class="btn" data-go="plano:${p.id}">Contratar</a></div>`}).join('');
 
 /* ---------- Botões da página que abrem o configurador ---------- */
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',ev=>{
   ev.preventDefault();
   const go=a.dataset.go;
-  if(go==='consultor'){S.modo='consultor';S.direto=true;S.step=4}
+  if(go==='consultor'){if(CONFIG.whatsapp){track('autovenda_whatsapp',{onde:'pagina'});window.open(linkZap(),'_blank','noopener');return}S.modo='consultor';S.direto=true;S.step=4}
   else{
-    if(go.startsWith('plano:')){const id=go.slice(6);S.escolheu=true;if(!S.sel.includes(id))S.sel=CONFIG.planos.map(p=>p.id).filter(x=>x===id||S.sel.includes(x))}
+    if(go.startsWith('plano:')){S.escolheu=true;S.sel=[go.slice(6)]}
     if(S.direto||S.step>=4){S.direto=false;S.modo=null;S.step=S.faixa&&S.risco&&S.need?3:0}
   }
   render();
