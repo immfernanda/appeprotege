@@ -63,10 +63,10 @@ button{font:inherit}
 /* Números na divisa da dobra */
 .proof-strip{position:relative;z-index:3;margin-top:-56px}
 .proof{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:20px;box-shadow:0 18px 44px rgba(0,27,74,.16);overflow:hidden}
-.proof div{padding:20px 24px;display:grid;gap:2px;align-content:center;min-height:108px}
+.proof div{padding:22px 26px;display:grid;gap:4px;align-content:start;justify-items:center;text-align:center}
 .proof div+div{border-left:1px solid var(--line)}
 .proof b{font-size:23px;font-weight:800;line-height:1.1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content}
-.proof small{color:var(--muted);font-size:13.5px}
+.proof small{color:var(--muted);font-size:13.5px;line-height:1.35;max-width:22ch}
 
 /* Configurador */
 .cfg{background:#fff;color:var(--fg);border-radius:22px;box-shadow:0 30px 70px rgba(0,10,40,.45);overflow:hidden;scroll-margin-top:16px}
@@ -185,7 +185,9 @@ button{font:inherit}
 .ex-v s{color:var(--muted);font-weight:500;margin-right:4px}
 .soma small{display:block;font-size:12px;margin-top:2px}
 a.btn svg{flex:none}
-.pc .tag{position:absolute;top:0;right:22px;border-radius:0 0 10px 10px;padding:4px 12px}
+.pc .tag{position:absolute;top:0;left:0;right:0;width:auto;border-radius:0;padding:9px 12px;display:flex;justify-content:center;align-items:center;gap:7px;font-size:12px;letter-spacing:.12em;background:linear-gradient(90deg,#F4BB0E,#FFD45C);color:var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.pc .tag svg{flex:none}
+.pc.star{padding-top:62px;margin-top:-22px;box-shadow:0 26px 60px rgba(40,100,176,.35);outline:3px solid rgba(244,187,14,.9);outline-offset:-3px}
 .pc li.plus{font-weight:700}
 .pk-t{flex:1;min-width:0}
 .pk-t b{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px;color:var(--navy)}
@@ -207,8 +209,15 @@ a.btn svg{flex:none}
 .pc .val b.ask{font-size:23px}
 .pc .val b span{font-size:15px;font-weight:600;color:var(--sub);margin-left:4px}
 .pc .for{color:var(--sub);font-size:14.5px;margin:6px 0 0;padding-bottom:18px;border-bottom:1px solid var(--div);min-height:3.6em}
-.pc ul{list-style:none;padding:0;margin:18px 0 26px;display:grid;gap:11px;font-size:14.5px;flex:1;align-content:start}
-.pc li{display:flex;gap:10px;align-items:center}
+.pc ul{list-style:none;padding:0;margin:18px 0 26px;display:grid;gap:12px;font-size:14.5px;flex:1;align-content:start}
+.pc li{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pc .it{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:center;width:100%;cursor:pointer;color:inherit;font:inherit}
+.pc .it:focus-visible{outline:2px solid var(--yellow);outline-offset:3px;border-radius:6px}
+.pc .it-n{flex:1}
+.pc .mais{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--div);display:grid;place-items:center;font-size:14px;line-height:1;color:var(--sub);flex:none;transition:transform .2s}
+.pc .it:hover .mais{border-color:var(--sub)}
+.pc .it[aria-expanded="true"] .mais{transform:rotate(45deg)}
+.pc .it-x{margin:6px 0 2px 28px;font-size:13px;line-height:1.45;color:var(--sub);flex-basis:100%}
 .pc li .chk{width:18px;height:18px;border-radius:50%;background:var(--chk);color:var(--chk-fg);display:grid;place-items:center;flex:none}
 .pc .btn{width:100%;background:var(--blue);color:#fff}
 .pc:nth-child(2) .btn{background:#fff;color:var(--blue)}
@@ -317,10 +326,10 @@ footer img{height:38px;display:block}
 
 <div class="container proof-strip">
   <div class="proof">
-    <div><b>Mais de 25 anos</b><small>em Saúde e Segurança do Trabalho</small></div>
-    <div><b>Mais de 750 clínicas</b><small>rede de atendimento em todo o Brasil</small></div>
+    <div><b>+25 anos</b><small>em Saúde e Segurança do Trabalho</small></div>
+    <div><b>+750 clínicas</b><small>de atendimento em todo o Brasil</small></div>
     <div><b>+5 mil clientes</b><small>atendidos em Curitiba e no CEASA</small></div>
-    <div><b>No mesmo dia</b><small>exames e ASO liberados</small></div>
+    <div><b>+agilidade</b><small>exames e ASO liberados no mesmo dia</small></div>
   </div>
 </div>
 
@@ -445,6 +454,22 @@ const CONFIG = {
       itens: ['Tudo do Completo', 'Aplicativo eProtege', 'Gestão de atestados', 'Documentos de SST guardados na nuvem'],
       precos: { baixo: { a: 199, b: 259, c: 349 }, alto: { a: 229, b: 299, c: 399 } } }
   ],
+  // Explicação curta de cada item, que abre ao clicar no item do cartão do plano
+  explica: {
+    'PGR': 'Programa de Gerenciamento de Riscos. Identifica, avalia e controla os riscos do ambiente de trabalho.',
+    'PCMSO': 'Programa de Controle Médico de Saúde Ocupacional. Define quais exames cada função precisa e quando fazer.',
+    'Exames e ASO no mesmo dia': 'Admissional, periódico, demissional, retorno ao trabalho e mudança de função, com o atestado (ASO) liberado no mesmo dia.',
+    'Envio ao eSocial': 'Nossa equipe envia ao eSocial os eventos de saúde e segurança (S-2220 e S-2240) dentro do prazo.',
+    'Tudo do Essencial': 'PGR, PCMSO, exames e ASO no mesmo dia e envio ao eSocial.',
+    'Riscos psicossociais (NR-01)': 'Questionário confidencial pelo celular, painel com o nível de risco da equipe e plano de ação, como a NR-01 exige.',
+    'LTCAT': 'Laudo Técnico das Condições Ambientais do Trabalho. Mostra se há exposição a agentes nocivos, base para a aposentadoria especial.',
+    'PPP': 'Perfil Profissiográfico Previdenciário. O histórico de cada trabalhador exigido pelo INSS, em formato digital.',
+    'Visita técnica': 'Um técnico de segurança vai até a sua empresa para levantar os riscos e orientar a equipe.',
+    'Tudo do Completo': 'Tudo do Essencial mais riscos psicossociais (NR-01), LTCAT, PPP e visita técnica.',
+    'Aplicativo eProtege': 'Ponto, comunicados, EPI e canal de denúncias no celular de cada colaborador.',
+    'Gestão de atestados': 'O colaborador envia o atestado pelo aplicativo e o RH acompanha tudo, sem papel perdido.',
+    'Documentos de SST guardados na nuvem': 'PGR, PCMSO, ASOs e laudos guardados em um só lugar, sempre à mão para uma fiscalização.'
+  },
   // Adicionais oferecidos no fim da escolha do plano (valor único, cobrado na ativação). de = preço riscado.
   adicionais: [
     { id: 'cipa', nome: 'Treinamento de CIPA (NR-05)', de: 180, por: 99 },
@@ -472,6 +497,7 @@ const ICONS={
   ok:'<path d="M20 6 9 17l-5-5"/>',
   back:'<path d="m15 18-6-6 6-6"/>',
   x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" fill="currentColor"/>',
   zap:'<path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 7.8 19.4z"/><path d="M9 10c0 3 2 5 5 5l1.2-1.2-2-1-1 .8c-.9-.4-1.6-1.1-2-2l.8-1-1-2z"/>'
 };
 const svg=(n,s=20,w=2.2)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
@@ -732,12 +758,20 @@ function enviar(){
 }
 
 /* ---------- Cartões de planos ---------- */
-$('planCards').innerHTML=CONFIG.planos.map(p=>{const v=aPartir(p.id);return `<div class="pc">${p.destaque?`<span class="tag">${esc(p.destaque)}</span>`:''}
+$('planCards').innerHTML=CONFIG.planos.map(p=>{const v=aPartir(p.id);return `<div class="pc${p.destaque?' star':''}">${p.destaque?`<span class="tag">${svg('star',14,2.4)}${esc(p.destaque)}</span>`:''}
   <h3>${esc(p.nome)}</h3>
   <div class="val">${v==null?'<b class="ask">Valor na proposta</b>':`<small>a partir de</small><b>R$ ${brl(v)}<span>/mês</span></b>`}</div>
   <p class="for">${esc(p.desc)}</p>
-  <ul>${p.itens.map(i=>`<li${/^Tudo do/.test(i)?' class="plus"':''}><span class="chk">${svg('ok',11,3.6)}</span>${esc(i)}</li>`).join('')}</ul>
+  <ul>${p.itens.map(i=>`<li${/^Tudo do/.test(i)?' class="plus"':''}>${CONFIG.explica[i]?`<button type="button" class="it" aria-expanded="false"><span class="chk">${svg('ok',11,3.6)}</span><span class="it-n">${esc(i)}</span><span class="mais" aria-hidden="true">+</span></button><p class="it-x" hidden>${esc(CONFIG.explica[i])}</p>`:`<span class="chk">${svg('ok',11,3.6)}</span>${esc(i)}`}</li>`).join('')}</ul>
   <a href="#plano" class="btn" data-go="plano:${p.id}">Contratar</a></div>`}).join('');
+
+// clicar no item do plano abre (ou fecha) a explicação
+$('planCards').addEventListener('click',e=>{
+  const b=e.target.closest('.it');if(!b)return;
+  const aberto=b.getAttribute('aria-expanded')==='true';
+  b.setAttribute('aria-expanded',String(!aberto));b.nextElementSibling.hidden=aberto;
+  if(!aberto)track('autovenda_item',{item:b.querySelector('.it-n').textContent});
+});
 
 /* ---------- Botões da página que abrem o configurador ---------- */
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',ev=>{
