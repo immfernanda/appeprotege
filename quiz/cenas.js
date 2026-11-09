@@ -305,7 +305,10 @@ function placeBubbles(a, cxPx, topPx){
   if (a.bubble){
     const box = overlay.clientWidth || 1, bw = a.bubble.offsetWidth, margin = 6;
     let px = cx/100*box; px = Math.min(box - bw/2 - margin, Math.max(bw/2 + margin, px));
-    a.bubble.style.left = (px/box*100)+'%'; a.bubble.style.top = ((topPx-4)/H*100)+'%';
+    // e também não sai por cima: se a cabeça está muito no alto, o balão desce
+    const boxH = overlay.clientHeight || 1, bh = a.bubble.offsetHeight + 22;
+    const py = Math.max(bh, (topPx-4)/H*boxH);
+    a.bubble.style.left = (px/box*100)+'%'; a.bubble.style.top = (py/boxH*100)+'%';
   }
   if (a.emote){ a.emote.style.left = cx+'%'; a.emote.style.top = ((topPx-3)/H*100)+'%'; }
 }
