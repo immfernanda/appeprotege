@@ -15,7 +15,7 @@ const CHARS = {
             outfit:'tee', top:'#e2574c', topD:'#b63f37', pants:'#4a72ad', pantsD:'#365a8e', shoes:'#2a2220', voice:400, tallTorso:2, tallLegs:3},
   fernanda:{name:'Fernanda',skin:'#fde0bc', skinD:'#e9c39b', hair:'#141418', hairHi:'#34343e', style:'straight',
             outfit:'jacket', top:'#2b2b33', topD:'#1b1b21', shirt:'#f4f1ea', shirtD:'#ddd7cb', pants:'#40619a', shoes:'#f2f2f2', voice:470},
-  flavia:  {name:'Flávia',  skin:'#f8d9c0', skinD:'#e8bfa0', hair:'#e2b84c', hairHi:'#f7e08e', style:'straight', eyeCol:'#3d8fe0',
+  flavia:  {name:'Flávia',  skin:'#f8d9c0', skinD:'#e8bfa0', hair:'#e2b84c', hairHi:'#f7e08e', style:'shoulder', eyeCol:'#3d8fe0',
             outfit:'tee', top:'#64C6CC', topD:'#3fa7ae', pants:'#2b2b33', pantsD:'#1b1b21', shoes:'#1b1b21', voice:430},
   wagner:  {name:'Wagner',  skin:'#f1c89e', skinD:'#d9a97c', hair:'#101016', hairHi:'#30333f', style:'sleek', eyes:'narrow',
             outfit:'suit', top:'#2b5bb8', topD:'#1f4388', shirt:'#f2f4f8', tie:'#14203f', pants:'#1f3a74', shoes:'#121212', voice:190},
@@ -34,6 +34,7 @@ function sprite(c, st){
   // cabelo de trás
   if (c.style==='ponytail'){ P(13,0,4,3,c.hair); P(16,0,3,3,c.hair); P(18,2,2,4,c.hair); P(18,6,2,6,c.hair); P(19,12,1,3,c.hair); P(17,1,1,1,c.hairHi); P(19,4,1,6,c.hairHi); }
   if (c.style==='curly'){ P(2,6,16,16,c.hair); for(let y=6;y<22;y+=2){P(1,y,1,1,c.hair);P(18,y+1,1,1,c.hair);} P(3,22,3,1,c.hair);P(14,22,3,1,c.hair); }
+  if (c.style==='shoulder'){ P(2,5,16,14,c.hair); P(1,16,2,3,c.hair); P(17,16,2,3,c.hair); }
   if (c.style==='straight'){ P(2,5,16,19,c.hair); P(3,24,2,1,c.hair); P(15,24,2,1,c.hair); }
 
   // pernas (frame 1 e 2 = andando)
@@ -87,6 +88,9 @@ function sprite(c, st){
     P(5,3,4,1,hi); P(4,5,3,1,hi); P(10,2,3,1,hi); P(12,4,2,1,hi); }
   if (c.style==='curly'){ P(4,2,12,2,h); P(3,4,14,4,h); P(2,6,3,12,h); P(15,6,3,12,h); P(4,8,3,1,h); P(13,8,3,1,h);
     P(9,3,2,1,hi); P(5,4,2,1,hi); P(13,4,2,1,hi); P(3,10,1,2,hi); P(16,12,1,2,hi); P(3,15,1,1,hi); }
+  if (c.style==='shoulder'){ P(4,2,12,2,h); P(3,4,14,4,h); P(3,8,2,10,h); P(15,7,2,11,h);
+    P(5,8,5,1,h); P(5,9,2,1,h); P(14,8,1,1,h); P(2,17,2,2,h); P(16,17,2,2,h);
+    P(6,3,3,1,hi); P(12,4,2,1,hi); P(3,11,1,4,hi); P(16,10,1,4,hi); }
   if (c.style==='straight'){ P(4,2,12,2,h); P(3,4,14,4,h); P(3,8,2,11,h); P(15,7,2,12,h);
     P(5,8,5,1,h); P(5,9,2,1,h); P(14,8,1,1,h);            /* franja de lado, acima dos olhos */
     P(10,3,1,2,'#2a2a32'); P(6,3,3,1,hi); P(12,4,2,1,hi); P(3,12,1,4,hi); P(16,11,1,4,hi); }
@@ -411,8 +415,37 @@ async function emote(id, txt, ms=1000){
 const vid = document.getElementById('vid'); let musicWas = true;
 /* Filme pelo YouTube (usado onde o arquivo de vídeo não existe, como no celular).
    Coloque aqui o código do vídeo: o que vem depois de "v=" no link. */
-const YT_ID = '2Tpb1XyqGOQ', YT_START = 75;
+const YT_ID = '', YT_START = 75;   // desligado: o YouTube mostrava propaganda
 let ytFrame = null;
+/* Filminho em pixel art que passa na TV de tubo (celular e onde não houver o vídeo) */
+function drawMiniFilm(now, x, y, w, h){
+  ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  const t = now/1000, part = Math.floor(t/4) % 3, k = (t % 4)/4;
+  if (part === 0){                                   // perseguição de carro à noite
+    R(ctx,x,y,w,h,'#0d1b3d'); for (let i=0;i<7;i++) R(ctx, x+((i*11+Math.floor(t*3))%w), y+2+(i*5)%10, 1,1,'#ffffff');
+    R(ctx,x+w-8,y+3,4,4,'#f7e08e');
+    for (let i=0;i<6;i++){ const bx = x + ((i*9 - t*18) % (w+9) + w+9) % (w+9) - 9, bh = 8 + (i*7)%9;
+      R(ctx,bx,y+h-6-bh,7,bh,'#1d2b52'); R(ctx,bx+2,y+h-4-bh,1,1,'#F4BB0E'); R(ctx,bx+4,y+h-1-bh,1,1,'#F4BB0E'); }
+    R(ctx,x,y+h-6,w,6,'#2a2a33'); for (let i=0;i<4;i++) R(ctx, x+((i*10 - t*30)%w+w)%w, y+h-3, 4,1,'#d8d8d0');
+    const cx = x + 4 + Math.sin(t*3)*2; R(ctx,cx,y+h-10,11,4,'#e8706f'); R(ctx,cx+3,y+h-12,5,2,'#c0262d'); R(ctx,cx+1,y+h-6,2,2,'#111'); R(ctx,cx+8,y+h-6,2,2,'#111');
+    R(ctx,cx+11,y+h-9,5,2,'rgba(255,240,170,.8)');
+  } else if (part === 1){                            // romance no pôr do sol
+    R(ctx,x,y,w,h/2,'#f29a8a'); R(ctx,x,y+h/2,w,h/2,'#e2574c'); R(ctx,x+w/2-4,y+h/2-4,8,4,'#F4BB0E'); R(ctx,x,y+h-5,w,5,'#5a2238');
+    const d = Math.min(1, k*1.6), ax = x+3+d*9, bx2 = x+w-7-d*9;
+    R(ctx,ax,y+h-12,3,7,'#1b1430'); R(ctx,ax,y+h-14,3,2,'#1b1430'); R(ctx,bx2,y+h-12,3,7,'#1b1430'); R(ctx,bx2,y+h-15,3,3,'#1b1430');
+    if (k > .6){ const hy = y+6 - (k-.6)*10; R(ctx,x+w/2-3,hy,2,2,'#ff4d6d'); R(ctx,x+w/2+1,hy,2,2,'#ff4d6d'); R(ctx,x+w/2-2,hy+2,4,2,'#ff4d6d'); R(ctx,x+w/2-1,hy+4,2,1,'#ff4d6d'); }
+  } else {                                           // monstro gigante na cidade
+    R(ctx,x,y,w,h,'#7fc4e8'); R(ctx,x,y+h-5,w,5,'#3f9a55');
+    for (let i=0;i<4;i++) R(ctx,x+2+i*8,y+h-11,6,6,'#9aa7b0');
+    const my = y+4 + Math.round(Math.sin(t*4)); R(ctx,x+w-15,my,10,13,'#2e7d4f'); R(ctx,x+w-18,my+2,4,4,'#2e7d4f'); R(ctx,x+w-17,my+3,1,1,'#fff');
+    R(ctx,x+w-13,my+13,2,4,'#2e7d4f'); R(ctx,x+w-8,my+13,2,4,'#2e7d4f');
+    if (Math.floor(t*6)%2) R(ctx,x+w-22,my+3,4,1,'#F4BB0E');
+    const rx = x + 2 + (k*w*0.5); R(ctx,rx,y+h-9,2,4,'#e8706f'); R(ctx,rx,y+h-11,2,2,'#f6c9a0');
+  }
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; for (let yy=y; yy<y+h; yy+=2) ctx.fillRect(x, yy, w, 1);     // linhas de TV antiga
+  if (Math.floor(t*10)%17===0){ ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(x,y,w,h); }
+  ctx.restore();
+}
 function showYouTube(){
   if (!YT_ID || ytFrame) return;
   const wrap = document.getElementById('stageWrap'); if (!wrap) return;
@@ -564,11 +597,12 @@ const SCENES = [
         ctx.imageSmoothingEnabled = true;
         ctx.drawImage(filmSheet, (i%8)*360, Math.floor(i/8)*203, 360, 203, 0, 0, W, H);
         if (fx.video && !vid.paused) ctx.drawImage(vid, 80, 0, 480, 360, CRT.x, CRT.y, CRT.w, CRT.h);
+        else if (fx.mini) drawMiniFilm(now, CRT.x, CRT.y, CRT.w, CRT.h);
         ctx.imageSmoothingEnabled = false;
       }
     },
     async play(){
-      startVideo(false); fx.video = true;
+      startVideo(false); fx.video = true; if (!vid.getAttribute('src')) fx.mini = true;   // celular: filminho desenhado
       await wait(2200);
       await emote('amauri','♥',900);
       await say('amauri','Só mais um pouquinho… o filme tá na melhor parte!',{hold:600});
@@ -580,7 +614,7 @@ const SCENES = [
     right:1,
     async react(){
       await say('amauri','Opa! Desligando agora, Brenda!',{hold:300});
-      stopVideo(); fx.video = false; SFX.click();
+      stopVideo(); fx.video = false; fx.mini = false; SFX.click();
       await wait(500);
       await say('amauri','Pronto, já tô ligando pros clientes.',{hold:500});
       await say('brenda','Isso! Filme é em casa. Aqui a gente bate meta!',{hold:1000});
