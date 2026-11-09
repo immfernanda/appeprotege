@@ -35,15 +35,21 @@
   .soundbtn{font:inherit;font-size:13px;background:transparent;color:var(--turq2);border:2px solid var(--turq2);padding:4px 8px;cursor:pointer}
 
   /* palco da cena (mesmo motor da TV, tamanhos para celular) */
-  #stageWrap{position:relative;width:100%;aspect-ratio:16/9;border:3px solid var(--ink);box-shadow:0 0 0 3px var(--turq2);overflow:hidden;background:#000}
+  #stageWrap{position:relative;width:100%;aspect-ratio:16/9;border:3px solid var(--ink);box-shadow:0 0 0 3px var(--turq2);overflow:hidden;background:#000;container-type:inline-size}
+  @media (max-width:600px){ #stageWrap{width:calc(100% + 28px);margin:0 -14px;border-left:0;border-right:0;box-shadow:0 0 0 0 transparent,0 3px 0 var(--turq2),0 -3px 0 var(--turq2)} }
+  #stageWrap:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border:0;box-shadow:none;display:grid;place-items:center}
+  #stageWrap:fullscreen canvas#stage{width:min(100vw,177.78vh);height:auto;aspect-ratio:16/9}
+  .stagebtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .sbtn{font:inherit;font-size:14px;font-weight:700;background:transparent;color:var(--turq2);border:2px solid var(--turq2);padding:7px 12px;cursor:pointer}
+  .sbtn:active{transform:translateY(2px)}
   canvas#stage{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
-  .hud-clock{position:absolute;left:2%;top:3%;background:#3b2f3a;border:2px solid #f2c9b8;padding:2px 6px;font-size:10px;line-height:1.15;text-align:center;font-weight:700}
-  .bubble{position:absolute;transform:translate(-50%,-100%);background:#fffdf7;color:#14183a;border:3px solid var(--ink);padding:6px 8px 5px;font-size:12px;font-weight:700;line-height:1.25;width:max-content;max-width:62%;pointer-events:none}
-  .bubble .name{position:absolute;top:-15px;left:6px;background:var(--ink);padding:0 5px;font-size:9px;font-family:'Pixelify Sans',sans-serif;color:var(--yellow)}
+  .hud-clock{position:absolute;left:2%;top:3%;background:#3b2f3a;border:2px solid #f2c9b8;padding:.4cqw 1.4cqw;font-size:clamp(10px,2.6cqw,26px);line-height:1.15;text-align:center;font-weight:700}
+  .bubble{position:absolute;transform:translate(-50%,-100%);background:#fffdf7;color:#14183a;border:3px solid var(--ink);padding:1.4cqw 2cqw 1.2cqw;font-size:clamp(13px,3.7cqw,34px);font-weight:700;line-height:1.25;width:max-content;max-width:66%;pointer-events:none}
+  .bubble .name{position:absolute;bottom:100%;left:1.6cqw;background:var(--ink);padding:0 1.2cqw;font-size:clamp(10px,2.6cqw,24px);font-family:'Pixelify Sans',sans-serif;color:var(--yellow)}
   .bubble:after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink);border-bottom:0}
-  .emote{position:absolute;transform:translate(-50%,-100%);background:#fff;color:var(--ink);border:2px solid var(--ink);padding:0 5px;font-size:13px;font-weight:800;pointer-events:none}
-  .caption{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,27,74,.93);color:#fff;border:3px solid var(--yellow);padding:8px 12px;font-size:13px;font-weight:800;text-align:center;width:84%;line-height:1.3}
-  .caption small{display:block;font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:10px;margin-bottom:3px;letter-spacing:.08em}
+  .emote{position:absolute;transform:translate(-50%,-100%);background:#fff;color:var(--ink);border:2px solid var(--ink);padding:0 1.2cqw;font-size:clamp(13px,3.6cqw,32px);font-weight:800;pointer-events:none}
+  .caption{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,27,74,.93);color:#fff;border:3px solid var(--yellow);padding:2cqw 3cqw;font-size:clamp(14px,4cqw,36px);font-weight:800;text-align:center;width:84%;line-height:1.3}
+  .caption small{display:block;font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:clamp(10px,2.6cqw,24px);margin-bottom:.6cqw;letter-spacing:.08em}
   .pip,.cut{display:none!important}
 
   .q{font-size:18px;font-weight:800;line-height:1.3;margin:0}
@@ -55,6 +61,16 @@
   .watch{font-size:14px;color:var(--turq2);text-align:center;margin:2px 0 0}
   .done .emoji{font-family:'Pixelify Sans',sans-serif;font-size:54px;line-height:1}
   .done .code{font-family:'Pixelify Sans',sans-serif;font-size:40px;color:var(--yellow);letter-spacing:.2em;margin:8px 0}
+  @media (min-width:900px){
+    .wrap{max-width:1180px;padding:20px 28px 32px;gap:18px}
+    h1{font-size:40px} header img{height:40px}
+    .q{font-size:26px} .opt{font-size:20px;min-height:72px} .opt .let{width:48px;height:48px;font-size:26px}
+    .opts{display:grid;grid-template-columns:1fr 1fr}
+    .me .code{font-size:32px} .watch{font-size:18px} .sbtn{font-size:16px}
+    #vName,#vDone,#vWait{max-width:640px;align-self:center;width:100%}
+    #stageWrap{width:min(100%, calc((100vh - 190px) * 1.7778));align-self:center}
+    #vPlay{align-items:center} #qCard{width:100%}
+  }
   footer{margin-top:auto;font-size:12px;color:var(--turq2);text-align:center;opacity:.8}
 </style>
 </head>
@@ -93,6 +109,7 @@
       <div id="cut" class="cut"><img id="cutImg" alt=""><div id="cutCap"></div></div>
       <div id="overlay"></div>
     </div>
+    <div class="stagebtns"><button class="sbtn" id="fsBtn">⛶ Tela cheia</button><button class="sbtn hidden" id="replayBtn">↺ Ver a cena de novo</button></div>
     <p class="watch" id="watch">Assista à cena… 👀</p>
     <div class="card hidden" id="qCard">
       <div class="tag" id="qTag">PERGUNTA</div>
@@ -127,7 +144,7 @@ const $ = id => document.getElementById(id);
 const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
 const ROOM = (new URLSearchParams(location.search).get('s') || 'EPROTEGE').toUpperCase();
 const ALL_SCENES = SCENES.slice();
-muted = true; musicOn = false;                    // no celular começa sem som (25 celulares juntos!)
+muted = true; musicOn = false; PACE = 1.5;   // mais devagar, para dar tempo de ler no celular                    // no celular começa sem som (25 celulares juntos!)
 
 const store = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
@@ -151,12 +168,13 @@ function sendProgress(){
 /* lista de cenas que a TV abriu, na ordem */
 function playList(){ const want = state && state.scenes; return want ? ALL_SCENES.filter(s=>want.includes(s.name)) : ALL_SCENES; }
 
-let sceneRun = 0;
+let sceneRun = 0, curIdx = 0;
 async function runScene(i){
   const my = ++sceneRun, list = playList(), s = list[i];
   $('myProg').textContent = `${i+1} de ${list.length}`;
+  curIdx = i; $('replayBtn').classList.add('hidden');
   $('qCard').classList.add('hidden'); $('watch').classList.remove('hidden');
-  actors = {}; overlay.innerHTML = ''; bg = s.bg() || officeBg; fx = {}; curScene = s;
+  clearAll(); actors = {}; overlay.innerHTML = ''; bg = s.bg() || officeBg; fx = {}; curScene = s;
   $('clock').innerHTML = s.clock; s.setup();
   if (s.intro){
     const c = document.createElement('div'); c.className = 'caption';
@@ -171,7 +189,8 @@ async function runScene(i){
   $('qTag').textContent = `PERGUNTA ${i+1} DE ${list.length}`;
   $('qText').textContent = s.q;
   $('opts').innerHTML = s.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="let" style="background:${COLORS[k]}">${'ABCD'[k]}</span><span>${o}</span></button>`).join('');
-  $('qCard').classList.remove('hidden');
+  $('qCard').classList.remove('hidden'); $('replayBtn').classList.remove('hidden');
+  if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
   $('qCard').scrollIntoView({behavior:'smooth', block:'start'});
   document.querySelectorAll('.opt').forEach(b=>b.onclick=async ()=>{
     if (prog.ans[s.name] !== undefined) return;
@@ -205,6 +224,13 @@ $('nameForm').onsubmit = e=>{
   name = n; store.set('epq_name', name);
   if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
   if (state) begin(); else { show('vWait'); $('waitText').textContent = 'Aguardando a organização abrir o quiz na TV.'; }
+};
+$('replayBtn').onclick = ()=>{ window.scrollTo({top:0, behavior:'smooth'}); runScene(curIdx); };
+$('fsBtn').onclick = ()=>{
+  const el = $('stageWrap');
+  if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); return; }
+  const go = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (go) Promise.resolve(go.call(el)).then(()=>{ try { screen.orientation.lock('landscape').catch(()=>{}); } catch(e){} }).catch(()=>{});
 };
 $('soundBtn').onclick = ()=>{
   if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }

@@ -359,7 +359,8 @@ function loop(now){
 }
 
 /* ============ AÇÕES DO ROTEIRO ============ */
-const wait = ms => new Promise(r=>setTimeout(r,ms));
+let PACE = 1;          // ritmo das cenas (o celular usa mais devagar, para dar tempo de ler)
+const wait = ms => new Promise(r=>setTimeout(r,ms*PACE));
 function walk(id, toX, speed=42){
   const a = actors[id]; if (!a) return Promise.resolve(); a.walking = true; a.look = toX > a.x ? 1 : -1;
   return new Promise(res=>{
@@ -387,7 +388,8 @@ async function say(id, text, {hold=1200, speed=32}={}){
     if (i%2===0 && text[i]!==' ') SFX.blip(a.c.voice);
     await wait(/[.,!?…]/.test(text[i]) ? speed*5 : speed);
   }
-  a.talking = false; await wait(hold);
+  a.talking = false;
+  await wait(PACE > 1 ? Math.max(hold, 900 + text.length*28) : hold);   // tempo de leitura
 }
 async function emote(id, txt, ms=1000){
   const a = actors[id]; if (!a) return; if (a.emote) a.emote.remove();
