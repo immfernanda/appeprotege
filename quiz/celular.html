@@ -52,6 +52,15 @@
   </header>
   <h1>Quiz da Boa Convivência</h1>
 
+  <div class="card center hidden" id="vCode">
+    <p class="big">Qual é o código da sala?</p>
+    <p class="muted">Escaneie o QR code da TV ou digite as 4 letras que aparecem embaixo dele.</p>
+    <form id="codeForm" style="display:flex;gap:10px;margin-top:14px">
+      <input id="codeIn" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" style="flex:1;min-width:0;font:inherit;font-family:'Pixelify Sans',sans-serif;font-size:28px;letter-spacing:.3em;text-align:center;text-transform:uppercase;padding:10px;border:3px solid var(--ink);background:#fff;color:var(--ink)">
+      <button class="opt" style="width:auto;min-height:0;justify-content:center;background:var(--turq);color:var(--ink)">Entrar</button>
+    </form>
+  </div>
+
   <div class="card center" id="vWait">
     <div class="wave">👀</div>
     <p class="big" id="waitTitle">Você está no jogo!</p>
@@ -60,7 +69,7 @@
 
   <div id="vQuestion" class="hidden">
     <div class="card">
-      <div class="tag" id="qTag">PERGUNTA 1 DE 10</div>
+      <div class="tag" id="qTag">PERGUNTA</div>
       <p class="big" id="qText" style="margin:8px 0 12px"></p>
       <div class="timer"><i id="qTimer"></i></div>
     </div>
@@ -102,10 +111,11 @@ let state = null, timerInt = null;
 
 function setStatus(s){ const el=$('status'); el.className='status '+s; el.querySelector('span').textContent = s==='on'?'ao vivo':'reconectando…'; }
 
-function show(view){ ['vWait','vQuestion','vResult'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+function show(view){ ['vCode','vWait','vQuestion','vResult'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
 
 function renderTrail(){
-  const total = state?.total || 10; let ok = 0, done = 0;
+  if (!state || !state.total){ $('trail').innerHTML = ''; return; }
+  const total = state.total; let ok = 0, done = 0;
   $('trail').innerHTML = Array.from({length:total},(_,i)=>{
     const m = mine[i]; let c = '';
     if (m && m.right !== undefined){ done++; if (m.a===m.right){ ok++; c='ok'; } else c='no'; }
@@ -171,10 +181,7 @@ function answer(i){
   render();
 }
 
-if (!code){
-  show('vWait'); $('waitTitle').textContent='Código não encontrado';
-  $('waitText').textContent='Escaneie de novo o QR code que aparece na TV.';
-}
+$('codeForm').onsubmit = e=>{ e.preventDefault(); const c = $('codeIn').value.trim().toUpperCase(); if (c.length===4) location.search = '?s=' + c; };
 const net = code ? quizNet(code, ['state'], (sub, data)=>{
   if (sub==='state'){
     // se a TV recomeçou o jogo, zera o histórico deste aparelho
@@ -185,7 +192,7 @@ const net = code ? quizNet(code, ['state'], (sub, data)=>{
 
 function join(){ net && net.publish('join', {pid}); }
 setInterval(join, 15000);
-render();
+if (code) render(); else { show('vCode'); setStatus('off'); $('status').querySelector('span').textContent = 'sem sala'; $('trail').closest('.card').classList.add('hidden'); }
 </script>
 </body>
 </html>
