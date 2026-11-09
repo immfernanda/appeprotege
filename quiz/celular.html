@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#001B4A">
+<title>Quiz da Boa Convivência</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --navy:#001B4A; --navy2:#0b2a63; --blue:#2864B0; --turq:#12B0B6; --turq2:#64C6CC; --yellow:#F4BB0E; --coral:#e8706f; --ink:#1b1430; --cream:#f5ecd9; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%;background:var(--navy);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-weight:600}
+  .wrap{max-width:520px;margin:0 auto;padding:16px 16px 28px;min-height:100vh;display:flex;flex-direction:column;gap:16px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  header img{height:30px;background:#fff;padding:5px 8px;border:3px solid var(--ink)}
+  .status{font-size:12px;color:var(--turq2);display:flex;align-items:center;gap:6px}
+  .status i{width:10px;height:10px;background:#888;display:inline-block}
+  .status.on i{background:#3fd17a} .status.off i{background:var(--coral)}
+  h1{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:28px;line-height:1.1;margin:4px 0 0;text-shadow:3px 3px 0 var(--ink)}
+  .card{background:var(--navy2);border:3px solid var(--ink);box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),0 5px 0 rgba(0,0,0,.3);padding:18px}
+  .big{font-size:20px;font-weight:800;line-height:1.3}
+  .muted{color:var(--turq2);font-size:15px;line-height:1.4}
+  .tag{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:14px;letter-spacing:.06em}
+  .opts{display:flex;flex-direction:column;gap:12px}
+  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--navy2);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);padding:12px;cursor:pointer;min-height:64px}
+  .opt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+  .opt .let{flex:none;width:40px;height:40px;display:grid;place-items:center;font-family:'Pixelify Sans',sans-serif;font-size:22px;color:var(--ink);border:3px solid var(--ink)}
+  .opt.sel{outline:4px solid var(--yellow)}
+  .opt[disabled]{cursor:default}
+  .opt.dim{opacity:.4}
+  .result{text-align:center;padding:26px 18px}
+  .result .emoji{font-family:'Pixelify Sans',sans-serif;font-size:56px;line-height:1}
+  .result.ok{background:#0f5f63} .result.no{background:#5a2238}
+  .trail{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .trail span{width:22px;height:22px;border:3px solid var(--ink);background:var(--navy2)}
+  .trail .ok{background:var(--turq)} .trail .no{background:var(--coral)} .trail .cur{background:var(--yellow)}
+  .timer{height:10px;background:var(--navy2);border:3px solid var(--ink)}
+  .timer i{display:block;height:100%;background:var(--yellow);width:100%}
+  .hidden{display:none!important}
+  .center{text-align:center}
+  .wave{font-family:'Pixelify Sans',sans-serif;font-size:44px;animation:bob 1s steps(2) infinite}
+  @keyframes bob{50%{transform:translateY(-6px)}}
+  footer{margin-top:auto;font-size:12px;color:var(--turq2);text-align:center;opacity:.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="img/logo-horizontal.png" alt="eProtege">
+    <div class="status" id="status"><i></i><span>conectando…</span></div>
+  </header>
+  <h1>Quiz da Boa Convivência</h1>
+
+  <div class="card center" id="vWait">
+    <div class="wave">👀</div>
+    <p class="big" id="waitTitle">Você está no jogo!</p>
+    <p class="muted" id="waitText">Olhe para a TV. Quando a pergunta aparecer, as opções surgem aqui.</p>
+  </div>
+
+  <div id="vQuestion" class="hidden">
+    <div class="card">
+      <div class="tag" id="qTag">PERGUNTA 1 DE 10</div>
+      <p class="big" id="qText" style="margin:8px 0 12px"></p>
+      <div class="timer"><i id="qTimer"></i></div>
+    </div>
+    <div class="opts" id="opts" style="margin-top:14px"></div>
+    <p class="muted center hidden" id="sent" style="margin-top:14px">Resposta enviada! Agora é só esperar a revelação na TV.</p>
+  </div>
+
+  <div class="card result hidden" id="vResult">
+    <div class="emoji" id="rEmoji"></div>
+    <p class="big" id="rTitle"></p>
+    <p class="muted" id="rText"></p>
+  </div>
+
+  <div class="card">
+    <div class="tag" style="margin-bottom:8px">SUA TRILHA</div>
+    <div class="trail" id="trail"></div>
+    <p class="muted" id="score" style="margin:10px 0 0">Ninguém vê o que você respondeu. Só o total aparece na TV.</p>
+  </div>
+
+  <footer>eProtege · Saúde e Segurança do Trabalho</footer>
+</div>
+
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script src="net.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
+const params = new URLSearchParams(location.search);
+const code = (params.get('s') || '').toUpperCase();
+
+/* identidade anônima do aparelho e respostas guardadas só neste celular */
+const store = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
+};
+let pid = store.get('epq_pid_'+code, null); if (!pid){ pid = quizRandom(12); store.set('epq_pid_'+code, pid); }
+let mine = store.get('epq_mine_'+code, {});       // { q: {a, right?} }
+let state = null, timerInt = null;
+
+function setStatus(s){ const el=$('status'); el.className='status '+s; el.querySelector('span').textContent = s==='on'?'ao vivo':'reconectando…'; }
+
+function show(view){ ['vWait','vQuestion','vResult'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+
+function renderTrail(){
+  const total = state?.total || 10; let ok = 0, done = 0;
+  $('trail').innerHTML = Array.from({length:total},(_,i)=>{
+    const m = mine[i]; let c = '';
+    if (m && m.right !== undefined){ done++; if (m.a===m.right){ ok++; c='ok'; } else c='no'; }
+    else if (state && state.q===i && state.phase!=='lobby') c='cur';
+    return `<span class="${c}"></span>`;
+  }).join('');
+  if (done) $('score').textContent = `Você acertou ${ok} de ${done}. Ninguém vê o que você respondeu, só o total aparece na TV.`;
+}
+
+let lastKey = '', qEnd = 0;
+function render(){
+  const key = state ? state.phase+'|'+state.q+'|'+(mine[state.q]?1:0) : 'none';
+  if (key === lastKey && state && state.phase==='question'){ qEnd = Date.now() + (state.left||0)*1000; return; }  // só atualiza o tempo
+  lastKey = key;
+  clearInterval(timerInt);
+  if (!state || state.phase==='lobby'){
+    show('vWait'); $('waitTitle').textContent='Você está no jogo!';
+    $('waitText').textContent='Aguarde: o quiz já vai começar na TV.';
+  }
+  else if (state.phase==='play'){
+    show('vWait'); $('waitTitle').textContent=`Cena ${state.q+1} de ${state.total}`;
+    $('waitText').textContent='Olhe para a TV! Quando a pergunta aparecer, as opções surgem aqui.';
+  }
+  else if (state.phase==='question'){
+    show('vQuestion');
+    $('qTag').textContent = `PERGUNTA ${state.q+1} DE ${state.total}`;
+    $('qText').textContent = state.text;
+    const answered = mine[state.q];
+    $('opts').innerHTML = state.opts.map((o,i)=>`<button class="opt ${answered? (answered.a===i?'sel':'dim'):''}" data-i="${i}" ${answered?'disabled':''}><span class="let" style="background:${COLORS[i]}">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
+    $('sent').classList.toggle('hidden', !answered);
+    document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+    qEnd = Date.now() + (state.left||0)*1000; const tot = state.time||20;
+    const tick = ()=>{ const l = Math.max(0,(qEnd-Date.now())/1000); $('qTimer').style.width = (l/tot*100)+'%'; };
+    tick(); timerInt = setInterval(tick, 250);
+  }
+  else if (state.phase==='reveal'){
+    const m = mine[state.q];
+    if (m){ m.right = state.right; store.set('epq_mine_'+code, mine); }
+    show('vResult');
+    const letter = 'ABCD'[state.right];
+    const el = $('vResult');
+    if (!m){ el.className='card result'; $('rEmoji').textContent='⏱'; $('rTitle').textContent='Não deu tempo!';
+      $('rText').textContent=`A resposta certa era a ${letter}: ${state.opts[state.right]}`; }
+    else if (m.a===state.right){ el.className='card result ok'; $('rEmoji').textContent='★'; $('rTitle').textContent='Acertou!';
+      $('rText').textContent=`${letter}: ${state.opts[state.right]}`; }
+    else { el.className='card result no'; $('rEmoji').textContent='✗'; $('rTitle').textContent='Quase!';
+      $('rText').textContent=`A certa era a ${letter}: ${state.opts[state.right]}`; }
+  }
+  else if (state.phase==='end'){
+    show('vResult'); const el=$('vResult'); el.className='card result ok';
+    const ok = Object.values(mine).filter(m=>m.right!==undefined && m.a===m.right).length;
+    $('rEmoji').textContent='🏁'; $('rTitle').textContent='Fim de jogo!';
+    $('rText').textContent=`Você acertou ${ok} de ${state.total}. Obrigado por jogar e por deixar a eProtege um lugar melhor de trabalhar!`;
+  }
+  renderTrail();
+}
+
+function answer(i){
+  if (!state || state.phase!=='question' || mine[state.q]) return;
+  mine[state.q] = {a:i}; store.set('epq_mine_'+code, mine);
+  net.publish('answer', {pid, q:state.q, a:i});
+  if (navigator.vibrate) navigator.vibrate(40);
+  render();
+}
+
+if (!code){
+  show('vWait'); $('waitTitle').textContent='Código não encontrado';
+  $('waitText').textContent='Escaneie de novo o QR code que aparece na TV.';
+}
+const net = code ? quizNet(code, ['state'], (sub, data)=>{
+  if (sub==='state'){
+    // se a TV recomeçou o jogo, zera o histórico deste aparelho
+    if (data.game && store.get('epq_game_'+code,null) !== data.game){ mine = {}; store.set('epq_mine_'+code, mine); store.set('epq_game_'+code, data.game); }
+    state = data; render();
+  }
+}, s=>{ setStatus(s); if (s==='on') join(); }) : null;
+
+function join(){ net && net.publish('join', {pid}); }
+setInterval(join, 15000);
+render();
+</script>
+</body>
+</html>
