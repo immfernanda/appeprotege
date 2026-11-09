@@ -11,45 +11,51 @@
   :root{ --navy:#001B4A; --navy2:#0b2a63; --blue:#2864B0; --turq:#12B0B6; --turq2:#64C6CC; --yellow:#F4BB0E; --coral:#e8706f; --ink:#1b1430; --cream:#f5ecd9; }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
   html,body{margin:0;min-height:100%;background:var(--navy);color:#fff;font-family:'Montserrat',system-ui,sans-serif;font-weight:600}
-  .wrap{max-width:520px;margin:0 auto;padding:16px 16px 28px;min-height:100vh;display:flex;flex-direction:column;gap:16px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  header img{height:30px;background:#fff;padding:5px 8px;border:3px solid var(--ink)}
+  .wrap{max-width:560px;margin:0 auto;padding:14px 14px 28px;min-height:100vh;display:flex;flex-direction:column;gap:14px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  header img{height:28px;background:#fff;padding:4px 8px;border:3px solid var(--ink)}
   .status{font-size:12px;color:var(--turq2);display:flex;align-items:center;gap:6px}
   .status i{width:10px;height:10px;background:#888;display:inline-block}
   .status.on i{background:#3fd17a} .status.off i{background:var(--coral)}
-  h1{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:28px;line-height:1.1;margin:4px 0 0;text-shadow:3px 3px 0 var(--ink)}
-  .card{background:var(--navy2);border:3px solid var(--ink);box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),0 5px 0 rgba(0,0,0,.3);padding:18px}
-  .big{font-size:20px;font-weight:800;line-height:1.3}
-  .muted{color:var(--turq2);font-size:15px;line-height:1.4}
+  h1{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:26px;line-height:1.1;margin:2px 0 0;text-shadow:3px 3px 0 var(--ink)}
+  .card{background:var(--navy2);border:3px solid var(--ink);box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),0 5px 0 rgba(0,0,0,.3);padding:16px}
+  .big{font-size:19px;font-weight:800;line-height:1.3}
+  .muted{color:var(--turq2);font-size:15px;line-height:1.45}
   .tag{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:14px;letter-spacing:.06em}
-  .opts{display:flex;flex-direction:column;gap:12px}
-  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--navy2);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);padding:12px;cursor:pointer;min-height:64px}
-  .opt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
-  .opt .let{flex:none;width:40px;height:40px;display:grid;place-items:center;font-family:'Pixelify Sans',sans-serif;font-size:22px;color:var(--ink);border:3px solid var(--ink)}
-  .opt.sel{outline:4px solid var(--yellow)}
-  .opt[disabled]{cursor:default}
-  .opt.dim{opacity:.4}
-  .result{text-align:center;padding:26px 18px}
-  .result .emoji{font-family:'Pixelify Sans',sans-serif;font-size:56px;line-height:1}
-  .result.ok{background:#0f5f63} .result.no{background:#5a2238}
-  .trail{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .trail span{width:22px;height:22px;border:3px solid var(--ink);background:var(--navy2)}
-  .trail .ok{background:var(--turq)} .trail .no{background:var(--coral)} .trail .cur{background:var(--yellow)}
-  .timer{height:10px;background:var(--navy2);border:3px solid var(--ink)}
-  .timer i{display:block;height:100%;background:var(--yellow);width:100%}
   .hidden{display:none!important}
   .center{text-align:center}
-  .wave{font-family:'Pixelify Sans',sans-serif;font-size:44px;animation:bob 1s steps(2) infinite}
-  @keyframes bob{50%{transform:translateY(-6px)}}
-  footer{margin-top:auto;font-size:12px;color:var(--turq2);text-align:center;opacity:.8}
-  .me{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .me .code{font-family:'Pixelify Sans',sans-serif;font-size:30px;color:var(--yellow);letter-spacing:.15em}
-  .me .pts{font-size:15px;color:var(--turq2);text-align:right}
-  .me .pts b{display:block;font-size:22px;color:#fff}
   input.name{width:100%;font:inherit;font-size:20px;font-weight:700;padding:12px;border:3px solid var(--ink);background:#fff;color:var(--ink);margin:12px 0}
-  .go{width:100%;justify-content:center;background:var(--turq);color:var(--ink);font-size:18px}
-  .note{background:rgba(100,198,204,.12);border-left:4px solid var(--turq);padding:10px 12px;font-size:14px;line-height:1.45;color:#dff;margin-top:6px}
-  .gain{font-family:'Pixelify Sans',sans-serif;font-size:26px;color:var(--yellow);margin-top:6px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font:inherit;font-size:18px;font-weight:800;background:var(--turq);color:var(--ink);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);padding:13px;cursor:pointer}
+  .btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+  .note{background:rgba(100,198,204,.12);border-left:4px solid var(--turq);padding:10px 12px;font-size:14px;line-height:1.45;color:#dff;margin-top:14px}
+  .me{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
+  .me .code{font-family:'Pixelify Sans',sans-serif;font-size:24px;color:var(--yellow);letter-spacing:.15em}
+  .me .prog{font-size:14px;color:var(--turq2);text-align:right}
+  .me .prog b{display:block;color:#fff;font-size:18px}
+  .soundbtn{font:inherit;font-size:13px;background:transparent;color:var(--turq2);border:2px solid var(--turq2);padding:4px 8px;cursor:pointer}
+
+  /* palco da cena (mesmo motor da TV, tamanhos para celular) */
+  #stageWrap{position:relative;width:100%;aspect-ratio:16/9;border:3px solid var(--ink);box-shadow:0 0 0 3px var(--turq2);overflow:hidden;background:#000}
+  canvas#stage{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+  .hud-clock{position:absolute;left:2%;top:3%;background:#3b2f3a;border:2px solid #f2c9b8;padding:2px 6px;font-size:10px;line-height:1.15;text-align:center;font-weight:700}
+  .bubble{position:absolute;transform:translate(-50%,-100%);background:#fffdf7;color:#14183a;border:3px solid var(--ink);padding:6px 8px 5px;font-size:12px;font-weight:700;line-height:1.25;width:max-content;max-width:62%;pointer-events:none}
+  .bubble .name{position:absolute;top:-15px;left:6px;background:var(--ink);padding:0 5px;font-size:9px;font-family:'Pixelify Sans',sans-serif;color:var(--yellow)}
+  .bubble:after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink);border-bottom:0}
+  .emote{position:absolute;transform:translate(-50%,-100%);background:#fff;color:var(--ink);border:2px solid var(--ink);padding:0 5px;font-size:13px;font-weight:800;pointer-events:none}
+  .caption{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,27,74,.93);color:#fff;border:3px solid var(--yellow);padding:8px 12px;font-size:13px;font-weight:800;text-align:center;width:84%;line-height:1.3}
+  .caption small{display:block;font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:10px;margin-bottom:3px;letter-spacing:.08em}
+  .pip,.cut{display:none!important}
+
+  .q{font-size:18px;font-weight:800;line-height:1.3;margin:0}
+  .opts{display:flex;flex-direction:column;gap:11px;margin-top:12px}
+  .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--navy2);border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);padding:11px;cursor:pointer;min-height:60px}
+  .opt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+  .opt .let{flex:none;width:38px;height:38px;display:grid;place-items:center;font-family:'Pixelify Sans',sans-serif;font-size:21px;color:var(--ink);border:3px solid var(--ink)}
+  .opt.sel{outline:4px solid var(--yellow)} .opt.dim{opacity:.4}
+  .watch{font-size:14px;color:var(--turq2);text-align:center;margin:2px 0 0}
+  .done .emoji{font-family:'Pixelify Sans',sans-serif;font-size:54px;line-height:1}
+  .done .code{font-family:'Pixelify Sans',sans-serif;font-size:40px;color:var(--yellow);letter-spacing:.2em;margin:8px 0}
+  footer{margin-top:auto;font-size:12px;color:var(--turq2);text-align:center;opacity:.8}
 </style>
 </head>
 <body>
@@ -65,44 +71,49 @@
     <p class="big" style="margin-top:0">Como você se chama?</p>
     <form id="nameForm">
       <input class="name" id="nameIn" maxlength="40" autocomplete="given-name" placeholder="Seu nome" required>
-      <button class="opt go">Entrar no quiz ▶</button>
+      <button class="btn">Começar ▶</button>
     </form>
-    <div class="note">🔒 <b>Suas respostas são anônimas.</b> Na TV aparece só o total de cada alternativa, nunca quem respondeu o quê. O nome serve só para a organização saber quem ganhou a bonificação. Você vai receber um código e é ele que aparece no ranking.</div>
+    <div class="note">🔒 <b>Suas respostas são anônimas.</b> Ninguém vai ver o que você marcou: na TV aparece só quantas pessoas escolheram cada alternativa. O nome serve só para a organização saber quem ganhou a bonificação. No ranking aparece o seu código, não o nome.</div>
+    <p class="muted" style="margin:12px 0 0">São 8 cenas curtinhas. Assista e responda no seu ritmo, sem pressa. 🔊 Se quiser som, use fone.</p>
   </div>
 
-  <!-- seu código e pontos -->
+  <!-- código e progresso -->
   <div class="card me hidden" id="vMe">
     <div><div class="tag">SEU CÓDIGO</div><div class="code" id="myCode">---</div></div>
-    <div class="pts">pontos<b id="myPts">0</b></div>
+    <button class="soundbtn" id="soundBtn">🔇 som</button>
+    <div class="prog">cena<b id="myProg">1 de 8</b></div>
   </div>
 
-  <div class="card center hidden" id="vWait">
-    <div class="wave">👀</div>
-    <p class="big" id="waitTitle">Você está no jogo!</p>
-    <p class="muted" id="waitText">Olhe para a TV. Quando a pergunta aparecer, as opções surgem aqui.</p>
-  </div>
-
-  <div id="vQuestion" class="hidden">
-    <div class="card">
-      <div class="tag" id="qTag">PERGUNTA</div>
-      <p class="big" id="qText" style="margin:8px 0 12px"></p>
-      <div class="timer"><i id="qTimer"></i></div>
+  <!-- 2) cena + pergunta -->
+  <div id="vPlay" class="hidden" style="display:flex;flex-direction:column;gap:12px">
+    <div id="stageWrap">
+      <canvas id="stage" width="240" height="135"></canvas>
+      <div class="hud-clock" id="clock">QUA<br>10:15</div>
+      <div id="pip" class="pip"><video id="vid" playsinline muted></video></div>
+      <div id="cut" class="cut"><img id="cutImg" alt=""><div id="cutCap"></div></div>
+      <div id="overlay"></div>
     </div>
-    <div class="opts" id="opts" style="margin-top:14px"></div>
-    <p class="muted center hidden" id="sent" style="margin-top:14px">Resposta enviada! Agora é só esperar a revelação na TV.</p>
+    <p class="watch" id="watch">Assista à cena… 👀</p>
+    <div class="card hidden" id="qCard">
+      <div class="tag" id="qTag">PERGUNTA</div>
+      <p class="q" id="qText" style="margin-top:6px"></p>
+      <div class="opts" id="opts"></div>
+    </div>
   </div>
 
-  <div class="card result hidden" id="vResult">
-    <div class="emoji" id="rEmoji"></div>
-    <p class="big" id="rTitle"></p>
-    <p class="muted" id="rText"></p>
-    <div class="gain" id="rGain"></div>
+  <!-- 3) fim -->
+  <div class="card center done hidden" id="vDone">
+    <div class="emoji">🏁</div>
+    <p class="big">Pronto, respostas enviadas!</p>
+    <p class="muted">Agora é só aguardar: a revelação vai acontecer na TV, com o gráfico da equipe e o ranking. Guarde o seu código:</p>
+    <div class="code" id="doneCode">---</div>
+    <p class="muted" style="margin:0">Se ficar entre os primeiros, procure a organização com ele.</p>
   </div>
 
-  <div class="card hidden" id="vTrail">
-    <div class="tag" style="margin-bottom:8px">SUA TRILHA</div>
-    <div class="trail" id="trail"></div>
-    <p class="muted" id="score" style="margin:10px 0 0">Acertou rápido, ganha mais pontos!</p>
+  <!-- aguardando a TV abrir o quiz -->
+  <div class="card center hidden" id="vWait">
+    <p class="big">Quase lá…</p>
+    <p class="muted" id="waitText">Aguardando a organização abrir o quiz na TV.</p>
   </div>
 
   <footer>eProtege · Saúde e Segurança do Trabalho</footer>
@@ -110,120 +121,107 @@
 
 <script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <script src="net.js"></script>
+<script src="cenas.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
-const ROOM = (new URLSearchParams(location.search).get('s') || 'EPROTEGE').toUpperCase();   // sala fixa
+const ROOM = (new URLSearchParams(location.search).get('s') || 'EPROTEGE').toUpperCase();
+const ALL_SCENES = SCENES.slice();
+muted = true; musicOn = false;                    // no celular começa sem som (25 celulares juntos!)
 
 const store = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
 };
-/* identidade do aparelho: id interno, nome e código curto que aparece no ranking */
 let pid  = store.get('epq_pid', null);  if (!pid){ pid = quizRandom(12); store.set('epq_pid', pid); }
 let code = store.get('epq_code', null); if (!code){ code = quizRandom(3); store.set('epq_code', code); }
 let name = store.get('epq_name', '');
-let mine = store.get('epq_mine', {});   // { q: {a, right?, gain?} }
-let total = 0, state = null, timerInt = null, lastKey = '', qEnd = 0;
+let prog = store.get('epq_prog', {game:null, ans:{}, done:false, tDone:0});   // respostas deste aparelho
+let state = null, started = false;
 
 function setStatus(s){ const el=$('status'); el.className='status '+s; el.querySelector('span').textContent = s==='on'?'ao vivo':'reconectando…'; }
-const VIEWS = ['vWait','vQuestion','vResult'];
-function show(view){ VIEWS.forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
-function showMe(){ $('myCode').textContent = code; $('myPts').textContent = total.toLocaleString('pt-BR'); }
-
-function renderTrail(){
-  if (!state || !state.total){ $('vTrail').classList.add('hidden'); return; }
-  $('vTrail').classList.remove('hidden');
-  let ok = 0, done = 0;
-  $('trail').innerHTML = Array.from({length:state.total},(_,i)=>{
-    const m = mine[i]; let c = '';
-    if (m && m.right !== undefined){ done++; if (m.a===m.right){ ok++; c='ok'; } else c='no'; }
-    else if (state.q===i && state.phase!=='lobby') c='cur';
-    return `<span class="${c}"></span>`;
-  }).join('');
-  if (done) $('score').textContent = `Você acertou ${ok} de ${done}. Acertou rápido, ganha mais pontos!`;
+const VIEWS = ['vName','vMe','vPlay','vDone','vWait'];
+function show(...v){ VIEWS.forEach(x=>$(x).classList.toggle('hidden', !v.includes(x))); }
+function save(){ store.set('epq_prog', prog); }
+function sendProgress(){
+  if (!name || !state) return;
+  net.publish('p/'+pid, {game:state.game, pid, name, code, ans:prog.ans, done:prog.done, tDone:prog.tDone}, true);
 }
 
-function render(){
-  if (!name) return;
-  const key = state ? state.phase+'|'+state.q+'|'+(mine[state.q]?1:0) : 'none';
-  if (key === lastKey && state && state.phase==='question'){ qEnd = Date.now() + (state.left||0)*1000; return; }
-  lastKey = key; clearInterval(timerInt);
-  if (!state || state.phase==='lobby'){
-    show('vWait'); $('waitTitle').textContent = `Bem-vindo(a), ${name.split(' ')[0]}!`;
-    $('waitText').textContent = 'Você está no jogo. Aguarde: o quiz já vai começar na TV.';
+/* lista de cenas que a TV abriu, na ordem */
+function playList(){ const want = state && state.scenes; return want ? ALL_SCENES.filter(s=>want.includes(s.name)) : ALL_SCENES; }
+
+let sceneRun = 0;
+async function runScene(i){
+  const my = ++sceneRun, list = playList(), s = list[i];
+  $('myProg').textContent = `${i+1} de ${list.length}`;
+  $('qCard').classList.add('hidden'); $('watch').classList.remove('hidden');
+  actors = {}; overlay.innerHTML = ''; bg = s.bg() || officeBg; fx = {}; curScene = s;
+  $('clock').innerHTML = s.clock; s.setup();
+  if (s.intro){
+    const c = document.createElement('div'); c.className = 'caption';
+    c.innerHTML = `<small>CENA ${i+1} DE ${list.length}</small>${s.intro}`;
+    overlay.appendChild(c); SFX.pop(); await wait(3000); c.remove();
   }
-  else if (state.phase==='play'){
-    show('vWait'); $('waitTitle').textContent = `Cena ${state.q+1} de ${state.total}`;
-    $('waitText').textContent = 'Olhe para a TV! Quando a pergunta aparecer, as opções surgem aqui.';
-  }
-  else if (state.phase==='question'){
-    show('vQuestion');
-    $('qTag').textContent = `PERGUNTA ${state.q+1} DE ${state.total}`;
-    $('qText').textContent = state.text;
-    const answered = mine[state.q];
-    $('opts').innerHTML = state.opts.map((o,i)=>`<button class="opt ${answered? (answered.a===i?'sel':'dim'):''}" data-i="${i}" ${answered?'disabled':''}><span class="let" style="background:${COLORS[i]}">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
-    $('sent').classList.toggle('hidden', !answered);
-    document.querySelectorAll('.opt[data-i]').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
-    qEnd = Date.now() + (state.left||0)*1000; const tot = state.time||20;
-    const tick = ()=>{ const l = Math.max(0,(qEnd-Date.now())/1000); $('qTimer').style.width = (l/tot*100)+'%'; };
-    tick(); timerInt = setInterval(tick, 250);
-  }
-  else if (state.phase==='reveal'){
-    const m = mine[state.q], sc = state.scores && state.scores[pid];
-    if (m){ m.right = state.right; if (sc) m.gain = sc[0]; store.set('epq_mine', mine); }
-    if (sc){ total = sc[1]; store.set('epq_total', total); }
-    show('vResult'); showMe();
-    const letter = 'ABCD'[state.right], el = $('vResult');
-    $('rGain').textContent = sc && sc[0] ? `+${sc[0]} pontos` : '';
-    if (!m){ el.className='card result'; $('rEmoji').textContent='⏱'; $('rTitle').textContent='Não deu tempo!';
-      $('rText').textContent=`A resposta certa era a ${letter}: ${state.opts[state.right]}`; }
-    else if (m.a===state.right){ el.className='card result ok'; $('rEmoji').textContent='★'; $('rTitle').textContent='Acertou!';
-      $('rText').textContent=`${letter}: ${state.opts[state.right]}`; }
-    else { el.className='card result no'; $('rEmoji').textContent='✗'; $('rTitle').textContent='Quase!';
-      $('rText').textContent=`A certa era a ${letter}: ${state.opts[state.right]}`; }
-  }
-  else if (state.phase==='end'){
-    show('vResult'); const el=$('vResult'); el.className='card result ok';
-    const p = state.pos && state.pos[pid];
-    if (p){ total = p[1]; showMe(); }
-    $('rEmoji').textContent = p && p[0]===1 ? '🏆' : '🏁';
-    $('rTitle').textContent = p && p[0]===1 ? 'Você venceu!' : 'Fim de jogo!';
-    $('rText').textContent = p ? `Você ficou em ${p[0]}º lugar com ${p[1].toLocaleString('pt-BR')} pontos (${p[2]} ${p[2]===1?'acerto':'acertos'}). Obrigado por jogar!`
-                               : 'Obrigado por jogar e por deixar a eProtege um lugar melhor de trabalhar!';
-    $('rGain').textContent = p && p[0]===1 ? 'Procure a organização com o seu código!' : '';
-  }
-  renderTrail();
+  if (my !== sceneRun) return;
+  await s.play(); if (my !== sceneRun) return;
+  stopVideo();
+  // pergunta, sem tempo
+  $('watch').classList.add('hidden');
+  $('qTag').textContent = `PERGUNTA ${i+1} DE ${list.length}`;
+  $('qText').textContent = s.q;
+  $('opts').innerHTML = s.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="let" style="background:${COLORS[k]}">${'ABCD'[k]}</span><span>${o}</span></button>`).join('');
+  $('qCard').classList.remove('hidden');
+  $('qCard').scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=async ()=>{
+    if (prog.ans[s.name] !== undefined) return;
+    const k = +b.dataset.k; prog.ans[s.name] = k; save(); sendProgress();
+    document.querySelectorAll('.opt').forEach(x=>x.classList.add(x===b?'sel':'dim'));
+    if (navigator.vibrate) navigator.vibrate(30); SFX.pick();
+    await wait(700); clearAll();
+    window.scrollTo({top:0, behavior:'smooth'});
+    nextScene();
+  });
+}
+function nextScene(){
+  const list = playList(), i = list.findIndex(s=>prog.ans[s.name] === undefined);
+  if (i === -1){ finish(); return; }
+  show('vMe','vPlay'); runScene(i);
+}
+function finish(){
+  if (!prog.done){ prog.done = true; prog.tDone = Date.now(); save(); sendProgress(); }
+  $('doneCode').textContent = code; show('vDone'); actors = {}; overlay.innerHTML = '';
+}
+function begin(){
+  if (!name || !state || started) return;
+  started = true; $('myCode').textContent = code;
+  if (prog.game !== state.game){ prog = {game:state.game, ans:{}, done:false, tDone:0}; save(); }
+  sendProgress();
+  if (prog.done) finish(); else nextScene();
 }
 
-function answer(i){
-  if (!state || state.phase!=='question' || mine[state.q]) return;
-  mine[state.q] = {a:i}; store.set('epq_mine', mine);
-  net.publish('answer', {pid, name, code, q:state.q, a:i});
-  if (navigator.vibrate) navigator.vibrate(40);
-  render();
-}
-function join(){ if (name) net.publish('join', {pid, name, code}); }
-
-/* entrada: pede o nome uma vez */
-function enter(){
-  $('vName').classList.add('hidden'); $('vMe').classList.remove('hidden'); showMe(); join(); render();
-}
 $('nameForm').onsubmit = e=>{
   e.preventDefault(); const n = $('nameIn').value.trim(); if (!n) return;
-  name = n; store.set('epq_name', name); enter();
+  name = n; store.set('epq_name', name);
+  if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+  if (state) begin(); else { show('vWait'); $('waitText').textContent = 'Aguardando a organização abrir o quiz na TV.'; }
+};
+$('soundBtn').onclick = ()=>{
+  if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+  muted = !muted; $('soundBtn').textContent = muted ? '🔇 som' : '🔊 som';
 };
 
 const net = quizNet(ROOM, ['state'], (sub, data)=>{
-  if (sub!=='state') return;
-  // a TV começou um jogo novo: zera respostas e pontos deste aparelho
-  if (data.game && store.get('epq_game', null) !== data.game){ mine = {}; total = 0; store.set('epq_mine', mine); store.set('epq_total', 0); store.set('epq_game', data.game); lastKey=''; }
-  state = data; if (name) render();
-}, s=>{ setStatus(s); if (s==='on') join(); });
-setInterval(join, 15000);
+  if (sub !== 'state' || !data || !data.game) return;
+  const changed = state && state.game !== data.game;
+  state = data;
+  if (changed){ prog = {game:data.game, ans:{}, done:false, tDone:0}; save(); started = false; sceneRun++; }
+  if (name && !started) begin();
+}, s=>{ setStatus(s); if (s==='on') sendProgress(); });
 
-total = store.get('epq_total', 0);
-if (name) enter(); else { show(null); $('vName').classList.remove('hidden'); }
+setInterval(sendProgress, 10000);   // reenvia o progresso de tempos em tempos
+requestAnimationFrame(loop);
+if (name){ show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; } else show('vName');
 </script>
 </body>
 </html>
