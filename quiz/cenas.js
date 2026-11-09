@@ -303,10 +303,10 @@ function drawFridge(){
 function placeBubbles(a, cxPx, topPx){
   const cx = cxPx/W*100;
   if (a.bubble){
-    const box = overlay.clientWidth || 1, bw = a.bubble.offsetWidth, margin = 6;
+    const box = cv.clientWidth || 1, bw = a.bubble.offsetWidth, margin = 6;   // tamanho real do palco na tela
     let px = cx/100*box; px = Math.min(box - bw/2 - margin, Math.max(bw/2 + margin, px));
     // e também não sai por cima: se a cabeça está muito no alto, o balão desce
-    const boxH = overlay.clientHeight || 1, bh = a.bubble.offsetHeight + 22;
+    const boxH = cv.clientHeight || 1, bh = a.bubble.offsetHeight + 22;
     const py = Math.max(bh, (topPx-4)/H*boxH);
     a.bubble.style.left = (px/box*100)+'%'; a.bubble.style.top = (py/boxH*100)+'%';
   }
@@ -409,14 +409,32 @@ async function emote(id, txt, ms=1000){
 
 /* vídeo do filme e cenas de corte (GIF) */
 const vid = document.getElementById('vid'); let musicWas = true;
+/* Filme pelo YouTube (usado onde o arquivo de vídeo não existe, como no celular).
+   Coloque aqui o código do vídeo: o que vem depois de "v=" no link. */
+const YT_ID = '2Tpb1XyqGOQ', YT_START = 75;
+let ytFrame = null;
+function showYouTube(){
+  if (!YT_ID || ytFrame) return;
+  const wrap = document.getElementById('stageWrap'); if (!wrap) return;
+  ytFrame = document.createElement('iframe');
+  ytFrame.src = `https://www.youtube-nocookie.com/embed/${YT_ID}?start=${YT_START}&autoplay=1&mute=${muted?1:0}&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3`;
+  ytFrame.allow = 'autoplay; encrypted-media; picture-in-picture';
+  ytFrame.setAttribute('frameborder','0');
+  // encaixa na tela da TV de tubo do quarto (coordenadas do palco 240x135)
+  Object.assign(ytFrame.style, {position:'absolute', left:(CRT.x/240*100)+'%', top:(CRT.y/135*100)+'%',
+    width:(CRT.w/240*100)+'%', height:(CRT.h/135*100)+'%', border:'0', zIndex:1, background:'#000', pointerEvents:'none'});
+  wrap.insertBefore(ytFrame, document.getElementById('overlay'));
+}
+function hideYouTube(){ if (ytFrame){ ytFrame.remove(); ytFrame = null; } }
 function startVideo(showWindow=true){
+  if (!vid.getAttribute('src')){ musicWas = musicOn; showYouTube(); vid.dataset.on = '1'; return; }   // sem arquivo: usa o YouTube
   const seek = ()=>{ try { vid.currentTime = 75; } catch(e){} };
   if (vid.readyState >= 1) seek(); else vid.addEventListener('loadedmetadata', seek, {once:true});
   vid.volume = 0.6; musicWas = musicOn; musicOn = false; vid.muted = muted;
   vid.dataset.on = '1'; if (showWindow) document.getElementById('pip').classList.remove('hidden');
   const p = vid.play(); if (p && p.catch) p.catch(()=>{ vid.muted = true; vid.play().catch(()=>{}); });
 }
-function stopVideo(){ if (vid.dataset.on !== '1') return; vid.dataset.on = ''; vid.pause(); document.getElementById('pip').classList.add('hidden'); musicOn = musicWas; }
+function stopVideo(){ hideYouTube(); if (vid.dataset.on !== '1') return; vid.dataset.on = ''; vid.pause(); document.getElementById('pip').classList.add('hidden'); musicOn = musicWas; }
 async function cutaway(src, caption, ms){
   const c = document.getElementById('cut'), im = document.getElementById('cutImg');
   im.src = src + '?t=' + Date.now(); document.getElementById('cutCap').textContent = caption || '';
