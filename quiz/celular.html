@@ -42,6 +42,14 @@
   .wave{font-family:'Pixelify Sans',sans-serif;font-size:44px;animation:bob 1s steps(2) infinite}
   @keyframes bob{50%{transform:translateY(-6px)}}
   footer{margin-top:auto;font-size:12px;color:var(--turq2);text-align:center;opacity:.8}
+  .me{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .me .code{font-family:'Pixelify Sans',sans-serif;font-size:30px;color:var(--yellow);letter-spacing:.15em}
+  .me .pts{font-size:15px;color:var(--turq2);text-align:right}
+  .me .pts b{display:block;font-size:22px;color:#fff}
+  input.name{width:100%;font:inherit;font-size:20px;font-weight:700;padding:12px;border:3px solid var(--ink);background:#fff;color:var(--ink);margin:12px 0}
+  .go{width:100%;justify-content:center;background:var(--turq);color:var(--ink);font-size:18px}
+  .note{background:rgba(100,198,204,.12);border-left:4px solid var(--turq);padding:10px 12px;font-size:14px;line-height:1.45;color:#dff;margin-top:6px}
+  .gain{font-family:'Pixelify Sans',sans-serif;font-size:26px;color:var(--yellow);margin-top:6px}
 </style>
 </head>
 <body>
@@ -52,16 +60,23 @@
   </header>
   <h1>Quiz da Boa Convivência</h1>
 
-  <div class="card center hidden" id="vCode">
-    <p class="big">Qual é o código da sala?</p>
-    <p class="muted">Escaneie o QR code da TV ou digite as 4 letras que aparecem embaixo dele.</p>
-    <form id="codeForm" style="display:flex;gap:10px;margin-top:14px">
-      <input id="codeIn" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" style="flex:1;min-width:0;font:inherit;font-family:'Pixelify Sans',sans-serif;font-size:28px;letter-spacing:.3em;text-align:center;text-transform:uppercase;padding:10px;border:3px solid var(--ink);background:#fff;color:var(--ink)">
-      <button class="opt" style="width:auto;min-height:0;justify-content:center;background:var(--turq);color:var(--ink)">Entrar</button>
+  <!-- 1) nome -->
+  <div class="card hidden" id="vName">
+    <p class="big" style="margin-top:0">Como você se chama?</p>
+    <form id="nameForm">
+      <input class="name" id="nameIn" maxlength="40" autocomplete="given-name" placeholder="Seu nome" required>
+      <button class="opt go">Entrar no quiz ▶</button>
     </form>
+    <div class="note">🔒 <b>Suas respostas são anônimas.</b> Na TV aparece só o total de cada alternativa, nunca quem respondeu o quê. O nome serve só para a organização saber quem ganhou a bonificação. Você vai receber um código e é ele que aparece no ranking.</div>
   </div>
 
-  <div class="card center" id="vWait">
+  <!-- seu código e pontos -->
+  <div class="card me hidden" id="vMe">
+    <div><div class="tag">SEU CÓDIGO</div><div class="code" id="myCode">---</div></div>
+    <div class="pts">pontos<b id="myPts">0</b></div>
+  </div>
+
+  <div class="card center hidden" id="vWait">
     <div class="wave">👀</div>
     <p class="big" id="waitTitle">Você está no jogo!</p>
     <p class="muted" id="waitText">Olhe para a TV. Quando a pergunta aparecer, as opções surgem aqui.</p>
@@ -81,12 +96,13 @@
     <div class="emoji" id="rEmoji"></div>
     <p class="big" id="rTitle"></p>
     <p class="muted" id="rText"></p>
+    <div class="gain" id="rGain"></div>
   </div>
 
-  <div class="card">
+  <div class="card hidden" id="vTrail">
     <div class="tag" style="margin-bottom:8px">SUA TRILHA</div>
     <div class="trail" id="trail"></div>
-    <p class="muted" id="score" style="margin:10px 0 0">Ninguém vê o que você respondeu. Só o total aparece na TV.</p>
+    <p class="muted" id="score" style="margin:10px 0 0">Acertou rápido, ganha mais pontos!</p>
   </div>
 
   <footer>eProtege · Saúde e Segurança do Trabalho</footer>
@@ -97,47 +113,49 @@
 <script>
 const $ = id => document.getElementById(id);
 const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
-const params = new URLSearchParams(location.search);
-const code = (params.get('s') || '').toUpperCase();
+const ROOM = (new URLSearchParams(location.search).get('s') || 'EPROTEGE').toUpperCase();   // sala fixa
 
-/* identidade anônima do aparelho e respostas guardadas só neste celular */
 const store = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
 };
-let pid = store.get('epq_pid_'+code, null); if (!pid){ pid = quizRandom(12); store.set('epq_pid_'+code, pid); }
-let mine = store.get('epq_mine_'+code, {});       // { q: {a, right?} }
-let state = null, timerInt = null;
+/* identidade do aparelho: id interno, nome e código curto que aparece no ranking */
+let pid  = store.get('epq_pid', null);  if (!pid){ pid = quizRandom(12); store.set('epq_pid', pid); }
+let code = store.get('epq_code', null); if (!code){ code = quizRandom(3); store.set('epq_code', code); }
+let name = store.get('epq_name', '');
+let mine = store.get('epq_mine', {});   // { q: {a, right?, gain?} }
+let total = 0, state = null, timerInt = null, lastKey = '', qEnd = 0;
 
 function setStatus(s){ const el=$('status'); el.className='status '+s; el.querySelector('span').textContent = s==='on'?'ao vivo':'reconectando…'; }
-
-function show(view){ ['vCode','vWait','vQuestion','vResult'].forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+const VIEWS = ['vWait','vQuestion','vResult'];
+function show(view){ VIEWS.forEach(v=>$(v).classList.toggle('hidden', v!==view)); }
+function showMe(){ $('myCode').textContent = code; $('myPts').textContent = total.toLocaleString('pt-BR'); }
 
 function renderTrail(){
-  if (!state || !state.total){ $('trail').innerHTML = ''; return; }
-  const total = state.total; let ok = 0, done = 0;
-  $('trail').innerHTML = Array.from({length:total},(_,i)=>{
+  if (!state || !state.total){ $('vTrail').classList.add('hidden'); return; }
+  $('vTrail').classList.remove('hidden');
+  let ok = 0, done = 0;
+  $('trail').innerHTML = Array.from({length:state.total},(_,i)=>{
     const m = mine[i]; let c = '';
     if (m && m.right !== undefined){ done++; if (m.a===m.right){ ok++; c='ok'; } else c='no'; }
-    else if (state && state.q===i && state.phase!=='lobby') c='cur';
+    else if (state.q===i && state.phase!=='lobby') c='cur';
     return `<span class="${c}"></span>`;
   }).join('');
-  if (done) $('score').textContent = `Você acertou ${ok} de ${done}. Ninguém vê o que você respondeu, só o total aparece na TV.`;
+  if (done) $('score').textContent = `Você acertou ${ok} de ${done}. Acertou rápido, ganha mais pontos!`;
 }
 
-let lastKey = '', qEnd = 0;
 function render(){
+  if (!name) return;
   const key = state ? state.phase+'|'+state.q+'|'+(mine[state.q]?1:0) : 'none';
-  if (key === lastKey && state && state.phase==='question'){ qEnd = Date.now() + (state.left||0)*1000; return; }  // só atualiza o tempo
-  lastKey = key;
-  clearInterval(timerInt);
+  if (key === lastKey && state && state.phase==='question'){ qEnd = Date.now() + (state.left||0)*1000; return; }
+  lastKey = key; clearInterval(timerInt);
   if (!state || state.phase==='lobby'){
-    show('vWait'); $('waitTitle').textContent='Você está no jogo!';
-    $('waitText').textContent='Aguarde: o quiz já vai começar na TV.';
+    show('vWait'); $('waitTitle').textContent = `Bem-vindo(a), ${name.split(' ')[0]}!`;
+    $('waitText').textContent = 'Você está no jogo. Aguarde: o quiz já vai começar na TV.';
   }
   else if (state.phase==='play'){
-    show('vWait'); $('waitTitle').textContent=`Cena ${state.q+1} de ${state.total}`;
-    $('waitText').textContent='Olhe para a TV! Quando a pergunta aparecer, as opções surgem aqui.';
+    show('vWait'); $('waitTitle').textContent = `Cena ${state.q+1} de ${state.total}`;
+    $('waitText').textContent = 'Olhe para a TV! Quando a pergunta aparecer, as opções surgem aqui.';
   }
   else if (state.phase==='question'){
     show('vQuestion');
@@ -146,17 +164,18 @@ function render(){
     const answered = mine[state.q];
     $('opts').innerHTML = state.opts.map((o,i)=>`<button class="opt ${answered? (answered.a===i?'sel':'dim'):''}" data-i="${i}" ${answered?'disabled':''}><span class="let" style="background:${COLORS[i]}">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
     $('sent').classList.toggle('hidden', !answered);
-    document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+    document.querySelectorAll('.opt[data-i]').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
     qEnd = Date.now() + (state.left||0)*1000; const tot = state.time||20;
     const tick = ()=>{ const l = Math.max(0,(qEnd-Date.now())/1000); $('qTimer').style.width = (l/tot*100)+'%'; };
     tick(); timerInt = setInterval(tick, 250);
   }
   else if (state.phase==='reveal'){
-    const m = mine[state.q];
-    if (m){ m.right = state.right; store.set('epq_mine_'+code, mine); }
-    show('vResult');
-    const letter = 'ABCD'[state.right];
-    const el = $('vResult');
+    const m = mine[state.q], sc = state.scores && state.scores[pid];
+    if (m){ m.right = state.right; if (sc) m.gain = sc[0]; store.set('epq_mine', mine); }
+    if (sc){ total = sc[1]; store.set('epq_total', total); }
+    show('vResult'); showMe();
+    const letter = 'ABCD'[state.right], el = $('vResult');
+    $('rGain').textContent = sc && sc[0] ? `+${sc[0]} pontos` : '';
     if (!m){ el.className='card result'; $('rEmoji').textContent='⏱'; $('rTitle').textContent='Não deu tempo!';
       $('rText').textContent=`A resposta certa era a ${letter}: ${state.opts[state.right]}`; }
     else if (m.a===state.right){ el.className='card result ok'; $('rEmoji').textContent='★'; $('rTitle').textContent='Acertou!';
@@ -166,33 +185,45 @@ function render(){
   }
   else if (state.phase==='end'){
     show('vResult'); const el=$('vResult'); el.className='card result ok';
-    const ok = Object.values(mine).filter(m=>m.right!==undefined && m.a===m.right).length;
-    $('rEmoji').textContent='🏁'; $('rTitle').textContent='Fim de jogo!';
-    $('rText').textContent=`Você acertou ${ok} de ${state.total}. Obrigado por jogar e por deixar a eProtege um lugar melhor de trabalhar!`;
+    const p = state.pos && state.pos[pid];
+    if (p){ total = p[1]; showMe(); }
+    $('rEmoji').textContent = p && p[0]===1 ? '🏆' : '🏁';
+    $('rTitle').textContent = p && p[0]===1 ? 'Você venceu!' : 'Fim de jogo!';
+    $('rText').textContent = p ? `Você ficou em ${p[0]}º lugar com ${p[1].toLocaleString('pt-BR')} pontos (${p[2]} ${p[2]===1?'acerto':'acertos'}). Obrigado por jogar!`
+                               : 'Obrigado por jogar e por deixar a eProtege um lugar melhor de trabalhar!';
+    $('rGain').textContent = p && p[0]===1 ? 'Procure a organização com o seu código!' : '';
   }
   renderTrail();
 }
 
 function answer(i){
   if (!state || state.phase!=='question' || mine[state.q]) return;
-  mine[state.q] = {a:i}; store.set('epq_mine_'+code, mine);
-  net.publish('answer', {pid, q:state.q, a:i});
+  mine[state.q] = {a:i}; store.set('epq_mine', mine);
+  net.publish('answer', {pid, name, code, q:state.q, a:i});
   if (navigator.vibrate) navigator.vibrate(40);
   render();
 }
+function join(){ if (name) net.publish('join', {pid, name, code}); }
 
-$('codeForm').onsubmit = e=>{ e.preventDefault(); const c = $('codeIn').value.trim().toUpperCase(); if (c.length===4) location.search = '?s=' + c; };
-const net = code ? quizNet(code, ['state'], (sub, data)=>{
-  if (sub==='state'){
-    // se a TV recomeçou o jogo, zera o histórico deste aparelho
-    if (data.game && store.get('epq_game_'+code,null) !== data.game){ mine = {}; store.set('epq_mine_'+code, mine); store.set('epq_game_'+code, data.game); }
-    state = data; render();
-  }
-}, s=>{ setStatus(s); if (s==='on') join(); }) : null;
+/* entrada: pede o nome uma vez */
+function enter(){
+  $('vName').classList.add('hidden'); $('vMe').classList.remove('hidden'); showMe(); join(); render();
+}
+$('nameForm').onsubmit = e=>{
+  e.preventDefault(); const n = $('nameIn').value.trim(); if (!n) return;
+  name = n; store.set('epq_name', name); enter();
+};
 
-function join(){ net && net.publish('join', {pid}); }
+const net = quizNet(ROOM, ['state'], (sub, data)=>{
+  if (sub!=='state') return;
+  // a TV começou um jogo novo: zera respostas e pontos deste aparelho
+  if (data.game && store.get('epq_game', null) !== data.game){ mine = {}; total = 0; store.set('epq_mine', mine); store.set('epq_total', 0); store.set('epq_game', data.game); lastKey=''; }
+  state = data; if (name) render();
+}, s=>{ setStatus(s); if (s==='on') join(); });
 setInterval(join, 15000);
-if (code) render(); else { show('vCode'); setStatus('off'); $('status').querySelector('span').textContent = 'sem sala'; $('trail').closest('.card').classList.add('hidden'); }
+
+total = store.get('epq_total', 0);
+if (name) enter(); else { show(null); $('vName').classList.remove('hidden'); }
 </script>
 </body>
 </html>
