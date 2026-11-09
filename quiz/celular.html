@@ -82,20 +82,17 @@
   </header>
   <h1>Quiz da Boa Convivência</h1>
 
-  <!-- 1) nome -->
+  <!-- 1) início -->
   <div class="card hidden" id="vName">
-    <p class="big" style="margin-top:0">Como você se chama?</p>
-    <form id="nameForm">
-      <input class="name" id="nameIn" maxlength="40" autocomplete="given-name" placeholder="Seu nome" required>
-      <button class="btn">Começar ▶</button>
-    </form>
-    <div class="note">🔒 <b>Suas respostas são anônimas.</b> Ninguém vai ver o que você marcou: na TV aparece só quantas pessoas escolheram cada alternativa. O nome serve só para a organização saber quem ganhou a bonificação. No ranking aparece o seu código, não o nome.</div>
-    <p class="muted" style="margin:12px 0 0">São 8 cenas curtinhas. Assista e responda no seu ritmo, sem pressa. 🔊 Se quiser som, use fone.</p>
+    <p class="big" style="margin-top:0">Bem-vindo(a)! 👋</p>
+    <p class="muted" style="margin:0 0 14px">São 8 cenas curtinhas do nosso dia a dia. Assista e responda no seu ritmo, sem pressa.</p>
+    <button class="btn" id="startBtn">Começar ▶</button>
+    <div class="note">🔒 <b>É anônimo.</b> Não pedimos seu nome e ninguém vai saber o que você marcou. No final, a TV mostra só quantas pessoas acertaram cada pergunta.</div>
+    <p class="muted" style="margin:12px 0 0">🔊 Se quiser som, use fone.</p>
   </div>
 
   <!-- código e progresso -->
   <div class="card me hidden" id="vMe">
-    <div><div class="tag">SEU CÓDIGO</div><div class="code" id="myCode">---</div></div>
     <button class="soundbtn" id="soundBtn">🔇 som</button>
     <div class="prog">cena<b id="myProg">1 de 8</b></div>
   </div>
@@ -122,9 +119,7 @@
   <div class="card center done hidden" id="vDone">
     <div class="emoji">🏁</div>
     <p class="big">Pronto, respostas enviadas!</p>
-    <p class="muted">Agora é só aguardar: a revelação vai acontecer na TV, com o gráfico da equipe e o ranking. Guarde o seu código:</p>
-    <div class="code" id="doneCode">---</div>
-    <p class="muted" style="margin:0">Se ficar entre os primeiros, procure a organização com ele.</p>
+    <p class="muted" style="margin-bottom:0">Obrigado por participar! Agora é só aguardar: a revelação vai acontecer na TV, com o resultado da equipe em cada pergunta.</p>
   </div>
 
   <!-- aguardando a TV abrir o quiz -->
@@ -151,8 +146,7 @@ const store = {
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
 };
 let pid  = store.get('epq_pid', null);  if (!pid){ pid = quizRandom(12); store.set('epq_pid', pid); }
-let code = store.get('epq_code', null); if (!code){ code = quizRandom(3); store.set('epq_code', code); }
-let name = store.get('epq_name', '');
+let joined = store.get('epq_joined', false);   // já apertou Começar
 let prog = store.get('epq_prog', {game:null, ans:{}, done:false, tDone:0});   // respostas deste aparelho
 let state = null, started = false;
 
@@ -161,8 +155,8 @@ const VIEWS = ['vName','vMe','vPlay','vDone','vWait'];
 function show(...v){ VIEWS.forEach(x=>$(x).classList.toggle('hidden', !v.includes(x))); }
 function save(){ store.set('epq_prog', prog); }
 function sendProgress(){
-  if (!name || !state) return;
-  net.publish('p/'+pid, {game:state.game, pid, name, code, ans:prog.ans, done:prog.done, tDone:prog.tDone}, true);
+  if (!joined || !state) return;
+  net.publish('p/'+pid, {game:state.game, pid, ans:prog.ans, done:prog.done, tDone:prog.tDone}, true);
 }
 
 /* lista de cenas que a TV abriu, na ordem */
@@ -209,19 +203,18 @@ function nextScene(){
 }
 function finish(){
   if (!prog.done){ prog.done = true; prog.tDone = Date.now(); save(); sendProgress(); }
-  $('doneCode').textContent = code; show('vDone'); actors = {}; overlay.innerHTML = '';
+  show('vDone'); actors = {}; overlay.innerHTML = '';
 }
 function begin(){
-  if (!name || !state || started) return;
-  started = true; $('myCode').textContent = code;
+  if (!joined || !state || started) return;
+  started = true;
   if (prog.game !== state.game){ prog = {game:state.game, ans:{}, done:false, tDone:0}; save(); }
   sendProgress();
   if (prog.done) finish(); else nextScene();
 }
 
-$('nameForm').onsubmit = e=>{
-  e.preventDefault(); const n = $('nameIn').value.trim(); if (!n) return;
-  name = n; store.set('epq_name', name);
+$('startBtn').onclick = ()=>{
+  joined = true; store.set('epq_joined', true);
   if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
   if (state) begin(); else { show('vWait'); $('waitText').textContent = 'Aguardando a organização abrir o quiz na TV.'; }
 };
@@ -242,12 +235,12 @@ const net = quizNet(ROOM, ['state'], (sub, data)=>{
   const changed = state && state.game !== data.game;
   state = data;
   if (changed){ prog = {game:data.game, ans:{}, done:false, tDone:0}; save(); started = false; sceneRun++; }
-  if (name && !started) begin();
+  if (joined && !started) begin();
 }, s=>{ setStatus(s); if (s==='on') sendProgress(); });
 
 setInterval(sendProgress, 10000);   // reenvia o progresso de tempos em tempos
 requestAnimationFrame(loop);
-if (name){ show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; } else show('vName');
+if (joined){ show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; } else show('vName');
 </script>
 </body>
 </html>

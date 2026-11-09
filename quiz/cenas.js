@@ -15,6 +15,8 @@ const CHARS = {
             outfit:'tee', top:'#e2574c', topD:'#b63f37', pants:'#4a72ad', pantsD:'#365a8e', shoes:'#2a2220', voice:400, tallTorso:2, tallLegs:3},
   fernanda:{name:'Fernanda',skin:'#fde0bc', skinD:'#e9c39b', hair:'#141418', hairHi:'#34343e', style:'straight',
             outfit:'jacket', top:'#2b2b33', topD:'#1b1b21', shirt:'#f4f1ea', shirtD:'#ddd7cb', pants:'#40619a', shoes:'#f2f2f2', voice:470},
+  flavia:  {name:'Flávia',  skin:'#f8d9c0', skinD:'#e8bfa0', hair:'#e2b84c', hairHi:'#f7e08e', style:'straight', eyeCol:'#3d8fe0',
+            outfit:'tee', top:'#64C6CC', topD:'#3fa7ae', pants:'#2b2b33', pantsD:'#1b1b21', shoes:'#1b1b21', voice:430},
   wagner:  {name:'Wagner',  skin:'#f1c89e', skinD:'#d9a97c', hair:'#101016', hairHi:'#30333f', style:'sleek', eyes:'narrow',
             outfit:'suit', top:'#2b5bb8', topD:'#1f4388', shirt:'#f2f4f8', tie:'#14203f', pants:'#1f3a74', shoes:'#121212', voice:190},
 };
@@ -70,6 +72,7 @@ function sprite(c, st){
     if (st.blink){ P(6+lx,12,2,1,'#2a1a14'); P(12+lx,12,2,1,'#2a1a14'); }
     else { P(6+lx,11,2,2,'#1a1010'); P(12+lx,11,2,2,'#1a1010'); P(5+lx,11,1,1,'#1a1010'); P(14+lx,11,1,1,'#1a1010'); P(7+lx,11,1,1,'#ffffff'); P(13+lx,11,1,1,'#ffffff'); }
   } else if (st.blink){ P(6+lx,12,2,1,'#2a1a14'); P(12+lx,12,2,1,'#2a1a14'); }
+  else if (c.eyeCol){ P(6+lx,10,2,3,'#1d3768'); P(12+lx,10,2,3,'#1d3768'); P(6+lx,11,2,2,c.eyeCol); P(12+lx,11,2,2,c.eyeCol); P(6+lx,10,1,1,'#ffffff'); P(12+lx,10,1,1,'#ffffff'); }
   else { P(6+lx,10,2,3,'#2a1a14'); P(12+lx,10,2,3,'#2a1a14'); P(6+lx,10,1,1,'#ffffff'); P(12+lx,10,1,1,'#ffffff'); }
   P(5,13,1,1,'#f0978a'); P(14,13,1,1,'#f0978a');
   if (st.mouth){ P(9,14,2,2,'#5a1a1a'); P(9,15,1,1,'#d9666a'); } else { P(9,14,2,1,'#9a4b38'); }
@@ -299,7 +302,11 @@ function drawFridge(){
 }
 function placeBubbles(a, cxPx, topPx){
   const cx = cxPx/W*100;
-  if (a.bubble){ a.bubble.style.left = Math.min(76,Math.max(24,cx))+'%'; a.bubble.style.top = ((topPx-4)/H*100)+'%'; }
+  if (a.bubble){
+    const box = overlay.clientWidth || 1, bw = a.bubble.offsetWidth, margin = 6;
+    let px = cx/100*box; px = Math.min(box - bw/2 - margin, Math.max(bw/2 + margin, px));
+    a.bubble.style.left = (px/box*100)+'%'; a.bubble.style.top = ((topPx-4)/H*100)+'%';
+  }
   if (a.emote){ a.emote.style.left = cx+'%'; a.emote.style.top = ((topPx-3)/H*100)+'%'; }
 }
 function drawPlain(a, now){                       // boneco em tamanho normal + objetos na mão
@@ -617,33 +624,32 @@ const SCENES = [
       clearAll();
     }
   },
-  { // 5. SOM ALTO
-    name:'Som alto', clock:'QUA<br>16:20', bg:()=>officeBg,
-    intro:'A Fernanda está numa ligação com uma clínica…<br>e o escritório virou balada.',
-    setup(){ addActor('fernanda',22,1); addActor('wagner',160,-1); BIG('fernanda',KY); BIG('wagner',KY);
-      actors.fernanda.holding = 'phoneEar'; },
-    draw(now){ drawBoombox(now); },
+  { // 5. COMUNICAÇÃO DE AUSÊNCIA (Flávia)
+    name:'Avisar ausência', clock:'TER<br>08:30', bg:()=>officeBg,
+    intro:'Terça-feira, 8h30.<br>Todo mundo chegou… quase todo mundo.',
+    setup(){ addActor('amauri',14,1); addActor('wagner',96,1); addActor('flavia',178,-1);
+      BIG('amauri',KY); BIG('wagner',KY); BIG('flavia',KY); },
     async play(){
-      await wait(300);
-      await say('fernanda','Alô? Oi, doutora! Pode falar.',{hold:400});
-      clearAll(); fx.loud = true; actors.wagner.dance = true;
-      (async()=>{ while(fx.loud){ SFX.loud(); await wait(380); } })();
-      await wait(1600);
-      look('fernanda',1); await emote('fernanda','>_<',900);
-      await say('fernanda','Desculpa, doutora… não estou te ouvindo!',{hold:600});
-      clearAll(); await emote('wagner','♪',900);
+      await wait(400);
+      look('wagner',1); await emote('wagner','?',800);
+      await say('wagner','Ué, cadê a Fernanda? Ela não veio hoje?',{hold:500});
+      look('flavia',-1);
+      await say('flavia','Não sei… ninguém me avisou nada.',{hold:500});
+      look('amauri',1); look('wagner',-1);
+      await say('amauri','Ah, ela me mandou mensagem. Disse que ia se atrasar.',{hold:600});
+      clearAll(); emote('flavia','…',1200); await emote('wagner','…',1200);
+      const c = document.createElement('div'); c.className = 'caption';
+      c.innerHTML = '<small>NA VERDADE…</small>A Fernanda foi ao médico e vai trazer um atestado.<br>E só avisou o Amauri.';
+      overlay.appendChild(c); SFX.pop(); await wait(4200); c.remove();
     },
-    q:'O Wagner quer ouvir música no trabalho. Qual é a atitude certa?',
-    opts:['Aumentar o volume pra todo mundo curtir','Colocar no viva-voz','Abaixar só se alguém reclamar','Usar fone, num volume que não atrapalhe'],
-    right:3,
+    q:'A Fernanda foi ao médico e vai trazer atestado, mas só mandou mensagem pro Amauri. O que ela deveria ter feito?',
+    opts:['Avisar um colega já resolve','Não avisar ninguém e entregar o atestado depois','Avisar a liderança o quanto antes e enviar o atestado pelo canal certo','Postar nos stories que está doente'],
+    right:2,
     async react(){
-      fx.loud = false; actors.wagner.dance = false; await wait(300);
-      look('wagner',-1); await emote('wagner','!',600);
-      actors.wagner.headphones = true; SFX.pick(); await wait(300);
-      await say('wagner','Foi mal, Fê! Coloquei o fone.',{hold:400});
-      actors.wagner.dance = true;
-      look('fernanda',-1);
-      await say('fernanda','Valeu! Pronto, doutora, agora te ouço.',{hold:1000});
+      await say('flavia','Ah, então ela foi ao médico! E a liderança nem sabia…',{hold:500});
+      await say('amauri','Pois é, ela só falou comigo.',{hold:400});
+      look('wagner',1);
+      await say('wagner','Ausência e atestado: avisa a liderança e manda pelo canal certo!',{hold:1100});
       clearAll();
     }
   },
