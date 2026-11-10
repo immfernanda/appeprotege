@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>App eProtege | Gestão de SST e Pessoas em um só lugar</title>
-<meta name="description" content="Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial, cursos e área comercial em um único app. Conheça o sistema de gestão da eProtege.">
+<meta name="description" content="Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial e cursos em um único app. Conheça o sistema de gestão da eProtege.">
 <link rel="icon" href="assets/simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=21">
+<link rel="stylesheet" href="assets/app-phone.css?v=22">
 <style>
 :root{
   /* Paleta oficial: Manual da Marca eProtege */
@@ -294,7 +294,7 @@ footer .brand .wm{height:24px}
   <div class="container hero-grid">
     <div class="reveal">
       <h1>Saúde, segurança e gestão de pessoas <span class="grad-text">na palma da mão.</span></h1>
-      <p class="lead">Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial, cursos e área comercial em um único sistema, com o suporte de quem é referência em Saúde e Segurança do Trabalho há mais de 20 anos.</p>
+      <p class="lead">Cartão ponto, canal de denúncias anônimo, EPI, atestados, risco psicossocial e cursos em um único sistema, com o suporte de quem é referência em Saúde e Segurança do Trabalho há mais de 20 anos.</p>
       <ul class="hero-list">
         <li><i data-lucide="check-circle-2"></i> Demonstração gratuita e sem compromisso</li>
         <li><i data-lucide="check-circle-2"></i> App para o colaborador e painel para o gestor</li>
@@ -333,7 +333,7 @@ footer .brand .wm{height:24px}
   <div class="container">
     <div class="stats-grid reveal">
       <div class="stat"><b data-count="20" data-prefix="+">0</b><span>anos em SST</span></div>
-      <div class="stat"><b data-count="14">0</b><span>módulos integrados</span></div>
+      <div class="stat"><b data-count="13">0</b><span>módulos integrados</span></div>
       <div class="stat"><b data-count="100" data-suffix="%">0</b><span>digital, sem papel</span></div>
       <div class="stat"><b data-count="24" data-suffix="h">0</b><span>canal de denúncias ativo</span></div>
     </div>
@@ -478,7 +478,7 @@ footer .brand .wm{height:24px}
   </div>
 </footer>
 
-<script src="assets/app-phone.js?v=20"></script>
+<script src="assets/app-phone.js?v=22"></script>
 <script>
 /* ============ CONFIGURAÇÃO ============ */
 const CONFIG = {
@@ -522,7 +522,7 @@ function sendLead(data){
 const picked=new Set(['ponto','denuncias','epi']);
 let interest=[];
 $('#chips').innerHTML=MODULES.map(m=>`<button class="chip" data-id="${m.id}"><i data-lucide="${m.icon}"></i>${m.name}</button>`).join('');
-const LEGAL={ponto:'Ponto digital com espelho sempre acessível',rh:'RH sem papel: cadastro, documentos, ponto e férias',seguranca:'Documentos de SST sempre acessíveis (PGR, PCMSO, LTCAT)',terceiros:'Terceirizadas com documentos de SST conferidos',atestados:'Atestados centralizados no RH',epi:'Controle de entregas de EPI (NR-6)',ideias:'Ideias e melhorias com histórico auditável',pedidos:'Pedidos de materiais acompanhados até a entrega',comunicados:'Comunicados com confirmação de leitura',psicossocial:'Apoio à gestão de riscos psicossociais (NR-1)',denuncias:'Canal anônimo alinhado à Lei 14.457/22',cursos:'Treinamentos e integração rastreáveis',resultados:'Indicadores de SST da empresa em um painel',comercial:'Funil comercial e metas em tempo real'};
+const LEGAL={ponto:'Ponto digital com espelho sempre acessível',rh:'RH sem papel: cadastro, documentos, ponto e férias',seguranca:'Documentos de SST sempre acessíveis (PGR, PCMSO, LTCAT)',terceiros:'Terceirizadas com documentos de SST conferidos',atestados:'Atestados centralizados no RH',epi:'Controle de entregas de EPI (NR-6)',ideias:'Ideias e melhorias com histórico auditável',pedidos:'Pedidos de materiais acompanhados até a entrega',comunicados:'Comunicados com confirmação de leitura',psicossocial:'Apoio à gestão de riscos psicossociais (NR-1)',denuncias:'Canal anônimo alinhado à Lei 14.457/22',cursos:'Treinamentos e integração rastreáveis',resultados:'Indicadores de SST da empresa em um painel'};
 function renderBuilder(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',picked.has(c.dataset.id)));
   const size=SIZES[$('#emp').value-1];

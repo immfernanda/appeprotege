@@ -39,10 +39,7 @@ const MODULES = [
    items:['Integração digital','Cursos e trilhas de NRs','Treinamentos com presença','Certificados']},
   {id:'resultados', name:'Painel de Resultados', icon:'layout-grid',
    desc:'Os números de SST da sua empresa em um painel: colaboradores, ASOs, EPIs, treinamentos e pendências por área.',
-   items:['Indicadores da empresa','ASOs e exames em dia','EPIs e treinamentos','Pendências por área']},
-  {id:'comercial', name:'Comercial', icon:'handshake',
-   desc:'Acompanhe leads, propostas e metas da equipe comercial com indicadores em tempo real.',
-   items:['Funil de vendas','Propostas e metas','Indicadores em tempo real','Relatórios da equipe']}
+   items:['Indicadores da empresa','ASOs e exames em dia','EPIs e treinamentos','Pendências por área']}
 ];
 const $ = s => document.querySelector(s);
 const icons = () => lucide.createIcons();
@@ -367,14 +364,6 @@ const SCREENS = {
     const p=[['RH',4],['EPI',3],['Treinamentos',6],['Terceiros',2],['Atestados',1]], mx=6;
     return topBar('Dashboard','resultados','Painel de Resultados')+`<div class="s-card"><b>Atestados nos últimos meses</b><div class="chart">${[30,45,38,60,42,35,28].map((h,i)=>`<i style="height:${h}%;animation-delay:${i*.07}s"></i>`).join('')}</div></div>
     <div class="s-card"><b>Pendências por área</b>${p.map(x=>`<div class="hbar"><span class="s-muted">${x[0]}</span><div class="bar"><i style="width:${x[1]/mx*100}%"></i></div><b style="font-size:.66rem;text-align:right">${x[1]}</b></div>`).join('')}</div>`;
-  },
-
-  /* Comercial */
-  comercial(){
-    const bars=[40,55,48,70,62,85,92];
-    return topBar('Comercial')+`<div class="kpis"><div class="s-card"><span class="s-muted">Leads no mês</span><b>128</b><span class="pill p-ok">+18%</span></div><div class="s-card"><span class="s-muted">Propostas</span><b>34</b><span class="pill p-info">R$ 212 mil</span></div></div>
-    <div class="s-card"><b>Vendas · últimas semanas</b><div class="chart">${bars.map((h,i)=>`<i style="height:${h}%;animation-delay:${i*.07}s"></i>`).join('')}</div></div>
-    <div class="s-card"><div class="s-row"><span>Meta do mês</span><b>78%</b></div><div class="bar"><i style="width:78%"></i></div></div>`;
   }
 };
 
