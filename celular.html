@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="assets/app-phone.css?v=10">
+<link rel="stylesheet" href="assets/app-phone.css?v=20">
 <style>
 :root{--navy:#001B4A;--blue:#2864B0;--teal:#12B0B6;--aqua:#64C6CC;--slate:#3E5A70;--muted:#5B6B80;--line:#E3EAF2;--bg:#F5F9FC;--grad:linear-gradient(135deg,#2864B0,#12B0B6)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -32,10 +32,11 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
 .lead{color:#c3d3ea;max-width:620px;line-height:1.6}
 .mod-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px}
 .mod-tab{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;text-align:center;font-size:.78rem;font-weight:600;color:#d2deef;transition:all .25s;line-height:1.25}
-.mod-tab .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;box-shadow:0 8px 18px -8px var(--c,#000)}
+.mod-tab .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#4FD1D6;background:rgba(79,209,214,.12);border:1px solid rgba(79,209,214,.38);box-shadow:0 0 16px -6px rgba(79,209,214,.8)}
 .mod-tab .ic svg{width:21px;height:21px}
 .mod-tab:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
 .mod-tab.active{background:#fff;border-color:var(--teal);color:var(--navy)}
+.mod-tab.active .ic{background:linear-gradient(160deg,#0b1d45,#020B1F)}
 .mod-tab{position:relative}
 .mod-detail{margin-top:18px;background:#fff;color:var(--navy);border-radius:20px;padding:24px 26px;min-height:190px}
 .mod-detail h3{font-size:1.35rem;font-weight:800;display:flex;align-items:center;gap:10px;margin-bottom:6px}
@@ -82,7 +83,7 @@ h1 span{background:linear-gradient(90deg,#64C6CC,#12B0B6);-webkit-background-cli
     </div>
   </div>
 </div>
-<script src="assets/app-phone.js?v=12"></script>
+<script src="assets/app-phone.js?v=20"></script>
 <script>
 // No celular, ao escolher um módulo, rola até o aparelho
 $('#modTabs').addEventListener('click',()=>{ if(innerWidth<=900) document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'center'}) });
