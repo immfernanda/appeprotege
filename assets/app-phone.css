@@ -18,10 +18,11 @@
 
 /* Início */
 .hi{display:flex;align-items:center;gap:10px;margin:2px 0 12px}
-.sky{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;background:linear-gradient(160deg,#cfeeff,#7cc4f2);box-shadow:0 8px 18px -10px #7cc4f2}
-.sky svg{width:19px;height:19px;color:#F4BB0E;animation:spin 14s linear infinite}
-.sky.night{background:linear-gradient(160deg,#0b1a3a,#1d3a7a);box-shadow:0 8px 18px -10px #2864B0}
-.sky.night svg{color:#cfe3ff;animation:none}
+.sky{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;position:relative;overflow:hidden;
+  background:radial-gradient(70% 70% at 50% 50%,rgba(244,187,14,.22),transparent 70%),rgba(255,255,255,.05);border:1px solid rgba(244,187,14,.35);box-shadow:0 0 18px -6px rgba(244,187,14,.55)}
+.sky svg{width:19px;height:19px;color:#FFD34D;filter:drop-shadow(0 0 5px rgba(244,187,14,.8));animation:spin 18s linear infinite}
+.sky.night{background:radial-gradient(70% 70% at 50% 50%,rgba(111,164,242,.22),transparent 70%),rgba(255,255,255,.05);border-color:rgba(111,164,242,.4);box-shadow:0 0 18px -6px rgba(111,164,242,.6)}
+.sky.night svg{color:#cfe3ff;filter:drop-shadow(0 0 5px rgba(160,200,255,.8));animation:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 .hi h4{font-size:1.02rem;font-weight:700;line-height:1.15}
 .hi h4 span{color:#4FD1D6}
