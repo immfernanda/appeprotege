@@ -156,7 +156,7 @@ function show(...v){ VIEWS.forEach(x=>$(x).classList.toggle('hidden', !v.include
 function save(){ store.set('epq_prog', prog); }
 function sendProgress(){
   if (!joined || !state) return;
-  net.publish('p/'+pid, {game:state.game, pid, ans:prog.ans, done:prog.done, tDone:prog.tDone}, true);
+  net.publish('p/'+pid, {game:prog.game || state.game, pid, t0:prog.t0||0, ans:prog.ans, done:prog.done, tDone:prog.tDone}, true);
 }
 
 /* lista de cenas que a TV abriu, na ordem */
@@ -208,7 +208,9 @@ function finish(){
 function begin(){
   if (!joined || !state || started) return;
   started = true;
-  if (prog.game !== state.game){ prog = {game:state.game, ans:{}, done:false, tDone:0}; save(); }
+  if (prog.game !== state.game && !(prog.game === 'ABERTO' || state.game === 'ABERTO')){ prog = {game:state.game, t0:Date.now(), ans:{}, done:false, tDone:0}; save(); }
+  if (state.game === 'ABERTO' && prog.game !== 'ABERTO' && (!prog.t0 || Date.now() - prog.t0 > 12*3600e3)){ prog = {game:'ABERTO', t0:Date.now(), ans:{}, done:false, tDone:0}; save(); }   // sobra de teste antigo
+  if (!prog.game){ prog.game = state.game; prog.t0 = Date.now(); save(); }
   sendProgress();
   if (prog.done) finish(); else nextScene();
 }
@@ -216,7 +218,7 @@ function begin(){
 $('startBtn').onclick = ()=>{
   joined = true; store.set('epq_joined', true);
   if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
-  if (state) begin(); else { show('vWait'); $('waitText').textContent = 'Aguardando a organização abrir o quiz na TV.'; }
+  if (state) begin(); else { show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; waitForTV(); }
 };
 $('replayBtn').onclick = ()=>{ window.scrollTo({top:0, behavior:'smooth'}); runScene(curIdx); };
 $('fsBtn').onclick = ()=>{
@@ -232,15 +234,22 @@ $('soundBtn').onclick = ()=>{
 
 const net = quizNet(ROOM, ['state'], (sub, data)=>{
   if (sub !== 'state' || !data || !data.game) return;
-  const changed = state && state.game !== data.game;
+  if (prog.game === 'ABERTO'){ prog.game = data.game; save(); state = data; sendProgress(); if (joined && !started) begin(); return; }   // já estava jogando sem a TV: só adota o jogo
+  const changed = state && state.game !== data.game && state.game !== 'ABERTO';
   state = data;
-  if (changed){ prog = {game:data.game, ans:{}, done:false, tDone:0}; save(); started = false; sceneRun++; }
+  if (changed){ prog = {game:data.game, t0:Date.now(), ans:{}, done:false, tDone:0}; save(); started = false; sceneRun++; }
   if (joined && !started) begin();
 }, s=>{ setStatus(s); if (s==='on') sendProgress(); });
 
 setInterval(sendProgress, 10000);   // reenvia o progresso de tempos em tempos
 requestAnimationFrame(loop);
-if (joined){ show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; } else show('vName');
+/* se a TV não estiver aberta, não trava: começa assim mesmo (as respostas contam quando a TV abrir) */
+let waitTimer = null;
+function waitForTV(){
+  clearTimeout(waitTimer);
+  waitTimer = setTimeout(()=>{ if (!state){ state = {game:'ABERTO', scenes:null}; if (joined && !started) begin(); } }, 3500);
+}
+if (joined){ show('vWait'); $('waitText').textContent = 'Conectando ao quiz…'; waitForTV(); } else show('vName');
 </script>
 </body>
 </html>
