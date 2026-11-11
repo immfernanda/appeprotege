@@ -578,7 +578,7 @@ const SCENES = [
       await say('wagner','Blá, blá, blá… e o pior: blá, blá, blá!', {hold:600, speed:26});
       clearAll(); emote('amauri','…',1400); await emote('fernanda','!!',1400);
     },
-    q:'O Wagner chegou com uma fofoca sobre um colega. O que a Fernanda faz?',
+    q:'O Wagner chegou com uma fofoca sobre um colega. O que a Fernanda deveria fazer?',
     opts:['Puxa uma cadeira: “conta tudo!”','Repassa no grupo do WhatsApp','Corta com educação e muda de assunto','Conta só pra uma pessoa de confiança'],
     right:2,
     async react(){
@@ -723,7 +723,7 @@ const SCENES = [
     }
   },
   { // 6. CAFÉ COM O SETOR TODO
-    name:'Café em grupo', clock:'QUA<br>15:00', bg:()=>officeBg,
+    name:'Café / almoço', clock:'QUA<br>15:00', bg:()=>officeBg,
     intro:'Quarta-feira, 15h.<br>Bateu aquela vontade de um cafezinho…',
     setup(){ addActor('fernanda',4,1); addActor('flavia',60,1); addActor('amauri',116,1); addActor('wagner',172,-1); addActor('brenda',-50,1);
       ['fernanda','flavia','amauri','wagner'].forEach(id=>BIG(id,KY)); BIG('brenda',KY_B); },
@@ -742,15 +742,15 @@ const SCENES = [
       await say('brenda','Cadê todo mundo?! O setor ficou vazio…',{hold:700});
       clearAll();
     },
-    q:'O setor inteiro foi tomar café junto e a Brenda ficou sem ninguém para ajudar. O que é o certo?',
-    opts:['Café é sagrado, vai todo mundo junto mesmo','Revezar: cada um vai num horário e sempre fica alguém no setor','Levar o celular e atender da copa','Sair junto só quando a liderança não estiver'],
+    q:'O setor inteiro saiu junto para o café / almoço e a Brenda ficou sem ninguém para ajudar. O que é o certo?',
+    opts:['Café / almoço é sagrado, vai todo mundo junto mesmo','Revezar: cada um vai num horário e sempre fica alguém no setor','Levar o celular e atender da copa','Sair junto só quando a liderança não estiver'],
     right:1,
     async react(){
       look('brenda',1);
       walk('amauri',150,80); await walk('wagner',196,80);
       look('amauri',-1); look('wagner',-1);
       await say('amauri','Desculpa, Brenda! Da próxima vez a gente reveza.',{hold:500});
-      await say('brenda','Isso! Café pode, sim. Mas sempre fica alguém no setor.',{hold:1100});
+      await say('brenda','Isso! Café / almoço pode, sim. Mas sempre fica alguém no setor.',{hold:1100});
       clearAll();
     }
   },
