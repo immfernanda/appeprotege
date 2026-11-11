@@ -121,6 +121,30 @@
   .chartlist .num{color:var(--turq2)} .chartlist .num b{color:#fff;font-size:3.4vh}
   .avgline{font-size:3vh;color:var(--turq2);margin:0 0 3vh} .avgline b{color:var(--yellow);font-size:4.4vh}
   .mute{position:fixed;right:1.5vw;bottom:1.5vh;font-size:1.6vh;color:var(--turq2);opacity:.7}
+  /* textos da cena acompanham o tamanho da cena (TV, computador ou celular) */
+  #stageWrap{container-type:inline-size}
+  .hud-clock{font-size:2.1cqw;padding:.5cqw 1cqw}
+  .hud-logo{height:6.4cqw;padding:.9cqw 1.3cqw}
+  .bubble{font-size:max(12px,2.8cqw);padding:1.3cqw 1.7cqw 1.1cqw;border-width:max(2px,.35cqw)}
+  .bubble .name{font-size:max(9px,1.9cqw);top:auto;bottom:100%;left:1.1cqw;padding:0 .9cqw}
+  .bubble:after{bottom:-1.5cqw;border-width:1.2cqw}
+  .emote{font-size:max(12px,2.5cqw);padding:.2cqw .9cqw}
+  .nametag{font-size:max(9px,1.8cqw);padding:0 .8cqw}
+  .caption{font-size:max(13px,3cqw);padding:1.5cqw 2.8cqw;border-width:max(2px,.35cqw)}
+  .caption small{font-size:max(9px,1.9cqw)}
+  @media (max-width:700px){
+    #app{padding:10px 0;gap:10px}
+    #stageWrap{height:auto;width:100vw;max-width:100vw;border-left:0;border-right:0}
+    #panel{width:100%;padding:0 12px}
+    .q{font-size:18px} .opt{font-size:15px;min-height:52px} .opt .let{width:32px;height:32px;font-size:18px}
+    .opts{grid-template-columns:1fr} .countbig{font-size:16px} .countbig b{font-size:20px} .btn{font-size:15px}
+    .trail{font-size:12px} .hint{font-size:15px}
+    .mute,.live{display:none}
+    .lobby{flex-direction:column;gap:24px;padding:20px 16px;text-align:center} .lobby-left{max-width:100%}
+    #title h1{white-space:normal;font-size:30px} .qrbox img,.qrbox canvas{width:62vw!important;height:62vw!important}
+    .chartlist li{grid-template-columns:1fr;gap:4px;font-size:14px} .chartlist .track{height:14px} .chartbox h2{font-size:26px}
+    .previewbar{font-size:11px;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap} .previewbar button{flex:none} body.preview #app{padding-top:52px}
+  }
 </style>
 </head>
 <body>
