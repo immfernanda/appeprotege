@@ -249,22 +249,36 @@ const phoneUrl = new URL(/github\.io$/.test(location.hostname) ? new URL('celula
 phoneUrl.search = (CODE!=='EPROTEGE' ? '?s=' + CODE : '');
 try { new QRCode($('qr'), {text: phoneUrl.href, width: 512, height: 512, colorDark:'#001B4A', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M}); } catch(e){}
 
-const net = quizNet(CODE, ['p/+'], (sub, data)=>{
-  if (!sub.startsWith('p/') || !data || !data.pid) return;
+/* todas as TVs (e a página de resultados) usam o MESMO jogo: o que estiver publicado no servidor */
+const rawP = new Map();             // tudo que chegou dos celulares, de qualquer jogo
+let gameKnown = false;
+function adoptGame(g, t0){
+  if (!g || g === GAME){ gameKnown = true; return; }
+  GAME = g; GAME_T0 = t0 || 0; store.set('epq_tv_game', GAME); store.set('epq_tv_game_t0', GAME_T0);
+  gameKnown = true; loadPlayers(); rawP.forEach(d=>takePlayer(d)); updatePlayers();
+}
+function takePlayer(data){
   // conta quem é deste jogo, ou quem começou sem a TV aberta depois do último "Novo jogo"
-  if (data.game !== GAME && !(data.game === 'ABERTO' && (data.t0||0) >= GAME_T0)) return;
+  if (data.game !== GAME && !(data.game === 'ABERTO' && (data.t0||0) >= GAME_T0)) return false;
+  players.set(data.pid, {name:'', code:'', ans: data.ans || {}, done: !!data.done, tDone: data.tDone || 0});
+  return true;
+}
+const net = quizNet(CODE, ['p/+','state'], (sub, data)=>{
+  if (sub === 'state'){ if (data && data.game) adoptGame(data.game, data.t0); return; }
+  if (!sub.startsWith('p/') || !data || !data.pid) return;
+  rawP.set(data.pid, data);
   const isNew = !players.has(data.pid);
-  players.set(data.pid, {name:String(data.name||'').slice(0,40), code:String(data.code||'').slice(0,4).toUpperCase(),
-    ans: data.ans || {}, done: !!data.done, tDone: data.tDone || 0});
+  if (!takePlayer(data)) return;
   if (isNew && phase==='title') tone(880,0.06,'square',0.04);
   savePlayers(); updatePlayers();
 }, s=>{
   $('netStatus').textContent = s==='on' ? 'modo ao vivo conectado ✓' : 'sem conexão ao vivo: a revelação roda em modo demonstração';
   $('netStatus').className = 'netstatus' + (s==='on'?'':' off');
   $('live').textContent = s==='on' ? '● ao vivo' : '○ modo demonstração';
-  if (s==='on') publishState();
+  // só publica depois de ver se já existe um jogo no servidor (para não criar um jogo diferente)
+  if (s==='on') setTimeout(()=>{ gameKnown = true; publishState(); }, 2500);
 });
-function publishState(){ net.publish('state', {game:GAME, scenes:SCENES.map(s=>s.name)}, true); }
+function publishState(){ if (gameKnown) net.publish('state', {game:GAME, t0:GAME_T0, scenes:SCENES.map(s=>s.name)}, true); }
 function updatePlayers(){
   const list = [...players.values()];
   $('nPlayers').textContent = list.length;
