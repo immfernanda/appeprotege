@@ -494,6 +494,7 @@ function drawSpreadsheet(){          // planilha de clientes no monitor da direi
 function drawSink(){                  // pia na bancada da cozinha
   R(ctx,160,63,50,8,OL); R(ctx,161,64,48,6,'#c9d2d6'); R(ctx,164,65,42,4,'#9aa7b0');
   R(ctx,183,54,3,10,OL); R(ctx,183,54,9,3,OL); R(ctx,184,55,2,8,'#e9eef0'); R(ctx,184,55,7,1,'#e9eef0');
+  if (fx.mug2){ R(ctx,177,51,8,8,OL); R(ctx,178,52,6,6,'#7b8fd6'); R(ctx,184,53,2,3,OL); }   // caneca escondida (aparece só a pontinha)
   const n = fx.dishes||0;
   for (let i=0;i<n;i++){ R(ctx,166+(i%2)*2,61-i*3,16,3,OL); R(ctx,167+(i%2)*2,61-i*3,14,2,i%3?'#ffffff':'#64C6CC'); }
   if (fx.mugInSink){ R(ctx,194,57,7,7,OL); R(ctx,195,58,5,5,'#e8706f'); R(ctx,200,59,2,3,OL); }
@@ -610,7 +611,9 @@ const SCENES = [
       await emote('amauri','♥',900);
       await say('amauri','Só mais um pouquinho… o filme tá na melhor parte!',{hold:600});
       clearAll(); await walk('brenda',112,60); look('amauri',1);
-      await emote('brenda','?!',1300);
+      await emote('brenda','?!',1100);
+      await say('brenda','Amauri… tudo certo por aí?',{hold:700});
+      clearAll();
     },
     q:'Fim de mês e a meta ainda aberta. O que o Amauri deveria estar fazendo?',
     opts:['Terminando o filme, falta pouco','Ligando pros clientes e levantando os dados da meta','Escolhendo o filme do fim de semana','Esperando o mês que vem'],
@@ -651,34 +654,42 @@ const SCENES = [
       await say('amauri','Gente, política a gente deixa da porta pra fora, combinado?',{hold:700});
       look('fernanda',1); look('wagner',-1);
       await say('wagner','Combinado. Desculpa, Fê.',{hold:400});
-      await say('fernanda','Tudo certo! Vamos de café?',{hold:900});
+      await say('fernanda','Desculpa também, Wagner. Me exaltei. Vamos de café?',{hold:1000});
       clearAll();
     }
   },
   { // 4. LOUÇA NA PIA (copa)
     name:'Louça na pia', clock:'QUI<br>14:05', bg:()=>kitchenBg,
     intro:'Depois do almoço…<br>a pia da copa começou a encher.',
-    setup(){ addActor('brenda',40,1); addActor('amauri',262,-1); BIG('brenda',KY_B); BIG('amauri',KY);
-      fx.dishes = 3; fridgeOpen = fridgeTarget = 0; window.lunchTaken = false; actors.brenda.holding = 'mugEmpty'; },
+    setup(){ addActor('brenda',40,1); addActor('fernanda',262,-1); BIG('brenda',KY_B); BIG('fernanda',KY);
+      fx.dishes = 3; fridgeOpen = fridgeTarget = 0; window.lunchTaken = false;
+      actors.brenda.holding = 'mugEmpty'; actors.fernanda.holding = 'mugEmpty'; },
     draw(){ drawSink(); },
     async play(){
       await wait(300);
       await walk('brenda',112,50);
-      actors.brenda.holding = null; fx.mugInSink = true; SFX.click();
+      actors.brenda.holding = 'nada'; fx.mugInSink = true; SFX.click();
       await say('brenda','Deixa de molho… depois alguém lava. Ninguém vai saber que fui eu!',{hold:500});
-      clearAll(); await walk('brenda',30,56);
-      await walk('amauri',196,50); look('amauri',-1);
-      await emote('amauri','…',1300);
+      clearAll(); await walk('brenda',14,56);
+      await walk('fernanda',112,50);
+      look('fernanda',-1); await wait(350); look('fernanda',1); await wait(350);
+      await emote('fernanda','shhh…',900);
+      actors.fernanda.holding = 'nada'; fx.mug2 = true; SFX.click();
+      await say('fernanda','Vou esconder a minha atrás das outras. Ninguém vai ver!',{hold:600});
+      clearAll();
     },
-    q:'A Brenda deixou a caneca na pia “pra depois”. Qual é a atitude certa?',
+    q:'A Brenda e a Fernanda deixaram as canecas na pia “pra depois”. Qual é a atitude certa?',
     opts:['Deixar de molho até sexta','Esperar a equipe da limpeza','Lavar, secar e guardar na hora','Esconder atrás das outras louças'],
     right:2,
     async react(){
-      look('brenda',1); await emote('brenda','!',700);
-      await walk('brenda',112,56);
-      fx.washing = true; SFX.water(); await wait(1300);
-      fx.washing = false; fx.mugInSink = false; fx.dishes = 0; actors.brenda.holding = 'mugEmpty'; SFX.pick();
-      await say('brenda','Usou, lavou, guardou! Pia limpa é de todo mundo.',{hold:1000});
+      look('fernanda',1); await emote('fernanda','!',700);
+      await say('fernanda','Nossa, a pia tá lotada! Deixa que eu resolvo.',{hold:400});
+      clearAll(); fx.washing = true; SFX.water(); await wait(900); SFX.water(); await wait(900);
+      fx.washing = false; fx.mugInSink = false; fx.mug2 = false; fx.dishes = 0; actors.fernanda.holding = 'mugEmpty'; SFX.pick();
+      look('fernanda',-1);
+      await say('fernanda','Lavou, secou e guardou!',{hold:600});
+      look('brenda',1);
+      await say('brenda','Isso! Pia limpa é de todo mundo.',{hold:1000});
       clearAll();
     }
   },
