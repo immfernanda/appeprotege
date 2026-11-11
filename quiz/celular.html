@@ -229,9 +229,21 @@ $('fsBtn').onclick = ()=>{
   const go = el.requestFullscreen || el.webkitRequestFullscreen;
   if (go) Promise.resolve(go.call(el)).then(()=>{ try { screen.orientation.lock('landscape').catch(()=>{}); } catch(e){} }).catch(()=>{});
 };
-$('soundBtn').onclick = ()=>{
+/* No iPhone, a chave de silencioso corta o som da página. Tocar um áudio mudo em loop
+   coloca a página no modo "reprodução de mídia", e aí a música e os efeitos tocam mesmo assim. */
+const SILENT = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+let keepAlive = null, musicStarted = false;
+function unlockAudio(){
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch(e){}
+  if (!keepAlive){ keepAlive = new Audio(SILENT); keepAlive.loop = true; keepAlive.setAttribute('playsinline',''); keepAlive.volume = 0.01; }
+  keepAlive.play().catch(()=>{});
   if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+  if (AC && AC.state === 'suspended') AC.resume().catch(()=>{});
+}
+$('soundBtn').onclick = ()=>{
   muted = !muted; $('soundBtn').textContent = muted ? '🔇 som' : '🔊 som';
+  if (!muted){ unlockAudio(); musicOn = true; if (!musicStarted){ musicStarted = true; startMusic(); } }
+  else { musicOn = false; if (keepAlive) keepAlive.pause(); }
 };
 
 const net = quizNet(ROOM, ['state'], (sub, data)=>{
