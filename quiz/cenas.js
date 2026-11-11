@@ -803,8 +803,8 @@ const SCENES = [
   { // 10. MARMITA NA SEXTA (copa)
     name:'Marmita', clock:'SEX<br>17:28', bg:()=>kitchenBg,
     intro:'Sexta-feira, 17h28.<br>Faltam 2 minutos para o fim de semana!',
-    setup(){ addActor('brenda',70,1); addActor('fernanda',112,1); addActor('wagner',150,1); addActor('amauri',192,-1);
-      BIG('brenda',KY_B); BIG('fernanda',KY); BIG('wagner',KY); BIG('amauri',KY);
+    setup(){ addActor('brenda',40,1); addActor('fernanda',84,1); addActor('flavia',126,1); addActor('wagner',162,1); addActor('amauri',198,-1);
+      BIG('brenda',KY_B); BIG('fernanda',KY); BIG('flavia',KY); BIG('wagner',KY); BIG('amauri',KY);
       actors.wagner.holding = 'nada'; actors.amauri.holding = 'nada';
       fridgeOpen = fridgeTarget = 0; window.lunchTaken = false; },
     async play(){
@@ -812,8 +812,9 @@ const SCENES = [
       await say('brenda','Ufa, que semana! Bom descanso, gente!',{hold:400});
       look('amauri',-1); await say('amauri','Até segunda, pessoal!',{hold:300});
       await say('wagner','Bom fim de semana! Fui!',{hold:200});
-      clearAll(); look('amauri',1); look('wagner',1);
-      walk('amauri',270,80); await walk('wagner',270,80);
+      await say('flavia','Tchau, gente! Até segunda!',{hold:200});
+      clearAll(); look('amauri',1); look('wagner',1); look('flavia',1);
+      walk('amauri',270,80); walk('wagner',280,80); await walk('flavia',290,80);
       await wait(300);
       await walk('fernanda',196,90);
       look('fernanda',-1); await emote('fernanda','?',1100);
