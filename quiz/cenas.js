@@ -16,7 +16,7 @@ const CHARS = {
   fernanda:{name:'Fernanda',skin:'#fde0bc', skinD:'#e9c39b', hair:'#141418', hairHi:'#34343e', style:'straight',
             outfit:'jacket', top:'#2b2b33', topD:'#1b1b21', shirt:'#f4f1ea', shirtD:'#ddd7cb', pants:'#40619a', shoes:'#f2f2f2', voice:470},
   flavia:  {name:'Flávia',  skin:'#f8d9c0', skinD:'#e8bfa0', hair:'#e2b84c', hairHi:'#f7e08e', style:'shoulder', eyeCol:'#3d8fe0',
-            outfit:'tee', top:'#64C6CC', topD:'#3fa7ae', pants:'#2b2b33', pantsD:'#1b1b21', shoes:'#1b1b21', voice:430},
+            outfit:'tee', top:'#64C6CC', topD:'#3fa7ae', pants:'#2b2b33', pantsD:'#1b1b21', shoes:'#1b1b21', voice:430, tallTorso:1, tallLegs:1},
   wagner:  {name:'Wagner',  skin:'#f1c89e', skinD:'#d9a97c', hair:'#101016', hairHi:'#30333f', style:'sleek', eyes:'narrow',
             outfit:'suit', top:'#2b5bb8', topD:'#1f4388', shirt:'#f2f4f8', tie:'#14203f', pants:'#1f3a74', shoes:'#121212', voice:190},
 };
@@ -305,6 +305,9 @@ function drawFridge(){
   if (dw>6){ R(ctx,x0-dw+2,y0+18,dw-4,2,'#5f9f92'); R(ctx,x0-dw+2,y0+40,dw-4,2,'#5f9f92'); }
 }
 function placeBubbles(a, cxPx, topPx){
+  if (!a.tag){ a.tag = document.createElement('div'); a.tag.className = 'nametag'; a.tag.textContent = a.c.name; overlay.appendChild(a.tag); }
+  a.tag.style.display = (a.bubble || a.emote || a.hidden || cxPx < 4 || cxPx > W-4) ? 'none' : '';
+  a.tag.style.left = (cxPx/W*100)+'%'; a.tag.style.top = ((topPx-2)/H*100)+'%';
   const cx = cxPx/W*100;
   if (a.bubble){
     const box = cv.clientWidth || 1, bw = a.bubble.offsetWidth, margin = 6;   // tamanho real do palco na tela
@@ -597,7 +600,7 @@ const SCENES = [
         ctx.imageSmoothingEnabled = true;
         ctx.drawImage(filmSheet, (i%8)*360, Math.floor(i/8)*203, 360, 203, 0, 0, W, H);
         if (fx.video && !vid.paused) ctx.drawImage(vid, 80, 0, 480, 360, CRT.x, CRT.y, CRT.w, CRT.h);
-        else if (fx.mini) drawMiniFilm(now, CRT.x, CRT.y, CRT.w, CRT.h);
+        else if (fx.mini || fx.video) drawMiniFilm(now, CRT.x, CRT.y, CRT.w, CRT.h);   // sem o vídeo (celular ou TV publicada): filminho desenhado
         ctx.imageSmoothingEnabled = false;
       }
     },
@@ -623,7 +626,7 @@ const SCENES = [
   },
   { // 3. POLÍTICA (copa)
     name:'Política', clock:'TER<br>12:30', bg:()=>kitchenBg,
-    intro:'Hora do almoço na copa.<br>E o clima esquentou…',
+    intro:'Hora do almoço na copa.<br>O clima pesou…',
     setup(){ addActor('fernanda',58,1); addActor('wagner',110,-1); addActor('amauri',262,-1);
       BIG('fernanda',KY); BIG('wagner',KY); BIG('amauri',KY); fridgeOpen = fridgeTarget = 0; window.lunchTaken = false; },
     draw(now){ if (fx.fight) drawFight(now); },
@@ -631,7 +634,7 @@ const SCENES = [
       await wait(300);
       await say('wagner','Não dá pra defender o seu candidato!',{hold:300,speed:26});
       SFX.angry(); emote('wagner','#@!',700); await wait(400);
-      await say('fernanda','O seu é que não dá! Vocês acabaram com tudo!',{hold:300,speed:26});
+      await say('fernanda','O seu candidato é que é corrupto!',{hold:300,speed:26});
       SFX.angry(); emote('fernanda','#@!',700); await wait(400);
       clearAll(); startFight(['fernanda','wagner'], 106, 98);
       await wait(2200);
@@ -662,7 +665,7 @@ const SCENES = [
       await wait(300);
       await walk('brenda',112,50);
       actors.brenda.holding = null; fx.mugInSink = true; SFX.click();
-      await say('brenda','Deixa de molho… depois alguém lava!',{hold:400});
+      await say('brenda','Deixa de molho… depois alguém lava. Ninguém vai saber que fui eu!',{hold:500});
       clearAll(); await walk('brenda',30,56);
       await walk('amauri',196,50); look('amauri',-1);
       await emote('amauri','…',1300);
@@ -681,7 +684,7 @@ const SCENES = [
   },
   { // 5. COMUNICAÇÃO DE AUSÊNCIA (Flávia)
     name:'Avisar ausência', clock:'TER<br>08:30', bg:()=>officeBg,
-    intro:'Terça-feira, 8h30.<br>Todo mundo chegou… quase todo mundo.',
+    intro:'Terça-feira, 8h30.<br>Todo mundo chegou… ou quase todo mundo.',
     setup(){ addActor('amauri',14,1); addActor('wagner',96,1); addActor('flavia',178,-1);
       BIG('amauri',KY); BIG('wagner',KY); BIG('flavia',KY); },
     async play(){
@@ -691,13 +694,13 @@ const SCENES = [
       look('flavia',-1);
       await say('flavia','Não sei… ninguém me avisou nada.',{hold:500});
       look('amauri',1); look('wagner',-1);
-      await say('amauri','Ah, ela me mandou mensagem. Disse que ia se atrasar.',{hold:600});
+      await say('amauri','Ah, ela me mandou mensagem. Disse que não ia vir hoje.',{hold:600});
       clearAll(); emote('flavia','…',1200); await emote('wagner','…',1200);
       const c = document.createElement('div'); c.className = 'caption';
-      c.innerHTML = '<small>NA VERDADE…</small>A Fernanda foi ao médico e vai trazer um atestado.<br>E só avisou o Amauri.';
+      c.innerHTML = '<small>NA VERDADE…</small>A Fernanda foi ao médico e não vem trabalhar hoje.<br>Mas a liderança não ficou sabendo de nada.';
       overlay.appendChild(c); SFX.pop(); await wait(4200); c.remove();
     },
-    q:'A Fernanda foi ao médico e vai trazer atestado, mas só mandou mensagem pro Amauri. O que ela deveria ter feito?',
+    q:'A Fernanda foi ao médico e não vem trabalhar hoje. Ela só mandou mensagem pro Amauri e a liderança ficou sem saber. O que ela deveria ter feito?',
     opts:['Avisar um colega já resolve','Não avisar ninguém e entregar o atestado depois','Avisar a liderança o quanto antes e enviar o atestado pelo canal certo','Postar nos stories que está doente'],
     right:2,
     async react(){
@@ -708,6 +711,38 @@ const SCENES = [
       clearAll();
     }
   },
+  { // 6. CAFÉ COM O SETOR TODO
+    name:'Café em grupo', clock:'QUA<br>15:00', bg:()=>officeBg,
+    intro:'Quarta-feira, 15h.<br>Bateu aquela vontade de um cafezinho…',
+    setup(){ addActor('fernanda',4,1); addActor('flavia',60,1); addActor('amauri',116,1); addActor('wagner',172,-1); addActor('brenda',-50,1);
+      ['fernanda','flavia','amauri','wagner'].forEach(id=>BIG(id,KY)); BIG('brenda',KY_B); },
+    async play(){
+      await wait(400);
+      await say('fernanda','Gente, bora tomar um café?',{hold:400});
+      await say('amauri','Bora! Todo mundo junto!',{hold:300});
+      await say('flavia','Vamos!',{hold:200});
+      clearAll(); ['fernanda','flavia','amauri','wagner'].forEach(id=>look(id,1));
+      walk('fernanda',270,70); walk('flavia',290,70); walk('amauri',300,70); await walk('wagner',310,70);
+      await wait(700);
+      await walk('brenda',96,60);
+      SFX.ring(); await wait(350); SFX.ring();
+      await say('brenda','Gente, preciso de ajuda com um cliente urgente!',{hold:400});
+      look('brenda',1); await emote('brenda','?!',900); look('brenda',-1);
+      await say('brenda','Cadê todo mundo?! O setor ficou vazio…',{hold:700});
+      clearAll();
+    },
+    q:'O setor inteiro foi tomar café junto e a Brenda ficou sem ninguém para ajudar. O que é o certo?',
+    opts:['Café é sagrado, vai todo mundo junto mesmo','Revezar: cada um vai num horário e sempre fica alguém no setor','Levar o celular e atender da copa','Sair junto só quando a liderança não estiver'],
+    right:1,
+    async react(){
+      look('brenda',1);
+      walk('amauri',150,80); await walk('wagner',196,80);
+      look('amauri',-1); look('wagner',-1);
+      await say('amauri','Desculpa, Brenda! Da próxima vez a gente reveza.',{hold:500});
+      await say('brenda','Isso! Café pode, sim. Mas sempre fica alguém no setor.',{hold:1100});
+      clearAll();
+    }
+  },
   { // 8. CONFLITO
     name:'Conflito', clock:'QUI<br>10:30', bg:()=>officeBg,
     intro:'O ar-condicionado está em 16 °C.<br>E alguém não gostou nada disso…',
@@ -715,9 +750,10 @@ const SCENES = [
     async play(){
       await wait(300);
       await emote('amauri','brrr',1000);
-      await say('amauri','A Fernanda só pensa nela! E eu aqui congelando…',{hold:400});
-      await say('wagner','Sério? Conta mais…',{hold:400});
-      clearAll(); await emote('fernanda','?',1000);
+      look('amauri',1); look('wagner',-1);
+      await say('amauri','Pode falar: a Fernanda é sacana! Deixa o ar no gelado e eu aqui morrendo de frio…',{hold:500});
+      await say('wagner','Você já tentou conversar com ela?',{hold:500});
+      clearAll(); await emote('amauri','…',1100);
     },
     q:'O Amauri ficou incomodado com a Fernanda. Qual é o melhor caminho?',
     opts:['Reclamar dela pelos corredores','Ficar de cara feia e não falar nada','Mandar indireta no status do WhatsApp','Conversar direto com ela, com respeito'],
@@ -725,7 +761,7 @@ const SCENES = [
     async react(){
       await walk('amauri',150,46); look('fernanda',-1);
       await say('amauri','Fê, posso falar com você? Estou congelando. Dá pra subir um pouco o ar?',{hold:400});
-      await say('fernanda','Claro! Nem tinha percebido. 23 °C está bom?',{hold:400});
+      await say('fernanda','Claro, Amauri! Desculpa, nem tinha percebido. Deixo em 23 °C, pode ser?',{hold:500});
       await say('amauri','Perfeito, obrigado!',{hold:900});
       clearAll();
     }
@@ -770,7 +806,7 @@ const SCENES = [
       await wait(300);
       await walk('fernanda',196,90);
       look('fernanda',-1); await emote('fernanda','?',1100);
-      await say('fernanda','Opa… estou esquecendo alguma coisa?',{hold:500});
+      await say('fernanda','Opa… tô esquecendo a minha marmita!',{hold:500});
       clearAll();
     },
     q:'Sexta, 17h28. Antes de sair às 17h30, o que a Fernanda precisa fazer?',

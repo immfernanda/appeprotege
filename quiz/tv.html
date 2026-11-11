@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz Convivência eProtege</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#001B4A; --navy2:#0b2a63; --blue:#2864B0; --turq:#12B0B6; --turq2:#64C6CC; --yellow:#F4BB0E;
+    --coral:#e8706f; --ink:#1b1430; --cream:#f5ecd9; --bubble:#3b2f3a; --bubbleb:#f2c9b8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--navy);color:var(--cream);font-family:'Montserrat',system-ui,sans-serif;font-weight:600;overflow:hidden}
+  .pixel,#title h1,.bubble .name,.opt .let,.trail,.btn{font-family:'Pixelify Sans',system-ui,sans-serif}
+  #app{height:100vh;display:flex;flex-direction:column;align-items:center;padding:1.5vh 2vw;gap:1.5vh}
+  #stageWrap{position:relative;height:56vh;aspect-ratio:16/9;max-width:96vw;border:4px solid var(--ink);box-shadow:0 0 0 4px var(--turq2),0 10px 0 4px rgba(0,0,0,.35)}
+  canvas#stage{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+  .hud-clock{position:absolute;left:2%;top:3%;background:var(--bubble);border:3px solid var(--bubbleb);padding:.4em .8em;font-size:2.2vh;line-height:1.15;text-align:center;letter-spacing:.06em}
+  .hud-logo{position:absolute;right:2%;top:3%;height:6.4vh;background:#fff;padding:1vh 1.4vh;border:3px solid var(--ink);box-shadow:0 4px 0 rgba(0,0,0,.25)}
+  .hud-logo img{height:100%;width:auto;display:block}
+  .nametag{position:absolute;transform:translate(-50%,-100%);background:rgba(27,20,48,.82);color:var(--yellow);font-family:'Pixelify Sans',sans-serif;font-size:1.9vh;padding:0 .8vh;white-space:nowrap;pointer-events:none}
+  .caption{position:absolute;left:50%;top:4%;transform:translate(-50%,0);background:rgba(0,27,74,.92);color:#fff;border:4px solid var(--yellow);padding:1.6vh 3vh;font-size:3.2vh;font-weight:800;text-align:center;max-width:80%;line-height:1.3;animation:fadein .4s ease-out}
+  .caption small{display:block;font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:2vh;margin-bottom:.6vh;letter-spacing:.08em}
+  @keyframes fadein{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+  .bubble{position:absolute;transform:translate(-50%,-100%);background:#fffdf7;color:#14183a;border:4px solid var(--ink);box-shadow:0 5px 0 rgba(0,0,0,.25);padding:1.4vh 1.8vh 1.2vh;font-size:2.9vh;font-weight:700;line-height:1.28;width:max-content;max-width:48%;pointer-events:none}
+  .bubble .name{position:absolute;top:-2.9vh;left:1.2vh;background:var(--ink);border:3px solid var(--ink);padding:.1vh 1vh;font-size:2vh;font-weight:700;color:var(--yellow)}
+  .bubble:after{content:"";position:absolute;left:50%;bottom:-1.6vh;transform:translateX(-50%);border:1.3vh solid transparent;border-top-color:var(--ink);border-bottom:0}
+  .emote{position:absolute;transform:translate(-50%,-100%);background:#fff;color:var(--ink);border:3px solid var(--ink);padding:.2vh 1vh;font-size:2.6vh;font-weight:700;pointer-events:none;animation:pop .25s steps(3)}
+  @keyframes pop{from{transform:translate(-50%,-60%) scale(.4)}to{transform:translate(-50%,-100%) scale(1)}}
+
+  #panel{width:min(96vw,calc(56vh*16/9));flex:1;display:flex;flex-direction:column;gap:1.2vh;min-height:0}
+  .trail{display:flex;align-items:center;gap:.8vh;font-size:1.8vh;color:var(--turq2)}
+  .trail .dot{width:2.2vh;height:2.2vh;background:var(--navy2);border:3px solid var(--ink)}
+  .trail .dot.on{background:var(--turq)} .trail .dot.cur{background:var(--yellow)}
+  .q{font-size:3.2vh;font-weight:800;line-height:1.25;color:#fff}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:1vh}
+  .opt{position:relative;display:flex;align-items:center;gap:1.2vh;background:var(--navy2);border:3px solid var(--ink);box-shadow:inset 3px 3px 0 rgba(255,255,255,.12),inset -3px -3px 0 rgba(0,0,0,.3);padding:.7vh 1.2vh;font-size:2.4vh;font-weight:700;line-height:1.22;color:#fff;overflow:hidden;min-height:6vh}
+  .opt .fill{position:absolute;inset:0 auto 0 0;width:0;background:rgba(100,198,204,.22);transition:width 1.2s steps(12)}
+  .opt .let{position:relative;flex:none;width:4.4vh;height:4.4vh;display:grid;place-items:center;font-weight:700;color:var(--ink);border:3px solid var(--ink);font-size:2.6vh}
+  .opt .txt{position:relative;flex:1}
+  .opt .pct{position:relative;font-weight:700;font-size:2.6vh;opacity:0}
+  .opt.wrong{opacity:.55}
+  .opt .pct{font-family:'Montserrat',sans-serif;font-weight:800}
+  .hud-clock{font-weight:700}
+  .opt.right{background:#0f5f63;outline:4px solid var(--yellow)}
+  .opt.right .fill{background:rgba(244,187,14,.25)}
+  .opt.show .pct{opacity:1}
+  .bar{display:flex;align-items:center;gap:1.5vh;font-size:2.1vh}
+  .timer{flex:1;height:2.2vh;background:var(--navy2);border:3px solid var(--ink)}
+  .timer i{display:block;height:100%;width:100%;background:var(--yellow)}
+  .btn{font-family:inherit;font-size:2.2vh;font-weight:700;background:var(--turq);color:var(--ink);border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink);padding:.6vh 2vh;cursor:pointer}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+  .hint{font-size:2.2vh;color:var(--turq2)}
+  .hidden{display:none!important}
+
+  #title{position:fixed;inset:0;display:grid;place-items:center;background:var(--navy);z-index:10;text-align:center}
+  #title h1{font-size:clamp(28px,5.4vh,64px);white-space:nowrap;margin:0 0 1vh;color:var(--yellow);text-shadow:4px 4px 0 var(--ink)}
+  #title p{font-size:2.6vh;margin:0 0 4vh;color:var(--turq2)}
+  #title .btn{font-size:3.2vh;padding:1.2vh 4vh;animation:blinkb 1s steps(2) infinite}
+  @keyframes blinkb{50%{filter:brightness(1.25)}}
+  .pip{position:absolute;left:3%;top:17%;width:44%;background:#111;border:4px solid var(--ink);box-shadow:0 0 0 3px #f4f4f0,0 8px 0 rgba(0,0,0,.35);z-index:2;animation:appear .3s ease-out}
+  .pip-bar{background:#c9d2d6;color:var(--ink);font-family:'Pixelify Sans',sans-serif;font-size:1.8vh;padding:.3vh 1vh;border-bottom:3px solid var(--ink)}
+  .pip video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+  .cut{position:absolute;inset:0;background:#000;z-index:3;display:grid;place-items:center;animation:appear .3s ease-out}
+  @keyframes appear{from{opacity:0}to{opacity:1}}
+  .cut img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+  .cutcap{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);background:rgba(0,27,74,.92);border:4px solid var(--yellow);color:#fff;font-weight:800;font-size:3vh;padding:1vh 2.4vh;white-space:nowrap}
+  .cutcap:empty{display:none}
+  .pick{margin:0 0 2.6vh}
+  .pick .lbl{font-size:1.9vh;color:var(--turq2);margin-bottom:1vh}
+  .chips{display:flex;flex-wrap:wrap;gap:.8vh;max-width:56vw}
+  .chip{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.8vh;background:var(--turq);color:var(--ink);border:3px solid var(--ink);padding:.5vh 1.2vh;cursor:pointer}
+  .chip.off{background:transparent;color:#7f8fb0;text-decoration:line-through;border-color:#33456e}
+  .lobby{display:flex;align-items:center;gap:7vw;text-align:left}
+  .lobby-left{max-width:56vw;min-width:0}
+  .players{font-size:3vh;margin:0 0 3vh;color:#fff}
+  .players b{font-family:'Pixelify Sans',sans-serif;font-size:6vh;color:var(--yellow);margin-right:.6vh}
+  .codes{display:flex;flex-wrap:wrap;gap:.6vh;max-width:52vw;margin:-1.5vh 0 3vh}
+  .codes span{font-family:'Pixelify Sans',sans-serif;font-size:2vh;background:var(--navy2);border:2px solid var(--turq);color:var(--yellow);padding:.2vh .8vh;animation:appear .4s}
+  .netstatus{margin-top:2.5vh;font-size:1.8vh;color:var(--turq2)}
+  .netstatus.off{color:var(--coral)}
+  .qrbox{background:#fff;padding:2.2vh;border:4px solid var(--ink);box-shadow:0 0 0 4px var(--turq2),0 10px 0 4px rgba(0,0,0,.35)}
+  .qrbox img,.qrbox canvas{width:38vh!important;height:38vh!important;display:block;image-rendering:pixelated}
+  .qrcap{margin-top:2.4vh;text-align:center;font-size:2.4vh;color:var(--turq2);line-height:1.5}
+  .qrcap b{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:3.4vh;letter-spacing:.15em}
+  .live{position:fixed;left:1.5vw;bottom:1.5vh;font-size:1.6vh;color:var(--turq2)}
+  .trail .dot.ok{background:var(--turq)} .trail .dot.meh{background:var(--yellow);opacity:.75} .trail .dot.low{background:var(--coral)}
+  #endCard{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,27,74,.94);z-index:9;text-align:center}
+  #endCard h2{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:7vh;margin:0 0 2vh;text-shadow:4px 4px 0 var(--ink)}
+  #endCard .pct{font-size:12vh;font-weight:800;color:#fff;line-height:1}
+  .rankbox{margin:0 auto 3vh;min-width:46vh;text-align:left}
+  .rankbox .rk{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:2.4vh;margin-bottom:1vh;text-align:center}
+  .rankbox ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.8vh}
+  .rankbox li{display:flex;align-items:center;gap:1.6vh;background:var(--navy2);border:3px solid var(--ink);padding:.8vh 1.6vh;font-size:2.6vh;font-weight:800}
+  .rankbox li.win{background:#0f5f63;outline:4px solid var(--yellow)}
+  .rankbox .c{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);letter-spacing:.12em}
+  .rankbox .n{flex:1;color:#fff;display:none}
+  .rankbox.names .n{display:block}
+  .rankbox .p{margin-left:auto;color:var(--turq2)}
+  #endCard p{font-size:3vh;color:var(--turq2);margin:1.5vh 0 4vh}
+  .previewbar{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 10px;background:#fff;color:var(--ink);font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;box-shadow:0 3px 0 var(--ink)}
+  .previewbar b{margin-right:6px;color:#c0262d}
+  .previewbar button{font:inherit;font-size:12px;background:var(--navy2);color:#fff;border:2px solid var(--ink);padding:3px 8px;cursor:pointer}
+  .previewbar button.cur{background:var(--yellow);color:var(--ink)}
+  body.preview #app{padding-top:46px}
+  .btn.ghost{background:transparent;color:var(--turq2);border-color:var(--turq2);box-shadow:none;font-size:1.8vh;margin-left:1vh}
+  .players b#nDone{color:#3fd17a}
+  .codes span.done{border-color:#3fd17a;color:#3fd17a}
+  .countbig{font-size:2.6vh}
+  .countbig b{color:var(--yellow);font-size:3.2vh}
+  #chartCard{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,27,74,.96);z-index:9}
+  .chartbox{width:min(86vw,118vh);text-align:center}
+  .chartbox h2{font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:6vh;margin:0 0 3vh;text-shadow:4px 4px 0 var(--ink)}
+  .chartlist{list-style:none;margin:0 0 4vh;padding:0;display:flex;flex-direction:column;gap:1.4vh;text-align:left}
+  .chartlist li{display:grid;grid-template-columns:26vh 1fr max-content;align-items:center;gap:2vh;font-size:2.6vh;font-weight:800}
+  .chartlist .track{height:4.2vh;background:var(--navy2);border:3px solid var(--ink)}
+  .chartlist .track i{display:block;height:100%;width:0;transition:width 1.4s steps(14)}
+  .chartlist .track i.go{width:var(--w)}
+  .chartlist .num{color:var(--turq2)} .chartlist .num b{color:#fff;font-size:3.4vh}
+  .avgline{font-size:3vh;color:var(--turq2);margin:0 0 3vh} .avgline b{color:var(--yellow);font-size:4.4vh}
+  .mute{position:fixed;right:1.5vw;bottom:1.5vh;font-size:1.6vh;color:var(--turq2);opacity:.7}
+</style>
+</head>
+<body>
+<div id="title">
+  <div class="lobby">
+    <div class="lobby-left">
+      <img src="img/logo-horizontal.png" alt="eProtege" style="height:7vh;margin-bottom:3vh;background:#fff;padding:1.2vh 1.8vh;border:3px solid var(--ink)">
+      <h1>Quiz da Boa Convivência</h1>
+      <p><span id="nSit">8</span> situações do dia a dia · assista e responda no seu celular</p>
+      <div class="pick hidden" id="pick"><div class="lbl">Cenas do jogo (clique para tirar ou colocar):</div><div class="chips" id="chips"></div></div>
+      <div class="players"><b id="nPlayers">0</b> entraram · <b id="nDone">0</b> já terminaram</div>
+      <div class="codes" id="codes"></div>
+      <button class="btn" id="startBtn">▶ Começar a revelação</button> <button class="btn ghost" id="newGameBtn">Novo jogo ↺</button>
+      <div class="netstatus" id="netStatus">conectando ao modo ao vivo…</div>
+    </div>
+    <div class="lobby-right">
+      <div class="qrbox"><div id="qr"></div></div>
+      <div class="qrcap">Aponte a câmera do celular<br>e entre no quiz</div>
+    </div>
+  </div>
+</div>
+
+<div id="previewBar" class="previewbar hidden"></div>
+<div id="app">
+  <div id="stageWrap">
+    <canvas id="stage" width="240" height="135"></canvas>
+    <div class="hud-clock" id="clock">QUA<br>10:15</div>
+    <div class="hud-logo"><img src="img/logo-horizontal.png" alt="eProtege"></div>
+    <div id="pip" class="pip hidden"><div class="pip-bar">▶ Tela do Amauri</div><video id="vid" src="img/filme.mp4" playsinline preload="auto"></video></div>
+    <div id="cut" class="cut hidden"><img id="cutImg" alt=""><div class="cutcap" id="cutCap"></div></div>
+    <div id="overlay"></div>
+  </div>
+  <div id="panel">
+    <div class="trail" id="trail"></div>
+    <div class="hint" id="hint">Assistindo a cena…</div>
+    <div class="q hidden" id="q"></div>
+    <div class="opts hidden" id="opts"></div>
+    <div class="bar hidden" id="bar">
+      <span id="count" class="countbig"></span>
+      <span style="flex:1"></span>
+      <button class="btn" id="nextBtn">Revelar ▶</button>
+    </div>
+  </div>
+</div>
+<div class="mute">M = som · B = música · Espaço = avançar · S = escolher cenas</div>
+<div class="live" id="live"></div>
+<div id="chartCard" class="hidden"><div class="chartbox">
+  <h2>Como a equipe foi</h2>
+  <ul id="chartList" class="chartlist"></ul>
+  <p class="avgline">Acerto médio da equipe: <b id="avg">0%</b></p>
+  <button class="btn" id="rankBtn">Voltar à entrada</button>
+</div></div>
+<div id="endCard" class="hidden"><div>
+  <h2>Fim de jogo!</h2>
+  <div class="pct" id="endPct">0%</div>
+  <p>de acerto médio da equipe.<br>Boa convivência é coisa de todo mundo!</p>
+  <div id="rankBox" class="rankbox hidden"><div class="rk">🏆 Ranking (pelo código de cada um · N mostra os nomes)</div><ol id="rank"></ol></div>
+  <button class="btn" id="againBtn">Voltar à entrada</button>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script src="net.js"></script>
+<script src="cenas.js"></script>
+<script>
+/* ============ FLUXO DA TV: entrada com QR → revelação no final ============ */
+const $ = id => document.getElementById(id);
+let sceneIdx = 0, phase = 'title';
+const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
+const results = [];                 // por cena: {hits, n, pcts}
+
+const store = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
+};
+const CODE = (new URLSearchParams(location.search).get('sala') || 'EPROTEGE').toUpperCase();
+let GAME = store.get('epq_tv_game', null);
+let GAME_T0 = store.get('epq_tv_game_t0', 0);   // quando o jogo atual começou
+if (!GAME){ GAME = quizRandom(6); store.set('epq_tv_game', GAME); }
+const players = new Map();          // pid -> {name, code, ans:{cena: letra}, done, tDone}
+// a TV guarda tudo que recebe (se ela recarregar, nada se perde)
+function savePlayers(){ store.set('epq_tv_players_'+GAME, [...players.entries()]); }
+function loadPlayers(){ players.clear(); (store.get('epq_tv_players_'+GAME, []) || []).forEach(([k,v])=>players.set(k,v)); }
+loadPlayers();
+
+/* ---------- escolha das cenas (tecla S na entrada, só para quem organiza) ---------- */
+const ALL_SCENES = SCENES.slice();
+let picked = ALL_SCENES.map(()=>true);
+function renderChips(){
+  $('chips').innerHTML = ALL_SCENES.map((sc,i)=>`<button class="chip ${picked[i]?'':'off'}" data-i="${i}">${i+1}. ${sc.name}</button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i; picked[i]=!picked[i]; if (!picked.some(Boolean)) picked[i]=true;
+    applyPick(); renderChips(); publishState();
+  });
+}
+function applyPick(){ SCENES.splice(0, SCENES.length, ...ALL_SCENES.filter((_,i)=>picked[i])); $('nSit').textContent = SCENES.length; }
+applyPick(); renderChips();
+
+/* ---------- conexão ---------- */
+const PHONE_PAGE = 'https://immfernanda.github.io/appeprotege/quiz/celular.html';
+const phoneUrl = new URL(/github\.io$/.test(location.hostname) ? new URL('celular.html', location.href).href : PHONE_PAGE);
+phoneUrl.search = (CODE!=='EPROTEGE' ? '?s=' + CODE : '');
+try { new QRCode($('qr'), {text: phoneUrl.href, width: 512, height: 512, colorDark:'#001B4A', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M}); } catch(e){}
+
+const net = quizNet(CODE, ['p/+'], (sub, data)=>{
+  if (!sub.startsWith('p/') || !data || !data.pid) return;
+  // conta quem é deste jogo, ou quem começou sem a TV aberta depois do último "Novo jogo"
+  if (data.game !== GAME && !(data.game === 'ABERTO' && (data.t0||0) >= GAME_T0)) return;
+  const isNew = !players.has(data.pid);
+  players.set(data.pid, {name:String(data.name||'').slice(0,40), code:String(data.code||'').slice(0,4).toUpperCase(),
+    ans: data.ans || {}, done: !!data.done, tDone: data.tDone || 0});
+  if (isNew && phase==='title') tone(880,0.06,'square',0.04);
+  savePlayers(); updatePlayers();
+}, s=>{
+  $('netStatus').textContent = s==='on' ? 'modo ao vivo conectado ✓' : 'sem conexão ao vivo: a revelação roda em modo demonstração';
+  $('netStatus').className = 'netstatus' + (s==='on'?'':' off');
+  $('live').textContent = s==='on' ? '● ao vivo' : '○ modo demonstração';
+  if (s==='on') publishState();
+});
+function publishState(){ net.publish('state', {game:GAME, scenes:SCENES.map(s=>s.name)}, true); }
+function updatePlayers(){
+  const list = [...players.values()];
+  $('nPlayers').textContent = list.length;
+  $('nDone').textContent = list.filter(p=>p.done).length;
+  $('codes').innerHTML = '';
+}
+const live = ()=> players.size > 0;   // ninguém jogou ainda = demonstração (números de exemplo)
+
+/* ---------- revelação, cena por cena ---------- */
+function renderTrail(){
+  $('trail').innerHTML = 'Revelação ' + SCENES.map((_,i)=>{
+    let c = '';
+    if (results[i]) { const r = results[i].n ? results[i].hits/results[i].n*100 : 0; c = r >= 70 ? 'ok' : r >= 40 ? 'meh' : 'low'; }
+    else if (i===sceneIdx) c = 'cur';
+    return `<span class="dot ${c}"></span>`;
+  }).join('');
+}
+let runId = 0;
+var startScene = async function(){
+  const my = ++runId;
+  const s = SCENES[sceneIdx]; phase = 'play';
+  stopVideo(); fx.video = false; $('cut').classList.add('hidden');
+  actors = {}; overlay.innerHTML = ''; bg = s.bg() || officeBg; fx = {}; curScene = s;
+  $('clock').innerHTML = s.clock; renderTrail();
+  ['q','opts','bar'].forEach(i=>$(i).classList.add('hidden')); $('hint').classList.remove('hidden');
+  $('hint').textContent = 'Relembrando a cena…';
+  s.setup();
+  if (s.intro){
+    const c = document.createElement('div'); c.className = 'caption';
+    c.innerHTML = `<small>CENA ${sceneIdx+1} DE ${SCENES.length}</small>${s.intro}`;
+    overlay.appendChild(c); SFX.pop(); await wait(2800); c.remove();
+  }
+  if (my !== runId) return;
+  await s.play(); if (my !== runId) return; showQuestion();
+};
+function sceneAnswers(){                 // letras marcadas nesta cena por quem jogou
+  const name = SCENES[sceneIdx].name, out = [];
+  players.forEach(p=>{ const a = p.ans[name]; if (a>=0 && a<4) out.push(a); });
+  return out;
+}
+function showQuestion(){
+  const s = SCENES[sceneIdx]; phase = 'question';
+  $('hint').classList.add('hidden');
+  $('q').textContent = `${sceneIdx+1}. ${s.q}`; $('q').classList.remove('hidden');
+  $('opts').innerHTML = s.opts.map((o,i)=>`<div class="opt" data-i="${i}"><div class="fill"></div><div class="let" style="background:${COLORS[i]}">${'ABCD'[i]}</div><div class="txt">${o}</div><div class="pct">0%</div></div>`).join('');
+  $('opts').classList.remove('hidden'); $('bar').classList.remove('hidden');
+  const n = live() ? sceneAnswers().length : 25;
+  $('count').textContent = `${n} ${n===1?'pessoa respondeu':'pessoas responderam'}`;
+  $('nextBtn').textContent = 'Revelar ▶'; $('nextBtn').disabled = false;
+}
+function demoPcts(right){
+  const rightPct = 62 + Math.floor(Math.random()*25);
+  let rest = 100-rightPct; const p = [0,0,0,0]; p[right] = rightPct;
+  const others = [0,1,2,3].filter(i=>i!==right);
+  others.forEach((i,k)=>{ const v = k===others.length-1 ? rest : Math.floor(Math.random()*rest*0.7); p[i]=v; rest-=v; });
+  return p;
+}
+async function reveal(){
+  if (phase !== 'question') return;
+  phase = 'reveal';
+  const s = SCENES[sceneIdx];
+  let pcts, hits, n;
+  if (live()){
+    const ans = sceneAnswers(); n = ans.length;
+    const c = [0,0,0,0]; ans.forEach(a=>c[a]++);
+    pcts = c.map(v=> n ? Math.round(v/n*100) : 0); hits = c[s.right];
+  } else { pcts = demoPcts(s.right); n = 25; hits = Math.round(pcts[s.right]/100*n); }
+  results[sceneIdx] = {hits, n, pcts};
+  $('count').innerHTML = `<b>${hits} de ${n}</b> acertaram`;
+  SFX.reveal(); renderTrail();
+  document.querySelectorAll('.opt').forEach(el=>{
+    const i = +el.dataset.i;
+    el.classList.add('show', i===s.right?'right':'wrong');
+    el.querySelector('.fill').style.width = pcts[i]+'%';
+    el.querySelector('.pct').textContent = pcts[i]+'%';
+  });
+  $('nextBtn').textContent = '…'; $('nextBtn').disabled = true;
+  const my = runId; await s.react(); if (my !== runId) return;
+  phase = 'done'; $('nextBtn').disabled = false;
+  $('nextBtn').textContent = sceneIdx < SCENES.length-1 ? 'Próxima cena ▶' : 'Ver o gráfico 📊';
+}
+
+/* ---------- gráfico de acertos por pergunta ---------- */
+function showChart(){
+  phase = 'chart'; stopVideo();
+  $('chartList').innerHTML = SCENES.map((sc,i)=>{
+    const r = results[i] || {hits:0, n:0}, pct = r.n ? Math.round(r.hits/r.n*100) : 0;
+    const col = pct >= 70 ? 'var(--turq)' : pct >= 40 ? 'var(--yellow)' : 'var(--coral)';
+    return `<li><span class="lbl">${i+1}. ${sc.name}</span><span class="track"><i style="--w:${pct}%;background:${col}"></i></span><span class="num">${r.hits} de ${r.n} acertos = <b>${pct}%</b></span></li>`;
+  }).join('');
+  const all = results.filter(Boolean), tot = all.reduce((a,r)=>a+r.n,0);
+  $('avg').textContent = (tot ? Math.round(all.reduce((a,r)=>a+r.hits,0)/tot*100) : 0) + '%';
+  $('chartCard').classList.remove('hidden'); SFX.reveal();
+  requestAnimationFrame(()=>document.querySelectorAll('#chartList i').forEach(i=>i.classList.add('go')));
+}
+
+/* ---------- ranking ---------- */
+function showEnd(){
+  phase = 'end'; $('chartCard').classList.add('hidden');
+  const names = SCENES.map(s=>s.name);
+  const rank = [...players.values()].map(p=>({...p, hits: names.filter(nm=>p.ans[nm]===SCENES.find(s=>s.name===nm).right).length}))
+    .sort((a,b)=> b.hits-a.hits || (a.done&&b.done ? a.tDone-b.tDone : (b.done?1:0)-(a.done?1:0)));
+  const all = results.filter(Boolean), tot = all.reduce((a,r)=>a+r.n,0);
+  $('endPct').textContent = (tot ? Math.round(all.reduce((a,r)=>a+r.hits,0)/tot*100) : 0) + '%';
+  $('rank').innerHTML = rank.slice(0,5).map((r,i)=>`<li class="${i===0?'win':''}"><b>${i+1}º</b><span class="c">${r.code||'---'}</span><span class="n">${(r.name||'').replace(/[<>&]/g,'')}</span><span class="p">${r.hits} de ${SCENES.length}</span></li>`).join('');
+  $('rankBox').classList.toggle('hidden', !rank.length); $('rankBox').classList.remove('names');
+  $('endCard').classList.remove('hidden');
+  SFX.reveal();
+}
+
+function advance(){
+  if (phase === 'title') $('startBtn').click();
+  else if (phase === 'question') reveal();
+  else if (phase === 'done'){ if (sceneIdx < SCENES.length-1){ sceneIdx++; startScene(); } else showChart(); }
+}
+$('nextBtn').onclick = advance;
+$('rankBtn').onclick = ()=>{ $('chartCard').classList.add('hidden'); $('title').classList.remove('hidden'); phase = 'title'; results.length = 0; sceneIdx = 0; stopVideo(); };
+$('againBtn').onclick = ()=>{ $('endCard').classList.add('hidden'); $('title').classList.remove('hidden'); phase = 'title'; results.length = 0; sceneIdx = 0; stopVideo(); };
+$('newGameBtn').onclick = ()=>{
+  if (!confirm('Começar um jogo novo? As respostas de agora deixam de contar e os celulares recomeçam do zero.')) return;
+  GAME = quizRandom(6); store.set('epq_tv_game', GAME); GAME_T0 = Date.now(); store.set('epq_tv_game_t0', GAME_T0); players.clear(); savePlayers(); results.length = 0; updatePlayers(); publishState();
+};
+document.addEventListener('keydown', e=>{
+  if (e.target && e.target.tagName === 'INPUT') return;
+  if (e.code==='Space' || e.code==='Enter' || e.code==='ArrowRight'){ e.preventDefault(); advance(); }
+  if (e.key==='m' || e.key==='M'){ muted = !muted; vid.muted = muted; }
+  if (e.key==='b' || e.key==='B') musicOn = !musicOn;
+  if ((e.key==='s' || e.key==='S') && phase==='title') $('pick').classList.toggle('hidden');
+  if ((e.key==='n' || e.key==='N') && phase==='end') $('rankBox').classList.toggle('names');
+});
+$('startBtn').onclick = ()=>{
+  if (!AC){ AC = new (window.AudioContext||window.webkitAudioContext)(); startMusic(); }
+  $('title').classList.add('hidden'); sceneIdx = 0; results.length = 0; startScene();
+};
+
+/* modo prévia (só para quem monta o quiz): abra tv.html?previa */
+const PREVIEW = new URLSearchParams(location.search).has('previa');
+function renderPreviewBar(){
+  if (!PREVIEW) return;
+  $('previewBar').innerHTML = '<b>PRÉVIA</b>' + SCENES.map((sc,i)=>`<button data-i="${i}" class="${i===sceneIdx && phase!=='title'?'cur':''}">${i+1}. ${sc.name}</button>`).join('')
+    + '<button data-act="rev">Revelar</button><button data-act="next">Próxima ▶</button><button data-act="chart">Gráfico</button>';
+  $('previewBar').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    if (!AC){ AC = new (window.AudioContext||window.webkitAudioContext)(); startMusic(); }
+    $('title').classList.add('hidden'); $('endCard').classList.add('hidden'); $('chartCard').classList.add('hidden');
+    if (b.dataset.act==='rev'){ reveal(); return; }
+    if (b.dataset.act==='chart'){ showChart(); return; }
+    if (b.dataset.act==='next'){ sceneIdx = Math.min(SCENES.length-1, sceneIdx+(phase==='title'?0:1)); }
+    else sceneIdx = +b.dataset.i;
+    startScene(); renderPreviewBar();
+  });
+}
+if (PREVIEW){ document.body.classList.add('preview'); $('previewBar').classList.remove('hidden'); renderPreviewBar(); }
+const _startScene = startScene;
+startScene = async function(){ const r = _startScene(); renderPreviewBar(); return r; };
+/* respostas em tempo real: abra tv.html?resultados */
+if (new URLSearchParams(location.search).has('resultados')){
+  $('title').classList.add('hidden'); $('rankBtn').classList.add('hidden');
+  document.querySelector('.chartbox h2').textContent = 'Respostas em tempo real';
+  const sub = document.createElement('p'); sub.className = 'avgline'; sub.id = 'liveSub'; document.querySelector('.chartbox h2').after(sub);
+  $('chartCard').classList.remove('hidden'); phase = 'chart';
+  const tick = ()=>{
+    SCENES.forEach((s,i)=>{ let hits = 0, n = 0; players.forEach(p=>{ const a = p.ans[s.name]; if (a>=0 && a<4){ n++; if (a===s.right) hits++; } }); results[i] = {hits, n}; });
+    const list = [...players.values()];
+    $('liveSub').textContent = `${list.length} entraram · ${list.filter(p=>p.done).length} já terminaram · atualiza sozinho`;
+    $('chartList').innerHTML = SCENES.map((sc,i)=>{
+      const r = results[i], pct = r.n ? Math.round(r.hits/r.n*100) : 0;
+      const col = pct >= 70 ? 'var(--turq)' : pct >= 40 ? 'var(--yellow)' : 'var(--coral)';
+      return `<li><span class="lbl">${i+1}. ${sc.name}</span><span class="track"><i class="go" style="--w:${pct}%;background:${col};transition:none"></i></span><span class="num">${r.hits} de ${r.n} acertos = <b>${pct}%</b></span></li>`;
+    }).join('');
+    const tot = results.reduce((a,r)=>a+r.n,0);
+    $('avg').textContent = (tot ? Math.round(results.reduce((a,r)=>a+r.hits,0)/tot*100) : 0) + '%';
+  };
+  tick(); setInterval(tick, 1500);
+}
+updatePlayers();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

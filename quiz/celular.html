@@ -48,7 +48,8 @@
   .bubble .name{position:absolute;bottom:100%;left:1.6cqw;background:var(--ink);padding:0 1.2cqw;font-size:clamp(10px,2.6cqw,24px);font-family:'Pixelify Sans',sans-serif;color:var(--yellow)}
   .bubble:after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink);border-bottom:0}
   .emote{position:absolute;transform:translate(-50%,-100%);background:#fff;color:var(--ink);border:2px solid var(--ink);padding:0 1.2cqw;font-size:clamp(13px,3.6cqw,32px);font-weight:800;pointer-events:none}
-  .caption{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,27,74,.93);color:#fff;border:3px solid var(--yellow);padding:2cqw 3cqw;font-size:clamp(14px,4cqw,36px);font-weight:800;text-align:center;width:84%;line-height:1.3}
+  .nametag{position:absolute;transform:translate(-50%,-100%);background:rgba(27,20,48,.82);color:var(--yellow);font-family:'Pixelify Sans',sans-serif;font-size:clamp(9px,2.3cqw,20px);padding:0 1cqw;white-space:nowrap;pointer-events:none}
+  .caption{position:absolute;left:50%;top:4%;transform:translate(-50%,0);background:rgba(0,27,74,.93);color:#fff;border:3px solid var(--yellow);padding:2cqw 3cqw;font-size:clamp(14px,4cqw,36px);font-weight:800;text-align:center;width:84%;line-height:1.3}
   .caption small{display:block;font-family:'Pixelify Sans',sans-serif;color:var(--yellow);font-size:clamp(10px,2.6cqw,24px);margin-bottom:.6cqw;letter-spacing:.08em}
   .pip,.cut{display:none!important}
 
@@ -85,7 +86,7 @@
   <!-- 1) início -->
   <div class="card hidden" id="vName">
     <p class="big" style="margin-top:0">Bem-vindo(a)! 👋</p>
-    <p class="muted" style="margin:0 0 14px">São 8 cenas curtinhas do nosso dia a dia. Assista e responda no seu ritmo, sem pressa.</p>
+    <p class="muted" style="margin:0 0 14px">São <span id="nCenas">9</span> cenas curtinhas do nosso dia a dia. Assista e responda no seu ritmo, sem pressa.</p>
     <button class="btn" id="startBtn">Começar ▶</button>
     <div class="note">🔒 <b>É anônimo.</b> Não pedimos seu nome e ninguém vai saber o que você marcou. No final, a TV mostra só quantas pessoas acertaram cada pergunta.</div>
     <p class="muted" style="margin:12px 0 0">🔊 Se quiser som, use fone.</p>
@@ -139,6 +140,7 @@ const $ = id => document.getElementById(id);
 const COLORS = ['#12B0B6','#2864B0','#F4BB0E','#e8706f'];
 const ROOM = (new URLSearchParams(location.search).get('s') || 'EPROTEGE').toUpperCase();
 const ALL_SCENES = SCENES.slice();
+document.getElementById('nCenas').textContent = ALL_SCENES.length;
 muted = true; musicOn = false; PACE = 1.5;   // mais devagar, para dar tempo de ler no celular                    // no celular começa sem som (25 celulares juntos!)
 
 const store = {
