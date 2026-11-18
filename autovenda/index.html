@@ -12,7 +12,7 @@
 <style>
 :root{
   --navy:#001B4A; --blue:#2864B0; --teal:#12B0B6; --teal-l:#64C6CC; --yellow:#F4BB0E; --gray:#3E5A70;
-  --bg:#FFFFFF; --bg2:#F3F7FB; --fg:#0B1F3A; --muted:#55708A; --line:#DCE5EE; --soft:#E8F4F6; --err:#D64545;
+  --bg:#FFFFFF; --bg2:#F3F7FB; --fg:#0B1F3A; --muted:#3E5168; --line:#DCE5EE; --soft:#E8F4F6; --err:#D64545;
   --grad:var(--blue);
   --f:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
@@ -76,7 +76,7 @@ button{font:inherit}
 .bar i{display:block;height:100%;background:var(--yellow);width:20%;transition:width .35s}
 .cfg-body{padding:24px 22px 22px;min-height:470px}
 .stp{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:.1em;text-transform:uppercase}
-.q{font-size:21px;font-weight:800;margin:4px 0 16px;color:var(--navy)}
+.q{font-size:22px;font-weight:800;margin:2px 0 14px;color:var(--navy);line-height:1.2}
 .opts{display:grid;gap:10px}
 .opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:2px solid var(--line);background:#fff;color:var(--fg);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s}
 .opt:hover{border-color:var(--teal-l)}
@@ -166,7 +166,7 @@ button{font:inherit}
 .cmp-cta{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:36px}
 
 /* Planos */
-.pl{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;max-width:980px;margin:0 auto}
+.pl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;max-width:1100px;margin:0 auto}
 /* Seleção de planos no configurador */
 .pks{display:grid;gap:9px}
 .pk{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:2px solid var(--line);background:#fff;color:var(--fg);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s}
@@ -179,7 +179,7 @@ button{font:inherit}
 .ex-h{font-size:14px;font-weight:700;color:var(--navy)}
 .ast{color:var(--teal);font-weight:800;margin-left:2px}
 .pc .ast{color:inherit}
-.pc-a{font-size:13px;font-weight:600;color:var(--sub);margin:4px 0 0}
+.pc-a{font-size:14px;font-weight:600;color:var(--c);opacity:.9;margin:6px 0 0;line-height:1.35;min-height:2.7em}
 .notas{font-size:12px;color:var(--muted);margin:8px 2px 0;line-height:1.5}
 .trs{display:grid;gap:8px}
 .tr{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
@@ -198,6 +198,78 @@ button{font:inherit}
 .qt button:hover:not([disabled]){border-color:var(--teal)}
 .qt button[disabled]{opacity:.4;cursor:default}
 .qt b{min-width:22px;text-align:center;font-size:15px;color:var(--navy)}
+/* Configurador em 3 passos */
+.lbl{font-weight:700;color:var(--navy);font-size:15px;margin:16px 0 8px}
+.sub-q{font-size:13.5px;color:var(--fg);margin:-8px 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;color:var(--navy);border-radius:10px;padding:9px 13px;font-weight:700;font-size:14px;cursor:pointer}
+.chip:hover{border-color:var(--teal-l)}
+.chip.on{border-color:var(--teal);background:var(--teal);color:#fff}
+.notas{color:var(--fg)}
+.xs-h{margin:22px 0 10px;padding-top:16px;border-top:2px solid var(--line);font-weight:800;color:var(--navy);font-size:17px}
+.xs-h small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:2px}
+.xs{border:2px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;margin-bottom:8px}
+.xs.on{border-color:var(--teal);background:var(--soft)}
+.xs-row{display:flex;gap:10px;align-items:flex-start}
+.xs .ck{width:22px;height:22px;border:2px solid #9AAFC4;display:grid;place-items:center;flex:none;background:#fff;color:#fff;cursor:pointer;padding:0;margin-top:1px}
+.xs.on .ck,.xs .ck.fixo{background:var(--teal);border-color:var(--teal)}
+.xs-t{flex:1;min-width:0;display:grid;gap:3px}
+.xs-t b{font-size:14.5px;color:var(--fg)}
+.xs-t b small{font-weight:600;color:var(--muted);font-size:12px}
+.why{font-size:12.5px;color:var(--fg);line-height:1.4}
+.xs-v{display:grid;justify-items:end;gap:6px;text-align:right;flex:none}
+.xs-v>small{font-size:11.5px;color:var(--muted);margin-bottom:-6px}
+.pr{position:relative;font-weight:800;color:var(--blue);font-size:14px;white-space:nowrap;cursor:help;outline:none}
+.pr small{font-weight:600;color:var(--muted);font-size:11.5px}
+.pr::after{content:attr(data-de);position:absolute;right:0;bottom:calc(100% + 6px);background:var(--navy);color:#fff;font-size:12px;font-weight:600;padding:5px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:5}
+.pr:hover::after,.pr:focus::after{opacity:1}
+.hrs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0 32px}
+.hrs .chip{font-size:12.5px;padding:7px 10px}
+.mais-tr>summary{margin-bottom:8px}
+.btn.zap,.cfg .btn.zap{background:#25D366;color:#fff;border-color:#25D366}
+.btn.zap:hover{background:#1EBE5A;box-shadow:0 10px 24px rgba(37,211,102,.35)}
+/* Passo 1: CNPJ em destaque */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.f.big{position:relative;margin-bottom:10px}
+.f.big input{height:58px;font-size:18px;font-weight:600;padding-left:48px;border-radius:14px;border-color:#C9D6E3;background:var(--bg2)}
+.f.big input:focus{background:#fff;border-color:var(--teal)}
+.f.big input::placeholder{color:#7A8DA3;font-weight:500}
+.in-ic{position:absolute;left:16px;top:19px;color:var(--blue);pointer-events:none}
+.found{display:flex;gap:10px;align-items:flex-start}
+.found.ok-emp{background:#E7F7EE;border:1.5px solid #9ED9B6}
+.found.ok-emp>span:last-child{display:grid;gap:2px}
+.ok-ic{width:24px;height:24px;border-radius:50%;background:#1E9E5A;color:#fff;display:grid;place-items:center;flex:none}
+.spin.dk{border-color:rgba(40,100,176,.25);border-top-color:var(--blue);width:16px;height:16px;flex:none;margin-top:1px}
+.fxs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.fx{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 4px;cursor:pointer;display:grid;gap:1px;text-align:center;color:var(--navy);transition:border-color .15s,background .15s}
+.fx b{font-size:16px}
+.fx small{font-size:11px;color:var(--muted)}
+.fx:hover{border-color:var(--teal-l)}
+.fx.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.fx.on small{color:#B9CBE0}
+.cfg .btn svg{flex:none}
+.rodape-cfg{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.pk-v small{display:block;font-size:11px;font-weight:600;color:var(--muted);text-align:right}
+.pk-v{font-size:16px}
+/* Extras em cartões */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{display:flex;flex-direction:column;gap:8px;border:2px solid var(--line);border-radius:14px;padding:12px;background:#fff;cursor:pointer;position:relative;transition:border-color .15s,background .15s}
+.tile:hover{border-color:var(--teal-l)}
+.tile.on{border-color:var(--teal);background:var(--soft)}
+.tile .ck{position:absolute;top:10px;right:10px;width:20px;height:20px;border:2px solid #9AAFC4;display:grid;place-items:center;background:#fff;color:#fff}
+.tile.on .ck{background:var(--teal);border-color:var(--teal)}
+.tile-t{display:grid;gap:2px;padding-right:24px}
+.tile-t b{font-size:14px;color:var(--fg);line-height:1.25}
+.tile-t small{font-size:11.5px;color:var(--muted)}
+.tile-v{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;margin-top:auto}
+.tile-v>small{font-size:11px;color:var(--muted);width:100%;margin-bottom:-6px}
+.tile.wide{flex-direction:row;align-items:center;margin-bottom:6px}
+.tile.wide .tile-t{flex:1}
+.tile.wide .tile-v{display:grid;justify-items:end;margin:0 26px 0 0}
+.tile .pr::after{left:0;right:auto}
+.tile .qt button{width:28px;height:28px;font-size:16px}
+.hrs{margin:0 0 10px}
+@media (max-width:440px){.fxs{grid-template-columns:repeat(3,1fr)}.tiles{grid-template-columns:1fr}}
 .ex{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1.5px dashed var(--teal-l);background:#fff;color:var(--fg);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:13.5px}
 .ex.on{border-style:solid;border-color:var(--teal);background:var(--soft)}
 .ex-t{flex:1;min-width:0;font-weight:600;color:var(--navy)}
@@ -215,13 +287,13 @@ a.btn svg{flex:none}
 .pk-v{font-size:12.5px;font-weight:700;color:var(--blue);white-space:nowrap}
 .soma{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bg2);font-size:13.5px;color:var(--muted)}
 .soma b{color:var(--navy);font-size:16px}
-.pc{--c:var(--navy);--sub:var(--muted);--chk:var(--blue);--chk-fg:#fff;--div:rgba(0,27,74,.12);background:#E8F1FB;color:var(--c);border-radius:20px;padding:30px 26px;display:flex;flex-direction:column;position:relative;overflow:hidden;isolation:isolate}
+.pc{--c:var(--navy);--sub:var(--muted);--chk:var(--blue);--chk-fg:#fff;--div:rgba(0,27,74,.12);background:#E8F1FB;color:var(--c);border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;position:relative;overflow:hidden;isolation:isolate}
 .pc::after{content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.07);z-index:-1}
-.pc:nth-child(2){background:var(--blue);--c:#fff;--sub:#D6E4F5;--chk:#fff;--chk-fg:var(--blue);--div:rgba(255,255,255,.25)}
+.pc:nth-child(2){background:#1D4A87;--c:#fff;--sub:#D6E4F5;--chk:#fff;--chk-fg:#1D4A87;--div:rgba(255,255,255,.25)}
 .pc:nth-child(3){background:var(--navy);--c:#fff;--sub:#B9CBE0;--chk:var(--teal);--chk-fg:#fff;--div:rgba(255,255,255,.18)}
 .pc:nth-child(3)::after{background:rgba(18,176,182,.22);width:300px;height:300px;right:-120px;top:auto;bottom:-140px}
 .pc:nth-child(4){background:#0C8C92;--c:#fff;--sub:#E0F6F7;--chk:#fff;--chk-fg:#0C8C92;--div:rgba(255,255,255,.3)}
-.pc h3{font-size:19px;color:var(--c);white-space:nowrap}
+.pc h3{font-size:21px;color:var(--c);white-space:nowrap}
 .pc .val{margin-top:14px;min-height:62px;display:flex;flex-direction:column;justify-content:center}
 .pc .val small{font-size:12.5px;color:var(--sub)}
 .pc .val b{font-size:30px;font-weight:800;line-height:1.1;color:var(--c)}
@@ -322,7 +394,7 @@ footer img{height:38px;display:block}
   <div class="container hero-grid">
     <div>
       <h1>Sua empresa em conformidade com a <em>Saúde e Segurança</em> <em class="t">do Trabalho</em> em poucos minutos.</h1>
-      <p class="sub">Responda 4 perguntas, escolha seu plano e receba sua proposta em poucos minutos, sem precisar marcar reunião.</p>
+      <p class="sub">Informe o CNPJ, escolha seu plano e receba sua proposta em poucos minutos, sem precisar marcar reunião.</p>
       <ul class="hero-list">
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>PCMSO, PGR, exames e eSocial em um só lugar</li>
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Exames com enfermagem ágil e liberação no mesmo dia</li>
@@ -456,9 +528,13 @@ const CONFIG = {
   gtm: '',
   // Número de parcelas exibido
   parcelas: 12,
-  // WhatsApp do comercial com DDI e DDD, só números (ex.: '5541999999999').
-  // Preenchido: os botões "Falar com um consultor" abrem o WhatsApp. Vazio: abrem o formulário de contato.
-  whatsapp: '',
+  // Consultoras que recebem os clientes no WhatsApp: cada pessoa cai em uma delas por sorteio (meio a meio).
+  // whatsapp com DDI e DDD, só números (ex.: '5541999999999'). Sem nenhum número: os botões abrem o formulário
+  // de contato e a tela final mostra o telefone fixo.
+  consultoras: [
+    { nome: 'Ju', whatsapp: '' },
+    { nome: 'Carol', whatsapp: '' }
+  ],
   // Planos em níveis (a empresa escolhe um). precos = valor da PARCELA por tipo de atividade e faixa de funcionários:
   // a = 2 a 5, b = 6 a 10, c = 11 a 15, d = 16 a 20 (mais de 20 = proposta com a equipe). null = "Valor na proposta".
   // destaque = cartão em evidência. ast = asterisco da nota de rodapé. sobMedida = não gera proposta, a equipe liga.
@@ -589,6 +665,7 @@ const ICONS={
   brain:'<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v.5a3 3 0 0 0-2 5 3 3 0 0 0 2 5v.5A2.5 2.5 0 0 0 12 17V4.5A2.5 2.5 0 0 0 9.5 2zM14.5 2A2.5 2.5 0 0 1 17 4.5v.5a3 3 0 0 1 2 5 3 3 0 0 1-2 5v.5a2.5 2.5 0 0 1-5 0"/>',
   swap:'<path d="M17 3l4 4-4 4M21 7H9M7 21l-4-4 4-4M3 17h12"/>',
   ok:'<path d="M20 6 9 17l-5-5"/>',
+  seta:'<path d="M5 12h14M13 6l6 6-6 6"/>',
   back:'<path d="m15 18-6-6 6-6"/>',
   x:'<path d="M18 6 6 18M6 6l12 12"/>',
   star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" fill="currentColor"/>',
@@ -680,13 +757,34 @@ async function buscarCNPJ(){
 const empresaNome=()=>S.emp?.fantasia||S.emp?.razao||S.empManual.trim();
 
 /* ---------- WhatsApp ---------- */
-function linkZap(){
-  const plano=S.sel.length&&S.faixa?` Montei o ${PL[S.sel[0]].nome} para ${FAIXAS.find(f=>f.id===S.faixa).t.toLowerCase()}.`:'';
-  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Olá! Vim pelo site e quero falar com um consultor da eProtege.'+plano)}`;
+// sorteia a consultora uma vez por visita (fica a mesma em todos os botões e vai para a planilha)
+const comZap=()=>CONFIG.consultoras.filter(c=>c.whatsapp);
+function consultora(){
+  const lista=comZap();if(!lista.length)return null;
+  if(!S.cons||!lista.includes(S.cons))S.cons=lista[Math.floor(Math.random()*lista.length)];
+  return S.cons;
 }
-// com WhatsApp configurado o botão abre a conversa; sem, abre o formulário de contato
-const botaoConsultor=cls=>CONFIG.whatsapp
-  ?`<a class="${cls}" data-zap href="${linkZap()}" target="_blank" rel="noopener">${svg('zap',18,2)}Falar com um consultor no WhatsApp</a>`
+// mensagem pronta: quem é, de qual empresa, quantos funcionários e o que pediu
+function msgZap(){
+  const c=consultora(),nome=S.dados.nome.trim(),emp=empresaNome(),faixa=FAIXAS.find(f=>f.id===S.faixa)?.t.toLowerCase();
+  const cnpj=!S.semCnpj&&S.cnpj?` (CNPJ ${S.cnpj})`:'';
+  let m=`Olá, ${c.nome}!`;
+  if(nome)m+=` Sou ${nome}${emp?`, da ${emp}${cnpj}`:''}.`;
+  else if(emp)m+=` Sou da ${emp}${cnpj}.`;
+  if(faixa)m+=` Temos ${faixa}.`;
+  if(S.step===P.OK&&S.modo==='contratar'){
+    const extras=[pacote()&&'técnico presencial',treinQtd()&&'treinamentos'].filter(Boolean);
+    m+=` Pedi pelo site a proposta do ${nomesSel()}${extras.length?` com ${extras.join(' e ')}`:''} e quero falar sobre a minha proposta.`;
+  }else if(S.step===P.OK)m+=` Preenchi o formulário no site e quero falar sobre um plano para a minha empresa.`;
+  else m+=` Vim pelo site da eProtege e quero falar sobre um plano${S.sel.length&&S.step>=1?` (estou vendo o ${nomesSel()})`:''} para a minha empresa.`;
+  return m;
+}
+const linkZap=()=>`https://wa.me/${consultora().whatsapp}?text=${encodeURIComponent(msgZap())}`;
+const iconeZap=`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3z"/></svg>`;
+// botão verde do WhatsApp (com número configurado); sem número, abre o formulário de contato
+const botaoZap=txt=>`<a class="btn zap" data-zap href="${linkZap()}" target="_blank" rel="noopener">${iconeZap}${esc(txt)}</a>`;
+const botaoConsultor=cls=>comZap().length
+  ?botaoZap('Falar com uma consultora no WhatsApp')
   :`<button type="button" class="${cls}" data-act="modo" data-v="consultor">Prefiro falar com um consultor</button>`;
 
 /* ---------- Telas ---------- */
@@ -694,119 +792,110 @@ const opt=(o,sel,key)=>`<button type="button" class="opt ${sel===o.id?'on':''}" 
 const back=()=>`<button type="button" class="back" data-act="back">${svg('back',16)}Voltar</button>`;
 const field=(id,label,type,val,msg,extra='')=>`<div class="f" id="f_${id}"><label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(val)}" ${extra}><span class="msg">${msg}</span></div>`;
 
+/* Passos: 0 empresa (CNPJ + funcionários), 1 plano, 2 extras (técnico e cursos), 3 dados, 4 pronto */
+const P={EMP:0,PLANO:1,EXTRAS:2,DADOS:3,OK:4};
+function statusCnpj(){
+  const e=S.emp;
+  if(e?.carregando)return `<div class="found"><span class="spin dk"></span>Buscando sua empresa na Receita...</div>`;
+  if(e?.erro)return `<div class="found warn">${esc(e.erro)}</div>`;
+  if(e?.falhou)return `<div class="found warn">Não conseguimos consultar o CNPJ agora, mas ele ficou anotado.</div>`;
+  if(e?.razao)return `<div class="found ok-emp"><span class="ok-ic">${svg('ok',14,3.4)}</span><span><b>${esc(e.fantasia||e.razao)}</b><span>${esc(e.cnaeDesc||[e.cidade,e.uf].filter(Boolean).join(', '))}</span>${S.gr?`<span class="gr">Grau de risco ${S.gr} · ${S.gr>=3?'maior risco':'menor risco'}</span>`:''}</span></div>`;
+  return '';
+}
+// preço com o valor cheio ao passar o mouse (ou tocar)
+const preco=(por,de,un)=>`<span class="pr" tabindex="0" data-de="Sem o pacote: R$ ${brl(de)}">R$ ${brl(por)}${un?` <small>${esc(un)}</small>`:''}</span>`;
+const voltar=()=>`<button type="button" class="back" data-act="back">${svg('back',16)}Voltar</button>`;
+const icoBusca=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
+
 function render(){
-  const labels=['Passo 1 de 4','Passo 2 de 4','Passo 3 de 4','Seus planos','Programe o seu ano','Seus dados','Pronto'];
-  $('stepLabel').textContent=S.direto&&S.step===5?'Falar com consultor':labels[S.step];
-  $('barFill').style.width=[20,40,60,74,84,92,100][S.step]+'%';
+  const labels=['Passo 1 de 4','Passo 2 de 4','Passo 3 de 4','Passo 4 de 4','Pronto'];
+  $('stepLabel').textContent=S.direto&&S.step===P.DADOS?'Falar com consultor':labels[S.step];
+  $('barFill').style.width=[22,45,68,88,100][S.step]+'%';
   let h='';
-  if(S.step===0)h=`<div class="stp">Sua empresa</div><div class="q">Quantas pessoas trabalham na empresa?</div><div class="opts">${FAIXAS.map(f=>opt(f,S.faixa,'faixa')).join('')}</div><button type="button" class="btn" data-act="next">Continuar</button><p class="hint" id="hint"></p>`;
-  if(S.step===1){
-    // CNPJ primeiro: pelo CNAE sai o grau de risco (NR-04). Sem CNPJ, ou sem grau, a pessoa escolhe a atividade.
-    const e=S.emp,manual=S.semCnpj||e?.falhou||(e?.razao&&!S.gr);
-    let st='';
-    if(e?.carregando)st=`<div class="found">Buscando sua empresa...</div>`;
-    else if(e?.erro)st=`<div class="found warn">${esc(e.erro)}</div>`;
-    else if(e?.falhou)st=`<div class="found warn">Não conseguimos consultar o CNPJ agora, mas ele ficou anotado.</div>`;
-    else if(e?.razao)st=`<div class="found"><span class="tag">ENCONTRAMOS</span><b>${esc(e.fantasia||e.razao)}</b><span>${esc([e.cidade,e.uf].filter(Boolean).join(', '))}${e.cnaeDesc?' · '+esc(e.cnaeDesc):''}</span>${S.gr?`<span class="gr">Grau de risco ${S.gr} pela NR-04 · ${S.gr>=3?'atividade de maior risco':'atividade de menor risco'}</span>`:''}</div>`;
-    h=`${back()}<div class="stp">Sua empresa</div><div class="q">${S.semCnpj?'O que sua equipe faz no dia a dia?':'Qual é o CNPJ da empresa?'}</div>
-      ${S.semCnpj?'':`<p class="terms" style="margin:-8px 0 12px">Com o CNPJ identificamos a atividade e o grau de risco da empresa e indicamos os treinamentos que ela precisa.</p>
-      <div class="f" id="f_cnpj"><label for="cnpj">CNPJ da empresa</label><input id="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>${st}`}
-      ${manual?`${S.semCnpj?'':'<div class="q2">O que sua equipe faz no dia a dia?</div>'}<div class="opts">${RISCOS.map(r=>opt(r,S.risco,'risco')).join('')}</div>`:''}
-      <button type="button" class="btn" data-act="next">Continuar</button><p class="hint" id="hint"></p>
-      <button type="button" class="link" data-act="${S.semCnpj?'comcnpj':'semcnpj'}" style="display:block;margin:4px auto 0">${S.semCnpj?'Prefiro informar o CNPJ':'Não tenho o CNPJ em mãos'}</button>`;
+  if(S.step===P.EMP){
+    const manual=S.semCnpj||S.emp?.falhou||(S.emp?.razao&&!S.gr);
+    const chip=f=>`<button type="button" class="fx ${S.faixa===f.id?'on':''}" data-k="faixa" data-v="${f.id}"><b>${esc(f.t.replace(' funcionários','').replace('Mais de ','+'))}</b><small>${f.id===GRANDE?'consultor':'pessoas'}</small></button>`;
+    h=`<div class="q">Descubra o plano certo para a sua empresa</div>
+      <p class="sub-q">${S.semCnpj?'Sem problema. Conte o que a sua equipe faz:':'Digite o CNPJ e nós identificamos a atividade e o grau de risco.'}</p>
+      ${S.semCnpj?'':`<div class="f big" id="f_cnpj"><label for="cnpj" class="sr">CNPJ da empresa</label><span class="in-ic">${icoBusca}</span><input id="cnpj" inputmode="numeric" placeholder="CNPJ da empresa" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>${statusCnpj()}`}
+      ${manual?`${S.semCnpj?'':'<div class="lbl">O que a sua equipe faz no dia a dia?</div>'}<div class="opts">${RISCOS.map(r=>opt(r,S.risco,'risco')).join('')}</div>`:''}
+      <div class="lbl">Quantos funcionários?</div><div class="fxs">${FAIXAS.map(chip).join('')}</div>
+      <button type="button" class="btn" data-act="next">${S.faixa===GRANDE?'Continuar':'Ver meu plano'} ${svg('seta',18,2.4)}</button><p class="hint" id="hint"></p>
+      <div class="rodape-cfg"><span>Sem cadastro · leva 1 minuto</span><button type="button" class="link" data-act="${S.semCnpj?'comcnpj':'semcnpj'}">${S.semCnpj?'Informar o CNPJ':'Não tenho o CNPJ'}</button></div>`;
   }
-  if(S.step===2)h=`${back()}<div class="stp">Momento</div><div class="q">O que te trouxe até aqui?</div><div class="opts">${NEEDS.map(n=>opt(n,S.need,'need')).join('')}</div><button type="button" class="btn" data-act="next">Ver meus planos</button><p class="hint" id="hint"></p>`;
-  if(S.step===3){
+  if(S.step===P.PLANO){
     if(!S.escolheu)S.sel=recomendado();
-    const rec=recomendado(),sob=S.faixa==='e',cons=sobMedida();
-    // plano sob medida exige o técnico: começa no pacote mínimo
-    if(cons&&!S.horas)S.horas=CONFIG.horas.pacotes[0].h;
+    const rec=recomendado();
     const linha=p=>{const on=S.sel.includes(p.id),v=parcelaDe(p.id);return `<button type="button" class="pk ${on?'on':''}" data-pl="${p.id}" aria-pressed="${on}">
       <span class="ck">${on?svg('ok',13,3.6):''}</span>
-      <span class="pk-t"><b>${esc(p.nome)}${p.ast?`<span class="ast">${p.ast}</span>`:''}${rec.includes(p.id)?' <span class="tag">RECOMENDADO</span>':''}</b><small>${esc(p.area)}</small></span>
-      <span class="pk-v">${p.sobMedida?'Sob medida':v==null?'Na proposta':`${CONFIG.parcelas}x R$ ${brl(v)}`}</span></button>`};
-    const hr=(h,t,v)=>{const on=S.horas===h;return `<button type="button" class="ex ${on?'on':''}" data-hr="${h}" aria-pressed="${on}">
-      <span class="ck">${on?svg('ok',12,3.6):''}</span><span class="ex-t">${esc(t)}</span>${v?`<span class="ex-v">R$ ${brl(v)} a hora</span>`:''}</button>`};
-    const horas=(cons?'':hr(0,'Agora não',0))+CONFIG.horas.pacotes.map(p=>hr(p.h,p.t,p.valor)).join('');
-    const p=pacote();
-    h=`${back()}<div class="stp">Seu plano</div><div class="q">Escolha o plano da sua empresa</div>
-      <p class="terms" style="margin:-8px 0 12px">${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${S.risco==='alto'?'atividade de maior risco':'atividade de menor risco'}. Já deixamos marcado o que recomendamos.</p>
+      <span class="pk-t"><b>${esc(p.nome.replace('eProtege ',''))}${rec.includes(p.id)?' <span class="tag">RECOMENDADO</span>':''}</b><small>${esc(p.area)}</small></span>
+      <span class="pk-v">${p.sobMedida?'Sob medida':v==null?'Na proposta':`<small>12x</small>R$ ${brl(v)}`}</span></button>`};
+    h=`${voltar()}<div class="q">Escolha o seu plano</div>
+      <p class="sub-q">${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${S.risco==='alto'?'maior risco':'menor risco'}</p>
       <div class="pks">${CONFIG.planos.map(linha).join('')}</div>
-      <p class="notas">${CONFIG.notas.map(esc).join('<br>')}</p>
-      <div class="exs"><span class="ex-h">${cons?'Horas do técnico na sua empresa':'Quer um técnico de segurança presencial na empresa?'}</span>${horas}
-        <p class="terms" style="margin:2px 0 0">O técnico combina com você como dividir as horas: um dia no mês, 4 horas a cada 15 dias ou dois períodos na semana. Fora do pacote, a hora avulsa é R$ ${brl(CONFIG.horas.avulsa)}.</p></div>
-      <div class="soma"><span>${S.sel.length?esc(PL[S.sel[0]].nome):'Nenhum plano escolhido'}${p?`<small>+ técnico presencial, ${esc(p.t)}, R$ ${brl(p.valor)} a hora</small>`:''}</span><b>${S.sel.length?esc(precoTxt()):''}</b></div>
-      ${cons?`<p class="terms">Este plano é montado para a realidade da sua empresa. Deixe seus dados e nas próximas horas nossa equipe entra em contato.</p>
-        <button type="button" class="btn" data-act="modo" data-v="equipe">Quero falar com a equipe</button><p class="hint" id="hint"></p>`
-      :`${sob?`<p class="terms">Para mais de 20 funcionários a nossa equipe monta uma proposta sob medida.</p>`:''}
-        <button type="button" class="btn" data-act="modo" data-v="contratar">Receber minha proposta</button><p class="hint" id="hint"></p>
-        ${botaoConsultor('btn out')}`}
-      <p class="terms" style="text-align:center">Pagamento: ativação + boleto em até ${CONFIG.parcelas}x</p>`;
+      <button type="button" class="btn" data-act="plano">Continuar ${svg('seta',18,2.4)}</button><p class="hint" id="hint"></p>
+      <p class="terms" style="text-align:center">Ativação + boleto em até ${CONFIG.parcelas}x</p>`;
   }
-  if(S.step===4){
-    const n=treinIds().length,ind=indicados(),indIds=ind.map(x=>x.id);
-    const tr=(t,motivo)=>{const q=S.trein[t.id]||0;return `<div class="tr ${q?'on':''}">
-      <span class="tr-t"><b>${esc(t.nome)}${t.carga?` <small>${esc(t.carga)}</small>`:''}</b>${motivo?`<span class="why">${esc(motivo)}</span>`:''}<span class="ex-v"><s>R$ ${brl(t.de)}</s> R$ ${brl(t.por)} <small>${esc(unTxt(t))}</small></span></span>
-      <span class="qt"><button type="button" data-tq="${t.id}" data-d="-1" aria-label="Diminuir ${esc(trNome(t))}" ${q?'':'disabled'}>−</button><b aria-live="polite">${q}</b><button type="button" data-tq="${t.id}" data-d="1" aria-label="Aumentar ${esc(trNome(t))}">+</button></span></div>`};
-    // outros: tudo que não foi indicado, sem as outras cargas de CIPA
-    const outros=CONFIG.treinamentos.filter(t=>!indIds.includes(t.id)&&!/^cipa/.test(t.id));
-    const quem=S.emp?.razao?esc(S.emp.fantasia||S.emp.razao):'a sua empresa';
-    const abertoOutros=outros.some(t=>S.trein[t.id]);
-    const duvida=CONFIG.whatsapp
-      ?`<a class="link" data-zap href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Olá! Estou montando meu plano no site e quero ajuda para escolher os treinamentos da minha equipe.')}" target="_blank" rel="noopener">Fale com a gente no WhatsApp</a>`
-      :`<button type="button" class="link" data-act="modo" data-v="consultor">Fale com a nossa equipe</button>`;
-    h=`${back()}<div class="stp">Programe o seu ano</div><div class="q">Já deixe os treinamentos do ano garantidos</div>
-      <p class="terms" style="margin:-8px 0 12px">Fechando junto com o seu plano, treinamentos e palestras saem com preço especial. Em janeiro a nossa tabela muda.</p>
-      <div class="ex-h" style="margin-bottom:8px">Indicados para ${quem}${S.gr?` · grau de risco ${S.gr}`:''}</div>
-      <div class="trs">${ind.map(x=>tr(TR[x.id],x.motivo)).join('')}</div>
-      <details class="mais-tr"${abertoOutros?' open':''}><summary>Ver outros treinamentos e palestras</summary><div class="trs">${outros.map(t=>tr(t)).join('')}</div></details>
-      <p class="terms" style="margin:8px 0 0">Indicação feita pela atividade do CNPJ e pela NR-04. Nosso técnico confirma na visita.</p>
-      <div class="soma"><span>${n?`${n} ${n>1?'treinamentos escolhidos':'treinamento escolhido'}`:'Nenhum treinamento escolhido'}</span><b>${n?`R$ ${brl(treinValor())} na ativação`:''}</b></div>
-      <button type="button" class="btn" data-act="ano">${n?'Incluir e continuar':'Continuar sem treinamentos'}</button>
-      <p class="terms" style="text-align:center">Em dúvida sobre quais treinamentos a sua equipe precisa? ${duvida}</p>`;
+  if(S.step===P.EXTRAS){
+    const cons=sobMedida();
+    if(cons&&!S.horas)S.horas=CONFIG.horas.pacotes[0].h;
+    // técnico presencial
+    const tecOn=S.horas>0,min=Math.min(...CONFIG.horas.pacotes.map(x=>x.valor));
+    const tec=`<div class="tile wide ${tecOn?'on':''}" ${cons?'':'data-tec role="button" tabindex="0"'} aria-pressed="${tecOn}" title="Confere documentos, treinamentos vencidos e uso de EPI antes que vire problema.">
+      <span class="ck sq">${tecOn?svg('ok',12,3.6):''}</span>
+      <span class="tile-t"><b>Técnico de segurança na empresa</b><small>Documentos, treinamentos e EPI sempre em dia</small></span>
+      <span class="tile-v"><small>a partir de</small>${preco(min,CONFIG.horas.avulsa,'/hora')}</span></div>
+      ${tecOn?`<div class="hrs">${CONFIG.horas.pacotes.map(p=>`<button type="button" class="chip ${S.horas===p.h?'on':''}" data-hr="${p.h}">${p.h===20?'20h+':p.h+'h'}/mês · R$ ${brl(p.valor)}/h</button>`).join('')}</div>`:''}`;
+    // cursos indicados (4 primeiros), os demais em "ver mais"
+    const todos=indicados(),ind=todos.slice(0,4),indIds=todos.map(x=>x.id);
+    const outros=todos.slice(4).map(x=>TR[x.id]).concat(CONFIG.treinamentos.filter(t=>!indIds.includes(t.id)&&!/^cipa/.test(t.id)));
+    const mot=Object.fromEntries(todos.map(x=>[x.id,x.motivo]));
+    const tile=t=>{const q=S.trein[t.id]||0;return `<div class="tile ${q?'on':''}" data-tr="${t.id}" role="button" tabindex="0" aria-pressed="${!!q}"${mot[t.id]?` title="${esc(mot[t.id])}"`:''}>
+      <span class="ck sq">${q?svg('ok',12,3.6):''}</span>
+      <span class="tile-t"><b>${esc(t.nome.replace(/ \(NR-\d+\)/,''))}</b><small>${esc([t.carga,(t.nome.match(/NR-\d+/)||[''])[0]].filter(Boolean).join(' · '))}</small></span>
+      <span class="tile-v">${preco(t.por,t.de,unTxt(t).replace('por ','/').replace('turma de até ','turma até '))}${q?`<span class="qt" data-stop><button type="button" data-tq="${t.id}" data-d="-1" aria-label="Diminuir">−</button><b>${q}</b><button type="button" data-tq="${t.id}" data-d="1" aria-label="Aumentar">+</button></span>`:''}</span></div>`};
+    const p=pacote(),n=treinIds().length,soma=treinValor();
+    h=`${voltar()}<div class="q">${cons?'Horas do técnico':'Aproveite e inclua'}</div>
+      <p class="sub-q">${cons?'Escolha quantas horas por mês o técnico fica na sua empresa.':'Contratando junto, sai mais barato. Em janeiro a tabela muda.'}</p>
+      ${tec}
+      ${cons?'':`<div class="lbl">Indicados para ${S.emp?.razao?esc(S.emp.fantasia||S.emp.razao):'a sua empresa'}</div>
+      <div class="tiles">${ind.map(x=>tile(TR[x.id])).join('')}</div>
+      <details class="mais-tr"${outros.some(t=>S.trein[t.id])?' open':''}><summary>Ver mais treinamentos e palestras</summary><div class="tiles">${outros.map(tile).join('')}</div></details>`}
+      <div class="soma"><span>${esc(PL[S.sel[0]].nome)}${p?`<small>+ técnico ${esc(p.t)}</small>`:''}${n?`<small>+ ${n} ${n>1?'treinamentos':'treinamento'} · R$ ${brl(soma)} na ativação</small>`:''}</span><b>${esc(precoTxt())}</b></div>
+      ${cons?`<button type="button" class="btn" data-act="modo" data-v="equipe">Quero falar com a equipe</button><p class="hint" id="hint"></p>`
+      :`<button type="button" class="btn" data-act="modo" data-v="contratar">Receber minha proposta</button><p class="hint" id="hint"></p>
+        ${n||p?'':`<button type="button" class="link" data-act="modo" data-v="contratar" style="display:block;margin:10px auto 0">Agora não, só o plano</button>`}`}`;
   }
-  if(S.step===5){
-    const d=S.dados,contratar=S.modo==='contratar',equipe=S.modo==='equipe',e=S.emp;
+  if(S.step===P.DADOS){
+    const d=S.dados,contratar=S.modo==='contratar',equipe=S.modo==='equipe',e=S.emp,grande=S.faixa===GRANDE;
     let emp='';
-    if(S.semCnpj)emp=`${field('empManual','Nome da empresa','text',S.empManual,'Informe o nome da empresa','autocomplete="organization"')}<button type="button" class="link" data-act="comcnpj" style="margin:-4px 0 14px">Prefiro informar o CNPJ</button>`;
-    else{
-      emp=`<div class="f" id="f_cnpj"><label for="cnpj">CNPJ da empresa</label><input id="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>`;
-      if(e?.carregando)emp+=`<div class="found">Buscando sua empresa...</div>`;
-      else if(e?.erro)emp+=`<div class="found warn">${esc(e.erro)}</div>`;
-      else if(e?.falhou)emp+=`<div class="found warn">Não conseguimos consultar o CNPJ agora, mas ele ficou anotado. Só falta o nome da empresa:</div>${field('empManual','Nome da empresa','text',S.empManual,'Informe o nome da empresa','autocomplete="organization"')}`;
-      else if(e?.razao)emp+=`<div class="found"><span class="tag">ENCONTRAMOS</span><b>${esc(e.fantasia||e.razao)}</b><span>${esc([e.cidade,e.uf].filter(Boolean).join(', '))}${e.cnaeDesc?' · '+esc(e.cnaeDesc):''}</span></div>`;
-      emp+=`<button type="button" class="link" data-act="semcnpj" style="margin:-4px 0 14px">Não tenho o CNPJ em mãos</button>`;
-    }
+    if(S.semCnpj||e?.falhou)emp=field('empManual','Nome da empresa','text',S.empManual,'Informe o nome da empresa','autocomplete="organization"');
+    else if(!e?.razao)emp=`<div class="f" id="f_cnpj"><label for="cnpj">CNPJ da empresa</label><input id="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>${statusCnpj()}<button type="button" class="link" data-act="semcnpj" style="margin:-4px 0 14px">Não tenho o CNPJ em mãos</button>`;
     const extras=[pacote()&&horasTxt(),contratar&&treinQtd()&&'Treinamentos: '+treinTxt()].filter(Boolean);
-    const grande=S.faixa===GRANDE;
-    const recap=!grande&&S.sel.length&&S.faixa?`<div class="recap"><b>${esc(nomesSel())}</b> · ${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${esc(precoTxt())}${extras.map(x=>`<br>+ ${esc(x)}`).join('')}</div>`:'';
-    h=`${S.direto?'':back()}<div class="stp">${contratar?'Proposta':grande?'Falar com um consultor':equipe?'Plano sob medida':'Falar com consultor'}</div><div class="q">${contratar?'Para quem enviamos a proposta?':grande?'Para quem o consultor liga?':equipe?'Para quem a nossa equipe liga?':'Como o consultor fala com você?'}</div>
-      ${grande?`<p class="terms" style="margin:-8px 0 12px">Para empresas com mais de 50 funcionários, um consultor monta o plano junto com você. Preencha seus dados.</p>`:equipe?`<p class="terms" style="margin:-8px 0 12px">Nas próximas horas nossa equipe entra em contato para entender a sua empresa e montar o plano.</p>`:''}
-      ${recap}
+    const recap=`<div class="recap">${e?.razao?`<b>${esc(e.fantasia||e.razao)}</b><br>`:''}${!grande&&S.sel.length?`${esc(nomesSel())} · ${esc(precoTxt())}${extras.map(x=>`<br>+ ${esc(x)}`).join('')}`:esc(FAIXAS.find(f=>f.id===S.faixa)?.t||'')}</div>`;
+    h=`${S.direto?'':voltar()}<div class="q">${contratar?'Para quem enviamos a proposta?':grande?'Para quem o consultor liga?':equipe?'Para quem a nossa equipe liga?':'Como o consultor fala com você?'}</div>
+      ${grande?`<p class="sub-q">Para empresas com mais de 50 funcionários, um consultor monta o plano junto com você.</p>`:''}
+      ${S.direto?'':recap}
       ${field('nome','Seu nome','text',d.nome,'Informe seu nome','autocomplete="name"')}
-      ${field('tel','Telefone','tel',d.tel,'Informe um telefone com DDD','inputmode="tel" autocomplete="tel" placeholder="(41) 99999 9999"')}
+      ${field('tel','WhatsApp','tel',d.tel,'Informe um telefone com DDD','inputmode="tel" autocomplete="tel" placeholder="(41) 99999 9999"')}
       ${field('email','E-mail','email',d.email,'Informe um e-mail válido','autocomplete="email" placeholder="voce@empresa.com.br"')}
       <div style="display:grid">${emp}</div>
       <div class="terms"><label><input type="checkbox" id="lgpd" ${d.lgpd?'checked':''}><span>Autorizo a eProtege a usar estes dados para enviar a proposta e entrar em contato, conforme a LGPD.</span></label></div>
-      <button type="submit" class="btn" ${S.enviando?'disabled':''}>${S.enviando?'<span class="spin"></span>Enviando':contratar?'Receber minha proposta':S.faixa===GRANDE?'Pedir contato do consultor':equipe?'Pedir contato da equipe':'Pedir contato do consultor'}</button>
+      <button type="submit" class="btn" ${S.enviando?'disabled':''}>${S.enviando?'<span class="spin"></span>Enviando':contratar?'Receber minha proposta':grande?'Pedir contato do consultor':equipe?'Pedir contato da equipe':'Pedir contato do consultor'}</button>
       ${S.direto?`<button type="button" class="link" data-act="montar" style="display:block;margin:14px auto 0">Prefiro montar meu plano primeiro</button>`:''}`;
   }
-  if(S.step===6){
+  if(S.step===P.OK){
     const contratar=S.modo==='contratar',equipe=S.modo==='equipe';
-    // mais de 50 funcionários ou plano com técnico: página de obrigado com o consultor e o WhatsApp
+    const c=consultora();
+    const zap=c?botaoZap(`Falar com a ${c.nome} no WhatsApp`):`<a class="btn" href="tel:+554132781663">Ligar para (41) 3278-1663</a>`;
     if(equipe){
-      const zap=CONFIG.whatsapp
-        ?`<a class="btn" data-zap href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(`Olá! Preenchi o formulário no site${empresaNome()?' pela '+empresaNome():''} e quero falar com um consultor da eProtege.`)}" target="_blank" rel="noopener">${svg('zap',18,2)}Falar com um consultor no WhatsApp</a>`
-        :`<a class="btn" href="tel:+554132781663">Ligar para (41) 3278-1663</a>`;
       h=`<div class="ok"><div class="big">${svg('ok',36,3)}</div><div class="q">Obrigada por preencher!</div>
-        <p>Para empresas do porte da sua, um consultor precisa te atender para montar o plano certo. Nas próximas horas ele entra em contato. Se preferir adiantar, fale com a gente agora.</p>
-        ${zap}</div>`;
-      $('cfgView').innerHTML=h;return;
-    }
-    h=`<div class="ok"><div class="big">${svg('ok',36,3)}</div><div class="q">${contratar?'Proposta a caminho!':'Pronto, recebemos!'}</div>
-      <p>${contratar?`Enviamos a proposta para <b>${esc(S.dados.email)}</b>. Se não encontrar, confira a caixa de spam. Nossa equipe também vai te chamar no WhatsApp para tirar qualquer dúvida.`:equipe?'Nas próximas horas nossa equipe entra em contato para entender a sua empresa e montar o plano com o técnico presencial.':'Um consultor da eProtege vai entrar em contato em até 1 dia útil.'}</p>
+        <p>Para empresas do porte da sua, um consultor precisa te atender para montar o plano certo. Nas próximas horas ele entra em contato. Se preferir adiantar, fale com a gente agora.</p>${zap}</div>`;
+    }else h=`<div class="ok"><div class="big">${svg('ok',36,3)}</div><div class="q">${contratar?'Proposta a caminho!':'Pronto, recebemos!'}</div>
+      <p>${contratar?`Enviamos a proposta para <b>${esc(S.dados.email)}</b>. Se não encontrar, confira a caixa de spam. ${c?`A ${esc(c.nome)}, sua consultora, vai cuidar do seu atendimento. Fale com ela agora:`:'Ficou com alguma dúvida? Fale com a gente agora.'}`:'Um consultor da eProtege vai entrar em contato em até 1 dia útil.'}</p>
+      ${contratar?zap:''}
       <div class="next">
-        <div><span>1</span>${contratar?'Você confere e aprova a proposta':equipe?'Conversa com a nossa equipe':'Conversa rápida com o consultor'}</div>
+        <div><span>1</span>${contratar?'Você confere e aprova a proposta':'Conversa rápida com o consultor'}</div>
         <div><span>2</span>${contratar?'Nossa equipe envia o contrato para assinar':'Proposta no seu e-mail'}</div>
         <div><span>3</span>Agendamos a visita técnica e os exames</div>
       </div></div>`;
@@ -818,55 +907,57 @@ function render(){
 const view=$('cfgView');
 /* O que falta para seguir (o botão nunca fica apagado: ele diz o que falta) */
 function faltando(){
-  if(S.step===0&&!S.faixa)return['Escolha quantas pessoas trabalham na empresa.'];
-  if(S.step===1&&!S.risco){
-    if(S.emp?.carregando)return['Aguarde, estamos buscando a sua empresa.'];
+  if(S.step!==P.EMP)return null;
+  if(S.emp?.carregando)return['Aguarde, estamos buscando a sua empresa.'];
+  if(S.faixa===GRANDE)return null;
+  if(!S.risco){
     if(S.semCnpj||S.emp?.falhou||S.emp?.razao)return['Escolha o que a sua equipe faz.'];
-    return['Digite o CNPJ ou clique em "Não tenho o CNPJ em mãos".'];
+    return['Digite o CNPJ ou clique em "Não tenho o CNPJ".'];
   }
-  if(S.step===2&&!S.need)return['Escolha uma das opções acima.'];
+  if(!S.faixa)return['Escolha quantos funcionários a empresa tem.'];
   return null;
 }
+const rolar=()=>$('plano').scrollIntoView({block:'nearest',behavior:'smooth'});
 function avancar(){
   const f=faltando();
   if(f){const h=$('hint');if(h)h.textContent=f[0];return}
   // mais de 50 funcionários: direto para os dados e o consultor
-  if(S.step===0&&S.faixa===GRANDE){S.modo='equipe';S.step=5;track('autovenda_checkout',{modo:'grande'});render();$('plano').scrollIntoView({block:'nearest',behavior:'smooth'});return}
-  S.step++;track('autovenda_passo',{passo:S.step+1});
-  if(S.step===3)track('autovenda_plano',{planos:recomendado().join('+')});
-  render();$('plano').scrollIntoView({block:'nearest',behavior:'smooth'});
+  if(S.faixa===GRANDE){S.modo='equipe';S.step=P.DADOS;track('autovenda_checkout',{modo:'grande'})}
+  else{S.step=P.PLANO;track('autovenda_plano',{planos:recomendado().join('+')})}
+  render();rolar();
 }
 function focarFim(id){const i=$(id);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
-view.addEventListener('click',e=>{
+function clique(e){
   const pl=e.target.closest('[data-pl]');
   if(pl){S.escolheu=true;S.sel=[pl.dataset.pl];render();return}
   const hr=e.target.closest('[data-hr]');
   if(hr){S.horas=+hr.dataset.hr;track('autovenda_horas',{horas:S.horas});render();return}
   const tq=e.target.closest('[data-tq]');
-  if(tq){const id=tq.dataset.tq;S.trein[id]=Math.max(0,(S.trein[id]||0)+ +tq.dataset.d);track('autovenda_treinamento',{treinamento:id,qtd:S.trein[id]});render();
-    view.querySelector(`[data-tq="${id}"][data-d="${tq.dataset.d}"]:not([disabled])`)?.focus();return}
+  if(tq){const id=tq.dataset.tq;S.trein[id]=Math.max(0,(S.trein[id]||0)+ +tq.dataset.d);track('autovenda_treinamento',{treinamento:id,qtd:S.trein[id]});render();return}
+  if(e.target.closest('[data-stop]'))return;
+  if(e.target.closest('.pr'))return;
+  if(e.target.closest('[data-tec]')){S.horas=S.horas?0:CONFIG.horas.pacotes[0].h;track('autovenda_horas',{horas:S.horas});render();return}
+  const trb=e.target.closest('[data-tr]');
+  if(trb){const id=trb.dataset.tr;S.trein[id]=S.trein[id]?0:1;track('autovenda_treinamento',{treinamento:id,qtd:S.trein[id]});render();return}
   if(e.target.closest('[data-zap]')){track('autovenda_whatsapp',{onde:'configurador'});return}
   const b=e.target.closest('[data-k],[data-act]');if(!b||b.disabled)return;
   if(b.dataset.k){
     S[b.dataset.k]=b.dataset.v;render();
     if(b.dataset.k==='faixa')track('autovenda_faixa',{faixa:b.dataset.v});
-    // faixa, atividade e momento: escolheu, já avança
-    if(['faixa','risco','need'].includes(b.dataset.k)){const st=S.step;setTimeout(()=>{if(S.step===st)avancar()},260)}
     return}
   const a=b.dataset.act;
   if(a==='semcnpj'){S.semCnpj=true;S.emp=null;S.cnpj='';if(S.gr){S.gr=null;S.risco=null}render();$('empManual')?.focus();return}
   if(a==='comcnpj'){S.semCnpj=false;S.emp=null;S.risco=null;render();$('cnpj')?.focus();return}
   if(a==='next'){avancar();return}
-  // dos dados, quem não pediu proposta volta direto para o plano (o passo do ano é só da proposta)
-  if(a==='back')S.step=S.step===5&&S.faixa===GRANDE?0:S.step===5&&S.modo!=='contratar'?3:S.step-1;
-  if(a==='modo'){
-    if(b.dataset.v==='contratar'&&!S.sel.length){$('hint').textContent='Escolha um plano.';return}
-    S.modo=b.dataset.v;S.step=S.modo==='contratar'?4:5;track('autovenda_checkout',{modo:S.modo,planos:S.sel.join('+')})}
-  if(a==='ano'){S.step=5;track('autovenda_ano',{participantes:treinQtd()})}
-  if(a==='montar'){S.direto=false;S.modo=null;S.step=0}
-  render();
-  $('plano').scrollIntoView({block:'nearest',behavior:'smooth'});
-});
+  if(a==='plano'){if(!S.sel.length){$('hint').textContent='Escolha um plano.';return}S.step=P.EXTRAS;track('autovenda_extras',{plano:S.sel[0]})}
+  if(a==='back')S.step=S.step===P.DADOS&&S.faixa===GRANDE?P.EMP:S.step-1;
+  if(a==='modo'){S.modo=b.dataset.v;S.step=P.DADOS;track('autovenda_checkout',{modo:S.modo,planos:S.sel.join('+')})}
+  if(a==='montar'){S.direto=false;S.modo=null;S.step=P.EMP}
+  render();rolar();
+}
+view.addEventListener('click',clique);
+// cartões clicáveis também pelo teclado
+view.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-tr],[data-tec]')){e.preventDefault();clique(e)}});
 view.addEventListener('input',e=>{
   const t=e.target;
   if(t.id==='cnpj'){
@@ -890,18 +981,18 @@ const validTel=v=>v.replace(/\D/g,'').length>=10;
 const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 $('cfg').addEventListener('submit',async e=>{
   e.preventDefault();
-  if(S.step!==5||S.enviando)return;
+  if(S.step!==P.DADOS||S.enviando)return;
   const d=S.dados;
   const temEmpresa=!!empresaNome()&&!S.emp?.carregando;
   const campoEmp=S.semCnpj||S.emp?.falhou?'empManual':'cnpj';
   const ok=[['nome',d.nome.trim().length>1],['tel',validTel(d.tel)],['email',validEmail(d.email)],[campoEmp,temEmpresa]]
     .map(([id,v])=>{$('f_'+id)?.classList.toggle('err',!v);return v}).every(Boolean);
-  if(campoEmp==='cnpj'&&!temEmpresa){const m=$('f_cnpj').querySelector('.msg');m.textContent=S.emp?.erro||'Digite o CNPJ ou clique em "Não tenho o CNPJ em mãos"'}
+  if(campoEmp==='cnpj'&&!temEmpresa){const m=$('f_cnpj')?.querySelector('.msg');if(m)m.textContent=S.emp?.erro||'Digite o CNPJ ou clique em "Não tenho o CNPJ em mãos"'}
   if(!d.lgpd){view.querySelector('.terms').style.color='var(--err)'}
   if(!ok||!d.lgpd){view.querySelector('.err input')?.focus();return}
   S.enviando=true;render();
   await enviar();
-  S.enviando=false;S.step=6;render();
+  S.enviando=false;S.step=P.OK;render();
   track('autovenda_lead',{modo:S.modo,planos:S.sel.join('+'),faixa:S.faixa});
 });
 
@@ -919,7 +1010,7 @@ function enviar(){
     'CNAE':e.cnae?`${e.cnae} ${e.cnaeDesc}`:'','Situação CNPJ':e.situacao||'',
     'Funcionários':faixa,'Atividade':atividade,'Momento':momento,'Plano':planos,'Parcela exibida':planos?precoTxt():'','Técnico presencial':horas,'Adicionais':trein,
     'Campanha':UTM.utm_campaign||'','Criativo':UTM.utm_content||UTM.utm_term||'','Origem':UTM.utm_source||'','Mídia':UTM.utm_medium||'',
-    'gclid':UTM.gclid||'','fbclid':UTM.fbclid||'','Página':location.href
+    'Consultora':consultora()?.nome||'','gclid':UTM.gclid||'','fbclid':UTM.fbclid||'','Página':location.href
   };
   // proposta automática só quando o cliente montou o plano e pediu a proposta (uma linha por plano no slide)
   const proposta=planos&&S.modo==='contratar'?{plano:planos,itens:PL[S.sel[0]].itens.concat(horas?[horas]:[],treinIds().map(id=>`Treinamento: ${S.trein[id]}x ${trNome(TR[id])} (R$ ${brl(TR[id].por)} ${unTxt(TR[id])}, na ativação)`)),
@@ -952,10 +1043,10 @@ $('planCards').addEventListener('click',e=>{
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',ev=>{
   ev.preventDefault();
   const go=a.dataset.go;
-  if(go==='consultor'){if(CONFIG.whatsapp){track('autovenda_whatsapp',{onde:'pagina'});window.open(linkZap(),'_blank','noopener');return}S.modo='consultor';S.direto=true;S.step=5}
+  if(go==='consultor'){if(comZap().length){track('autovenda_whatsapp',{onde:'pagina'});window.open(linkZap(),'_blank','noopener');return}S.modo='consultor';S.direto=true;S.step=P.DADOS}
   else{
     if(go.startsWith('plano:')){S.escolheu=true;S.sel=[go.slice(6)]}
-    if(S.direto||S.step>=4){S.direto=false;S.modo=null;S.step=S.faixa&&S.risco&&S.need?3:0}
+    if(S.direto||S.step>=P.EXTRAS){S.direto=false;S.modo=null;S.step=S.faixa&&S.risco&&S.faixa!==GRANDE?P.PLANO:P.EMP}
   }
   render();
   $('plano').scrollIntoView({behavior:'smooth',block:'center'});
