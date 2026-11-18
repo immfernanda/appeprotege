@@ -13,7 +13,7 @@
 :root{
   --navy:#001B4A; --blue:#2864B0; --teal:#12B0B6; --teal-l:#64C6CC; --yellow:#F4BB0E; --gray:#3E5A70;
   --bg:#FFFFFF; --bg2:#F3F7FB; --fg:#0B1F3A; --muted:#55708A; --line:#DCE5EE; --soft:#E8F4F6; --err:#D64545;
-  --grad:linear-gradient(120deg,#2864B0,#12B0B6);
+  --grad:var(--blue);
   --f:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box}
@@ -44,8 +44,7 @@ button{font:inherit}
 
 /* Topo (azul da eProtege) */
 .hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:0 0 120px}
-.hero::before{content:"";position:absolute;right:-220px;top:-200px;width:680px;height:680px;border-radius:50%;background:radial-gradient(circle,rgba(18,176,182,.33),transparent 64%);pointer-events:none}
-.hero::after{content:"";position:absolute;left:-200px;bottom:-260px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(40,100,176,.35),transparent 65%);pointer-events:none}
+.hero::before,.hero::after{content:none}
 .topbar{position:relative;z-index:2;padding-block:22px}
 .topbar img{height:52px;display:block}
 .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 480px;gap:56px;align-items:center;padding-top:20px}
@@ -65,7 +64,7 @@ button{font:inherit}
 .proof{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:20px;box-shadow:0 18px 44px rgba(0,27,74,.16);overflow:hidden}
 .proof div{padding:22px 26px;display:grid;gap:4px;align-content:start;justify-items:center;text-align:center}
 .proof div+div{border-left:1px solid var(--line)}
-.proof b{font-size:23px;font-weight:800;line-height:1.1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content}
+.proof b{font-size:23px;font-weight:800;line-height:1.1;color:var(--blue);width:max-content}
 .proof small{color:var(--muted);font-size:13.5px;line-height:1.35;max-width:22ch}
 
 /* Configurador */
@@ -177,7 +176,28 @@ button{font:inherit}
 .pk.on .ck,.ex.on .ck{background:var(--teal);border-color:var(--teal)}
 .ck.sq{border-radius:7px}
 .exs{display:grid;gap:7px;margin-top:14px}
-.ex-h{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.ex-h{font-size:14px;font-weight:700;color:var(--navy)}
+.ast{color:var(--teal);font-weight:800;margin-left:2px}
+.pc .ast{color:inherit}
+.pc-a{font-size:13px;font-weight:600;color:var(--sub);margin:4px 0 0}
+.notas{font-size:12px;color:var(--muted);margin:8px 2px 0;line-height:1.5}
+.trs{display:grid;gap:8px}
+.tr{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.tr.on{border-color:var(--teal);background:var(--soft)}
+.tr-t{flex:1;min-width:0;display:grid;gap:2px}
+.tr-t b{font-size:14px;color:var(--navy)}
+.tr-t b small,.tr-t .ex-v small{font-weight:500;color:var(--muted);font-size:12px}
+.why{font-size:12.5px;color:var(--gray);line-height:1.4}
+.found .gr{display:block;margin-top:4px;font-weight:700;color:var(--navy)}
+.q2{font-weight:700;color:var(--navy);margin:14px 0 8px}
+.mais-tr{margin-top:12px}
+.mais-tr summary{cursor:pointer;font-weight:700;color:var(--blue);font-size:14px;padding:6px 0}
+.mais-tr .trs{margin-top:8px}
+.qt{display:flex;align-items:center;gap:6px;flex:none}
+.qt button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:18px;font-weight:700;cursor:pointer;line-height:1}
+.qt button:hover:not([disabled]){border-color:var(--teal)}
+.qt button[disabled]{opacity:.4;cursor:default}
+.qt b{min-width:22px;text-align:center;font-size:15px;color:var(--navy)}
 .ex{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1.5px dashed var(--teal-l);background:#fff;color:var(--fg);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:13.5px}
 .ex.on{border-style:solid;border-color:var(--teal);background:var(--soft)}
 .ex-t{flex:1;min-width:0;font-weight:600;color:var(--navy)}
@@ -185,7 +205,7 @@ button{font:inherit}
 .ex-v s{color:var(--muted);font-weight:500;margin-right:4px}
 .soma small{display:block;font-size:12px;margin-top:2px}
 a.btn svg{flex:none}
-.pc .tag{position:absolute;top:0;left:0;right:0;width:auto;border-radius:0;padding:9px 12px;display:flex;justify-content:center;align-items:center;gap:7px;font-size:12px;letter-spacing:.12em;background:linear-gradient(90deg,#F4BB0E,#FFD45C);color:var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.pc .tag{position:absolute;top:0;left:0;right:0;width:auto;border-radius:0;padding:9px 12px;display:flex;justify-content:center;align-items:center;gap:7px;font-size:12px;letter-spacing:.12em;background:var(--yellow);color:var(--navy)}
 .pc .tag svg{flex:none}
 .pc.star{padding-top:62px;margin-top:-22px;box-shadow:0 26px 60px rgba(40,100,176,.35);outline:3px solid rgba(244,187,14,.9);outline-offset:-3px}
 .pc li.plus{font-weight:700}
@@ -200,7 +220,7 @@ a.btn svg{flex:none}
 .pc:nth-child(2){background:var(--blue);--c:#fff;--sub:#D6E4F5;--chk:#fff;--chk-fg:var(--blue);--div:rgba(255,255,255,.25)}
 .pc:nth-child(3){background:var(--navy);--c:#fff;--sub:#B9CBE0;--chk:var(--teal);--chk-fg:#fff;--div:rgba(255,255,255,.18)}
 .pc:nth-child(3)::after{background:rgba(18,176,182,.22);width:300px;height:300px;right:-120px;top:auto;bottom:-140px}
-.pc:nth-child(4){background:linear-gradient(160deg,#12B0B6,#0C8C92);--c:#fff;--sub:#E0F6F7;--chk:#fff;--chk-fg:#0C8C92;--div:rgba(255,255,255,.3)}
+.pc:nth-child(4){background:#0C8C92;--c:#fff;--sub:#E0F6F7;--chk:#fff;--chk-fg:#0C8C92;--div:rgba(255,255,255,.3)}
 .pc h3{font-size:19px;color:var(--c);white-space:nowrap}
 .pc .val{margin-top:14px;min-height:62px;display:flex;flex-direction:column;justify-content:center}
 .pc .val small{font-size:12.5px;color:var(--sub)}
@@ -234,7 +254,7 @@ a.btn svg{flex:none}
 
 /* NR-01 */
 .nr{background:var(--navy);color:#fff;border-radius:28px;padding:52px;display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:center;position:relative;overflow:hidden}
-.nr::after{content:"";position:absolute;right:-120px;bottom:-160px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(18,176,182,.3),transparent 65%)}
+.nr::after{content:none}
 .nr .eb{font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--yellow)}
 .nr h2{color:#fff;margin-top:8px}
 .nr p{color:#C7D6E8;margin:14px 0 0}
@@ -338,10 +358,11 @@ footer img{height:38px;display:block}
   <div class="container">
     <div class="head center">
       <h2>Escolha o plano ideal para a sua empresa.</h2>
-      <p class="lead">Do básico obrigatório até a gestão completa. Da contratação do primeiro funcionário até a NR-01, a eProtege cuida de tudo para você.</p>
+      <p class="lead">Do básico obrigatório até um técnico de segurança dentro da sua empresa. Da contratação do primeiro funcionário até a NR-01, a eProtege cuida de tudo para você.</p>
     </div>
     <div class="pl" id="planCards"></div>
-    <p class="pl-note">Para empresas de 2 a 20 funcionários. Pagamento: ativação + boleto faturado em até 12x. Exames fora de Curitiba: consultar valores.</p>
+    <p class="pl-note" id="planNotas"></p>
+    <p class="pl-note" style="margin-top:8px">Básico e Essencial para empresas de 2 a 20 funcionários. Pagamento: ativação + boleto faturado em até 12x. Exames fora de Curitiba: consultar valores.</p>
   </div>
 </section>
 
@@ -380,7 +401,7 @@ footer img{height:38px;display:block}
       <div style="position:relative;z-index:1">
         <div class="eb">NR-01</div>
         <h2>A avaliação de riscos psicossociais agora também vale para a pequena empresa</h2>
-        <p>A NR-01 passou a exigir que a empresa identifique e acompanhe riscos como estresse, sobrecarga e assédio. No eProtege Completo a nossa equipe cuida disso para você.</p>
+        <p>A NR-01 passou a exigir que a empresa identifique e acompanhe riscos como estresse, sobrecarga e assédio. No eProtege Essencial a nossa equipe cuida disso para você.</p>
         <a href="#plano" class="btn" data-go="plano">Ver se minha empresa precisa</a>
       </div>
       <ul>
@@ -400,7 +421,8 @@ footer img{height:38px;display:block}
       <details><summary>Como funciona o pagamento?</summary><p>Ativação + boleto faturado em até 12x. O valor da parcela vem na proposta.</p></details>
       <details><summary>Meu funcionário fica fora de Curitiba. E aí?</summary><p>Temos mais de 750 clínicas credenciadas em todo o Brasil. Exames fora de Curitiba têm valores consultados à parte, e nossa equipe te passa antes de agendar.</p></details>
       <details><summary>Quanto tempo leva para começar?</summary><p>Depois que você aprova a proposta, nossa equipe envia o contrato. Assinado o contrato, entramos em contato para agendar a visita técnica e os exames. O funcionário faz o exame e é liberado no mesmo dia.</p></details>
-      <details><summary>E se eu tiver mais de 20 funcionários?</summary><p>Monte o plano mesmo assim e escolha falar com um consultor. Para equipes maiores fazemos uma proposta sob medida, inclusive com unidade móvel na sua empresa a partir de 25 funcionários.</p></details>
+      <details><summary>E se eu tiver mais de 50 funcionários?</summary><p>Um consultor atende você para montar o plano junto, inclusive com unidade móvel na sua empresa. É só escolher "Mais de 50 funcionários" no simulador e deixar seus dados.</p></details>
+      <details><summary>Preciso de um técnico de segurança dentro da empresa?</summary><p>Para empresas com mais de 50 colaboradores, é o que mais faz diferença: alguém confere documentos, treinamentos vencidos e o uso de EPI antes que vire problema num processo. No eProtege Consultoria o técnico vai até a sua empresa a partir de 4 horas por mês. Quanto mais horas no pacote, menor o valor da hora: R$ 95 a partir de 4 horas, R$ 75 a partir de 8 e R$ 70 a partir de 20. Fora do pacote, a hora avulsa é R$ 140.</p></details>
       <details><summary>Já tenho outra empresa de SST. Posso trocar?</summary><p>Pode. Você contrata a eProtege e nós cuidamos da transição dos documentos e dos exames que estão vencendo.</p></details>
     </div>
   </div>
@@ -438,52 +460,124 @@ const CONFIG = {
   // Preenchido: os botões "Falar com um consultor" abrem o WhatsApp. Vazio: abrem o formulário de contato.
   whatsapp: '',
   // Planos em níveis (a empresa escolhe um). precos = valor da PARCELA por tipo de atividade e faixa de funcionários:
-  // a = 2 a 5, b = 6 a 10, c = 11 a 20. null = "Valor na proposta". destaque = cartão em evidência.
+  // a = 2 a 5, b = 6 a 10, c = 11 a 15, d = 16 a 20 (mais de 20 = proposta com a equipe). null = "Valor na proposta".
+  // destaque = cartão em evidência. ast = asterisco da nota de rodapé. sobMedida = não gera proposta, a equipe liga.
   // ATENÇÃO: valores FICTÍCIOS de exemplo (referência de mercado), trocar pela tabela real antes de rodar anúncio.
   planos: [
-    { id: 'essencial', nome: 'eProtege Essencial', area: 'O básico obrigatório',
+    { id: 'basico', nome: 'eProtege Básico', ast: '*', area: 'O mínimo obrigatório, sem a nova NR-01',
       desc: 'Os programas e exames que toda empresa precisa.',
       itens: ['PGR', 'PCMSO', 'Exames e ASO no mesmo dia', 'Envio ao eSocial'],
-      precos: { baixo: { a: 89, b: 129, c: 179 }, alto: { a: 109, b: 159, c: 219 } } },
-    { id: 'completo', nome: 'eProtege Completo', area: 'Tudo o que a lei exige', destaque: 'MAIS VANTAJOSO',
-      desc: 'A empresa toda em conformidade, inclusive com a NR-01.',
-      itens: ['Tudo do Essencial', 'Riscos psicossociais (NR-01)', 'LTCAT', 'PPP', 'Visita técnica'],
-      precos: { baixo: { a: 149, b: 199, c: 279 }, alto: { a: 179, b: 239, c: 329 } } },
-    { id: 'gestao', nome: 'eProtege Gestão', area: 'Conformidade e gestão',
-      desc: 'Tudo em dia e a gestão das pessoas na palma da mão.',
-      itens: ['Tudo do Completo', 'Aplicativo eProtege', 'Gestão de atestados', 'Documentos de SST guardados na nuvem'],
-      precos: { baixo: { a: 199, b: 259, c: 349 }, alto: { a: 229, b: 299, c: 399 } } }
+      precos: { baixo: { a: 89, b: 129, c: 159, d: 189 }, alto: { a: 109, b: 159, c: 199, d: 239 } } },
+    { id: 'essencial', nome: 'eProtege Essencial', ast: '**', area: 'Todas as exigências da norma', destaque: 'PLANO RECOMENDADO',
+      desc: 'A empresa toda em conformidade, inclusive com a nova NR-01.',
+      itens: ['Tudo do Básico', 'Riscos psicossociais (NR-01)', 'LTCAT', 'PPP', 'Visita técnica'],
+      precos: { baixo: { a: 149, b: 199, c: 249, d: 289 }, alto: { a: 179, b: 239, c: 289, d: 339 } } },
+    { id: 'consultoria', nome: 'eProtege Consultoria', area: 'Recomendado para mais de 50 colaboradores', sobMedida: true,
+      desc: 'Tudo do Essencial com um técnico de segurança dentro da sua empresa todo mês.',
+      itens: ['Tudo do Essencial', 'Técnico de segurança presencial', 'Conferência de documentos e treinamentos', 'Acompanhamento do uso de EPI'],
+      precos: null }
   ],
+  // Notas dos asteriscos (aparecem embaixo dos planos)
+  notas: ['* Não atende a nova NR-01.', '** Plano recomendado: cumpre todas as exigências básicas da norma.'],
+  // Técnico presencial: valor da HORA conforme o pacote mensal (mínimo 4h por mês). avulsa = hora chamada fora do pacote.
+  horas: { avulsa: 140, pacotes: [
+    { h: 4, t: '4 a 7 horas por mês', valor: 95 },
+    { h: 8, t: '8 a 19 horas por mês', valor: 75 },
+    { h: 20, t: '20 horas ou mais por mês', valor: 70 }
+  ] },
   // Explicação curta de cada item, que abre ao clicar no item do cartão do plano
   explica: {
     'PGR': 'Programa de Gerenciamento de Riscos. Identifica, avalia e controla os riscos do ambiente de trabalho.',
     'PCMSO': 'Programa de Controle Médico de Saúde Ocupacional. Define quais exames cada função precisa e quando fazer.',
     'Exames e ASO no mesmo dia': 'Admissional, periódico, demissional, retorno ao trabalho e mudança de função, com o atestado (ASO) liberado no mesmo dia.',
     'Envio ao eSocial': 'Nossa equipe envia ao eSocial os eventos de saúde e segurança (S-2220 e S-2240) dentro do prazo.',
-    'Tudo do Essencial': 'PGR, PCMSO, exames e ASO no mesmo dia e envio ao eSocial.',
+    'Tudo do Básico': 'PGR, PCMSO, exames e ASO no mesmo dia e envio ao eSocial.',
     'Riscos psicossociais (NR-01)': 'Questionário confidencial pelo celular, painel com o nível de risco da equipe e plano de ação, como a NR-01 exige.',
     'LTCAT': 'Laudo Técnico das Condições Ambientais do Trabalho. Mostra se há exposição a agentes nocivos, base para a aposentadoria especial.',
     'PPP': 'Perfil Profissiográfico Previdenciário. O histórico de cada trabalhador exigido pelo INSS, em formato digital.',
     'Visita técnica': 'Um técnico de segurança vai até a sua empresa para levantar os riscos e orientar a equipe.',
-    'Tudo do Completo': 'Tudo do Essencial mais riscos psicossociais (NR-01), LTCAT, PPP e visita técnica.',
-    'Aplicativo eProtege': 'Ponto, comunicados, EPI e canal de denúncias no celular de cada colaborador.',
-    'Gestão de atestados': 'O colaborador envia o atestado pelo aplicativo e o RH acompanha tudo, sem papel perdido.',
-    'Documentos de SST guardados na nuvem': 'PGR, PCMSO, ASOs e laudos guardados em um só lugar, sempre à mão para uma fiscalização.'
+    'Tudo do Essencial': 'Tudo do Básico mais riscos psicossociais (NR-01), LTCAT, PPP e visita técnica.',
+    'Técnico de segurança presencial': 'A partir de 4 horas por mês: um dia no mês, 4 horas a cada 15 dias ou dois períodos na semana. Quanto mais horas no pacote, menor o valor da hora.',
+    'Conferência de documentos e treinamentos': 'O técnico confere documentos, fichas de EPI e treinamentos vencidos, e organiza tudo no sistema.',
+    'Acompanhamento do uso de EPI': 'Quem está usando luva, protetor e calçado certo, com a ficha assinada. É o que protege a empresa num processo.'
   },
-  // Adicionais oferecidos no fim da escolha do plano (valor único, cobrado na ativação). de = preço riscado.
-  adicionais: [
-    { id: 'cipa', nome: 'Treinamento de CIPA (NR-05)', de: 180, por: 99 },
-    { id: 'lideranca', nome: 'Treinamento de liderança', de: 180, por: 99 },
-    { id: 'socorros', nome: 'Treinamento de primeiros socorros', de: 180, por: 99 }
-  ]
+  // "Programe o seu ano": treinamentos e palestras com desconto, só fechando junto com o plano.
+  // de = preço normal (Tabela de valores padrão eProtege 2022: presencial individual, turma fechada ou palestra;
+  // sem presencial na tabela, valor unitário do EAD). por = preço fechando junto. un = por pessoa, por turma ou por palestra.
+  // por: Altura, CIPA 8h e CIPA 16h são os valores da Brenda (18/11/2026); os demais foram calculados com o mesmo
+  // desconto (cerca de 43%) e PRECISAM SER CONFIRMADOS. Cobrado na ativação.
+  treinamentos: [
+    { id: 'cipa1', nome: 'CIPA (NR-05)', carga: '8h', de: 140, por: 80, un: 'pessoa' },
+    { id: 'cipa2', nome: 'CIPA (NR-05)', carga: '12h', de: 150, por: 85, un: 'pessoa' },
+    { id: 'cipa3', nome: 'CIPA (NR-05)', carga: '16h', de: 160, por: 95, un: 'pessoa' },
+    { id: 'cipa4', nome: 'CIPA (NR-05)', carga: '20h', de: 170, por: 100, un: 'pessoa' },
+    { id: 'cipatr', nome: 'CIPATR rural (NR-31)', carga: '20h', de: 170, por: 100, un: 'pessoa' },
+    { id: 'socorros', nome: 'Primeiros socorros', carga: '9h', de: 130, por: 75, un: 'pessoa' },
+    { id: 'brigada', nome: 'Brigada de incêndio (NR-23)', carga: '8h', de: 160, por: 90, un: 'pessoa' },
+    { id: 'altura', nome: 'Trabalho em altura (NR-35)', carga: '8h', de: 140, por: 80, un: 'pessoa' },
+    { id: 'nr10', nome: 'Segurança em eletricidade (NR-10)', carga: '40h', de: 335, por: 190, un: 'pessoa' },
+    { id: 'nr18', nome: 'Construção civil (NR-18)', carga: '4h', de: 650, por: 370, un: 'turma' },
+    { id: 'nr12', nome: 'Máquinas e equipamentos (NR-12)', carga: '', de: 650, por: 370, un: 'turma' },
+    { id: 'nr11', nome: 'Movimentação de cargas e empilhadeira (NR-11)', carga: '16h', de: 120, por: 70, un: 'pessoa' },
+    { id: 'nr06', nome: 'Uso correto de EPI (NR-06)', carga: '2h', de: 650, por: 370, un: 'turma' },
+    { id: 'nr20', nome: 'Inflamáveis e combustíveis (NR-20)', carga: '4h', de: 120, por: 70, un: 'pessoa' },
+    { id: 'nr32', nome: 'Segurança em serviços de saúde (NR-32)', carga: '8h', de: 130, por: 75, un: 'pessoa' },
+    { id: 'nr33', nome: 'Espaço confinado (NR-33)', carga: '16h', de: 190, por: 110, un: 'pessoa' },
+    { id: 'ergo', nome: 'Ergonomia (NR-17)', carga: '1h', de: 450, por: 255, un: 'turma25' },
+    { id: 'p_seg', nome: 'Palestra de segurança no trabalho', carga: '50min', de: 800, por: 455, un: 'palestra' },
+    { id: 'p_ergo', nome: 'Palestra de ergonomia', carga: '50min', de: 750, por: 430, un: 'palestra' },
+    { id: 'p_fono', nome: 'Palestra de fonoaudiologia', carga: '50min', de: 750, por: 430, un: 'palestra' },
+    { id: 'p_mot', nome: 'Palestra motivacional', carga: '50min', de: 800, por: 455, un: 'palestra' }
+  ],
+  // Texto da unidade de cada preço
+  unidades: { pessoa: 'por pessoa', turma: 'por turma de até 10', turma25: 'por turma de até 25', palestra: 'por palestra' }
 };
 /* ===================================== */
 
-const FAIXAS=[{id:'a',t:'2 a 5 funcionários',s:'Microempresa',ic:'2+'},{id:'b',t:'6 a 10 funcionários',s:'Pequena equipe',ic:'6+'},{id:'c',t:'11 a 20 funcionários',s:'Equipe em crescimento',ic:'11+'},{id:'d',t:'Mais de 20',s:'Proposta sob medida com um consultor',ic:'20+'}];
+// Grau de risco (NR-04, Anexo I) de cada classe CNAE 2.0 (4 primeiros dígitos). Extraído do PDF oficial do MTE, 18/11/2026.
+const GR_NR04=(()=>{const g={1:'4110 4742 4751 4752 4753 4754 4755 4756 4757 4759 4761 4762 4763 4772 4773 4774 4781 4782 4783 4789 6410 6421 6422 6423 6424 6431 6432 6433 6434 6435 6436 6437 6438 6440 6450 6461 6462 6463 6470 6491 6492 6493 6499 6511 6512 6520 6530 6541 6542 6550 6611 6612 6613 6619 6621 6622 6629 6630 6810 6821 6822 6911 6912 6920 7010 7020 7111 7112 7119 7311 7312 7319 7320 7410 7490 7711 7719 7721 7722 7723 7729 7731 7732 7733 7739 7740 7810 7820 7830 7911 7912 7990 8130 8211 8411 8412 8413 8421 8422 8423 8424 8425 8430 8660 8690 8711 8712 8720 8730 8800 9003 9200 9311 9411 9412 9420 9430 9491 9492 9493 9499 9900',2:'1411 1412 1413 1414 1421 1422 1521 1529 1731 1732 1733 1741 1742 1749 2063 3104 4511 4512 4530 4541 4542 4611 4612 4613 4614 4615 4616 4617 4618 4619 4621 4622 4623 4631 4632 4633 4634 4635 4636 4637 4639 4641 4642 4643 4644 4645 4646 4647 4649 4691 4692 4693 4711 4712 4713 4721 4723 4724 4729 4741 4743 4744 4771 4785 4790 5310 5320 5510 5590 5611 5612 5620 5911 5912 5913 5914 5920 6010 6021 6022 6110 6120 6130 6141 6142 6143 6190 6201 6202 6203 6204 6209 6311 6319 6391 6399 7120 7210 7220 7420 8111 8112 8219 8220 8230 8291 8292 8299 8511 8512 8513 8520 8531 8532 8533 8541 8542 8550 8591 8592 8593 8599 8650 9001 9002 9101 9102 9103 9312 9313 9319 9321 9329 9601 9602 9603 9609 9700',3:'0111 0112 0113 0114 0115 0116 0119 0121 0122 0131 0132 0133 0134 0135 0139 0141 0142 0151 0152 0153 0154 0155 0159 0161 0162 0163 0170 0210 0230 0311 0312 0321 0322 1011 1012 1013 1020 1031 1032 1033 1041 1042 1043 1051 1052 1053 1061 1062 1063 1064 1065 1066 1069 1071 1072 1081 1082 1091 1092 1093 1094 1095 1096 1099 1111 1112 1113 1121 1122 1210 1220 1311 1312 1313 1314 1321 1322 1323 1330 1340 1351 1352 1353 1354 1359 1510 1531 1532 1533 1539 1540 1610 1621 1622 1623 1629 1710 1721 1722 1811 1812 1813 1821 1822 1830 1910 1921 1922 1931 1932 2011 2012 2013 2014 2019 2021 2022 2029 2031 2032 2033 2040 2051 2052 2061 2062 2071 2072 2073 2091 2093 2094 2099 2110 2121 2122 2123 2211 2212 2219 2221 2222 2223 2229 2311 2312 2319 2342 2391 2399 2512 2513 2521 2522 2541 2542 2543 2591 2593 2599 2610 2621 2622 2631 2632 2640 2651 2652 2660 2670 2680 2710 2721 2722 2731 2732 2733 2740 2751 2759 2790 2811 2812 2813 2814 2815 2821 2822 2823 2824 2825 2829 2831 2832 2833 2840 2851 2852 2853 2854 2861 2862 2863 2864 2865 2866 2869 2910 2920 2930 2941 2942 2943 2944 2945 2949 2950 3011 3012 3031 3032 3041 3042 3050 3091 3092 3099 3101 3102 3103 3211 3212 3220 3230 3240 3250 3291 3292 3299 3311 3312 3313 3314 3315 3316 3317 3319 3321 3329 3511 3512 3513 3514 3520 3530 3600 3701 3702 3811 3812 3821 3822 3831 3832 3839 3900 4120 4213 4299 4313 4319 4321 4322 4329 4330 4399 4520 4543 4651 4652 4661 4662 4663 4664 4665 4669 4671 4672 4673 4674 4679 4681 4682 4683 4684 4685 4686 4687 4689 4722 4731 4732 4784 4911 4912 4921 4922 4923 4924 4929 4930 4940 4950 5011 5012 5021 5022 5030 5091 5099 5111 5112 5120 5130 5211 5212 5221 5222 5223 5229 5231 5232 5239 5240 5250 5811 5812 5813 5819 5821 5822 5823 5829 7500 8011 8012 8020 8030 8121 8122 8129 8610 8621 8622 8630 8640 9511 9512 9521 9529',4:'0220 0500 0600 0710 0721 0722 0723 0724 0725 0729 0810 0891 0892 0893 0899 0910 0990 2092 2320 2330 2341 2349 2392 2411 2412 2421 2422 2423 2424 2431 2439 2441 2442 2443 2449 2451 2452 2511 2531 2532 2539 2550 2592 4211 4212 4221 4222 4223 4291 4292 4311 4312 4391'},m={};for(const k in g)g[k].split(' ').forEach(c=>m[c]=+k);return m})();
+
+const FAIXAS=[{id:'a',t:'2 a 5 funcionários',s:'Microempresa',ic:'2+'},{id:'b',t:'6 a 10 funcionários',s:'Pequena equipe',ic:'6+'},{id:'c',t:'11 a 15 funcionários',s:'Equipe em crescimento',ic:'11+'},{id:'d',t:'16 a 20 funcionários',s:'Equipe em crescimento',ic:'16+'},{id:'f',t:'Mais de 50 funcionários',s:'Atendimento com um consultor',ic:'50+'}];
+// Mais de 50: não monta plano, vai direto para o formulário e a página de obrigado com o consultor
+const GRANDE='f';
+
+/* Treinamentos indicados para a empresa, pelo CNAE do CNPJ e pelo grau de risco da NR-04.
+   cnae = prefixos do código CNAE (2 dígitos = divisão, 4 = classe); gr = graus de risco. Sem cnae nem gr = vale para todas.
+   Base: NR-05 (CIPA, carga por grau de risco: 8, 12, 16 ou 20 horas; empresa sem CIPA nomeia um representante treinado),
+   NR-07 (material de primeiros socorros aos cuidados de pessoa treinada), NR-23 e Corpo de Bombeiros (incêndio),
+   e a NR específica de cada atividade. O técnico confirma na visita. */
+const INDICA=[
+  {ids:['socorros'],motivo:'Toda empresa precisa de alguém treinado para os primeiros socorros (NR-07).'},
+  {ids:['brigada'],motivo:'Prevenção e combate a incêndio exigidos pela NR-23 e pelo Corpo de Bombeiros.'},
+  {ids:['nr06','p_seg'],gr:[3,4],motivo:'Atividade de maior risco: a equipe usa EPI e precisa saber usar.'},
+  {ids:['ergo','p_ergo'],gr:[1,2],motivo:'Trabalho de escritório, atendimento ou comércio: ergonomia é o principal risco (NR-17).'},
+  {ids:['altura','nr18'],cnae:['41','42','43'],motivo:'Obras envolvem trabalho acima de 2 metros e canteiro (NR-35 e NR-18).'},
+  {ids:['nr10','altura'],cnae:['35','4221','4321','2710','2731','2732','2733','3313','3321'],motivo:'Atividade com instalações elétricas (NR-10).'},
+  {ids:['altura'],cnae:['4222','4291','4292','4299','4322','4329','4391','4399','6110','6120','8121','8122','8129','8130'],motivo:'Serviços em telhados, fachadas, postes ou estruturas (NR-35).'},
+  {ids:['nr12'],cnae:['10','11','12','13','14','15','16','17','18','20','21','22','23','24','25','26','27','28','29','30','31','32','33','4520','4543','9511','9521','9529'],motivo:'Uso de máquinas e equipamentos (NR-12).'},
+  {ids:['nr11'],cnae:['10','11','16','17','20','22','23','24','25','28','29','46','52','4930'],motivo:'Movimentação de cargas, paleteira ou empilhadeira (NR-11).'},
+  {ids:['nr20'],cnae:['06','19','2011','2012','2013','2014','2019','2021','2022','2029','2091','4681','4682','4731','4732','4784'],motivo:'Armazena ou manuseia inflamáveis e combustíveis (NR-20).'},
+  {ids:['nr32'],cnae:['86','8711','8712','8720','8730','7500','8650','9603'],motivo:'Serviço de saúde: risco biológico e perfurocortantes (NR-32).'},
+  {ids:['nr33'],cnae:['06','36','37','38','39','19','1101','1111','1112','1113','5211','5212'],motivo:'Pode haver tanques, poços, silos ou galerias (NR-33).'},
+  {ids:['p_fono'],cnae:['8220','85','6010','6021','6022','9001'],motivo:'Quem usa a voz o dia todo: professores, atendimento e locução.'}
+];
+// CIPA pela NR-05: carga conforme o grau de risco (rural segue a NR-31)
+function cipaPara(gr,cnae){if(/^0[123]/.test(cnae||''))return 'cipatr';return 'cipa'+(gr||2)}
+function indicados(){
+  const c=S.emp?.cnae?String(S.emp.cnae).replace(/\D/g,''):'',gr=S.gr;
+  const lista=[{id:cipaPara(gr,c),motivo:gr?`CIPA ou representante nomeado: para o grau de risco ${gr}, o treinamento é de ${({1:8,2:12,3:16,4:20})[gr]} horas (NR-05).`:'CIPA ou representante nomeado treinado, exigido pela NR-05.'}];
+  INDICA.forEach(r=>{
+    if(r.gr&&!(gr&&r.gr.includes(gr)))return;
+    if(r.cnae&&!(c&&r.cnae.some(p=>c.startsWith(p))))return;
+    r.ids.forEach(id=>{if(!lista.some(x=>x.id===id))lista.push({id,motivo:r.motivo})});
+  });
+  return lista;
+}
 const RISCOS=[{id:'baixo',t:'Escritório, comércio ou serviços',s:'Atendimento, vendas, administrativo',ic:'svg:office'},{id:'alto',t:'Obra, indústria, oficina ou saúde',s:'Máquinas, altura, produtos químicos, pacientes',ic:'svg:hard'}];
 const NEEDS=[{id:'Contratando',t:'Estou em processo de contratação',s:'Preciso do exame admissional',ic:'svg:plus'},{id:'Regularizar',t:'Quero deixar a empresa em dia',s:'Programas, exames e eSocial',ic:'svg:check'},{id:'Notificação',t:'Recebi uma notificação',s:'Fiscalização, eSocial ou sindicato',ic:'svg:alert'},{id:'NR-01',t:'Riscos psicossociais da NR-01',s:'Ouvi falar e não sei por onde começar',ic:'svg:brain'},{id:'Trocar',t:'Quero trocar de empresa de SST',s:'Já tenho, mas não estou satisfeito',ic:'svg:swap'}];
 const PL=Object.fromEntries(CONFIG.planos.map(p=>[p.id,p]));
-const AD=Object.fromEntries(CONFIG.adicionais.map(a=>[a.id,a]));
+const TR=Object.fromEntries(CONFIG.treinamentos.map(a=>[a.id,a]));
+const trNome=t=>t.nome+(t.carga?' '+t.carga:'');
 const ICONS={
   office:'<path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>',
   hard:'<path d="M2 18h20M4 18v-3a8 8 0 0 1 16 0v3M10 8V5h4v3"/>',
@@ -505,8 +599,9 @@ const $=id=>document.getElementById(id);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const brl=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 
-// sel = plano escolhido (um só); extras = adicionais; escolheu = a pessoa já mexeu (a recomendação não sobrescreve)
-const S={step:0,cnpj:'',emp:null,empManual:'',semCnpj:false,faixa:null,risco:null,need:null,sel:[],extras:[],escolheu:false,modo:null,direto:false,dados:{nome:'',tel:'',email:''},enviando:false};
+// Passos: 0 faixa, 1 atividade, 2 momento, 3 plano, 4 programe o ano (só proposta), 5 dados, 6 pronto
+// sel = plano escolhido (um só); trein = {id: quantidade}; horas = pacote do técnico (0 = não quer); escolheu = a pessoa já mexeu
+const S={step:0,cnpj:'',emp:null,empManual:'',semCnpj:false,faixa:null,risco:null,need:null,sel:[],trein:{},horas:0,gr:null,escolheu:false,modo:null,direto:false,dados:{nome:'',tel:'',email:''},enviando:false};
 
 /* Campanha, criativo e cliques dos anúncios vêm do link (UTM, gclid, fbclid) */
 const UTM=(()=>{
@@ -523,19 +618,25 @@ if(CONFIG.gtm){(function(w,d,s,l,i){w[l].push({'gtm.start':Date.now(),event:'gtm
 
 /* ---------- Preço ---------- */
 function parcelaDe(id){
-  if(S.faixa==='d')return null;
+  if(['e','f'].includes(S.faixa))return null;
   const v=PL[id]?.precos?.[S.risco]?.[S.faixa];
   return typeof v==='number'?v:null;
 }
 function parcela(){return S.sel.length?parcelaDe(S.sel[0]):null}
-// em contratação e atividade de menor risco: Essencial; nos demais casos: Completo
-const recomendado=()=>[S.need==='Contratando'&&S.risco!=='alto'?'essencial':'completo'];
-const extrasTxt=()=>S.extras.map(id=>AD[id].nome).join(', ');
-const extrasValor=()=>S.extras.reduce((t,id)=>t+AD[id].por,0);
-const precoTxt=()=>{const v=parcela();return v==null?'Valor na proposta':`${CONFIG.parcelas}x de R$ ${brl(v)}`};
+const sobMedida=()=>!!(S.sel.length&&PL[S.sel[0]].sobMedida);
+// o Essencial é o plano recomendado
+const recomendado=()=>['essencial'];
+const treinIds=()=>Object.keys(S.trein).filter(id=>S.trein[id]>0);
+const treinQtd=()=>treinIds().reduce((t,id)=>t+S.trein[id],0);
+const treinValor=()=>treinIds().reduce((t,id)=>t+TR[id].por*S.trein[id],0);
+const unTxt=t=>CONFIG.unidades[t.un]||'por pessoa';
+const treinTxt=()=>treinIds().map(id=>`${S.trein[id]}x ${trNome(TR[id])} (R$ ${brl(TR[id].por)} ${unTxt(TR[id])})`).join(', ');
+const pacote=()=>CONFIG.horas.pacotes.find(p=>p.h===S.horas)||null;
+const horasTxt=()=>{const p=pacote();return p?`Técnico presencial: ${p.t}, R$ ${brl(p.valor)} a hora`:''};
+const precoTxt=()=>{if(sobMedida())return 'Proposta sob medida';const v=parcela();return v==null?'Valor na proposta':`${CONFIG.parcelas}x de R$ ${brl(v)}`};
 const nomesSel=()=>S.sel.map(id=>PL[id].nome).join(' + ');
 // menor parcela da tabela, para o "a partir de" dos cartões
-function aPartir(id){const v=Object.values(PL[id].precos).flatMap(o=>Object.values(o)).filter(n=>typeof n==='number');return v.length?Math.min(...v):null}
+function aPartir(id){if(!PL[id].precos)return null;const v=Object.values(PL[id].precos).flatMap(o=>Object.values(o)).filter(n=>typeof n==='number');return v.length?Math.min(...v):null}
 
 /* ---------- CNPJ ---------- */
 const cnpjMask=v=>{const d=v.replace(/\D/g,'').slice(0,14);return d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2')};
@@ -557,7 +658,7 @@ async function consultar(d){
     const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),6000);
     try{
       const r=await fetch(url,{signal:ctl.signal});
-      if(r.ok){const e=ler(await r.json());if(e.razao)return{...e,cnae:e.cnae?String(e.cnae):'',cnaeDesc:e.cnaeDesc||'',situacao:e.situacao||''}}
+      if(r.ok){const e=ler(await r.json());if(e.razao)return{...e,cnae:e.cnae?String(e.cnae).replace(/\D/g,'').padStart(7,'0'):'',cnaeDesc:e.cnaeDesc||'',situacao:e.situacao||''}}
     }catch(err){}finally{clearTimeout(t)}
   }
   return null;
@@ -565,11 +666,14 @@ async function consultar(d){
 async function buscarCNPJ(){
   const d=S.cnpj.replace(/\D/g,'');
   if(!cnpjValido(d)){S.emp={erro:'CNPJ inválido. Confira os números.'};render();return}
-  const id=++cnpjBusca;S.emp={carregando:true};render();
+  const id=++cnpjBusca;S.emp={carregando:true};S.gr=null;render();
   const e=await consultar(d);
   if(id!==cnpjBusca)return;
   // não achou: o CNPJ fica anotado e só pedimos o nome da empresa (a planilha completa o resto)
   S.emp=e||{falhou:true};
+  // achou: o CNAE dá o grau de risco da NR-04, que define a atividade (1 e 2 = menor risco, 3 e 4 = maior)
+  const gr=e?.cnae?GR_NR04[String(e.cnae).replace(/\D/g,'').slice(0,4)]:null;
+  if(gr){S.gr=gr;S.risco=gr>=3?'alto':'baixo'}
   if(e)track('autovenda_cnpj');
   render();
 }
@@ -591,35 +695,78 @@ const back=()=>`<button type="button" class="back" data-act="back">${svg('back',
 const field=(id,label,type,val,msg,extra='')=>`<div class="f" id="f_${id}"><label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(val)}" ${extra}><span class="msg">${msg}</span></div>`;
 
 function render(){
-  const labels=['Passo 1 de 4','Passo 2 de 4','Passo 3 de 4','Seus planos','Seus dados','Pronto'];
-  $('stepLabel').textContent=S.direto&&S.step===4?'Falar com consultor':labels[S.step];
-  $('barFill').style.width=[20,40,60,80,92,100][S.step]+'%';
+  const labels=['Passo 1 de 4','Passo 2 de 4','Passo 3 de 4','Seus planos','Programe o seu ano','Seus dados','Pronto'];
+  $('stepLabel').textContent=S.direto&&S.step===5?'Falar com consultor':labels[S.step];
+  $('barFill').style.width=[20,40,60,74,84,92,100][S.step]+'%';
   let h='';
   if(S.step===0)h=`<div class="stp">Sua empresa</div><div class="q">Quantas pessoas trabalham na empresa?</div><div class="opts">${FAIXAS.map(f=>opt(f,S.faixa,'faixa')).join('')}</div><button type="button" class="btn" data-act="next">Continuar</button><p class="hint" id="hint"></p>`;
-  if(S.step===1)h=`${back()}<div class="stp">Atividade</div><div class="q">O que sua equipe faz no dia a dia?</div><div class="opts">${RISCOS.map(r=>opt(r,S.risco,'risco')).join('')}</div><button type="button" class="btn" data-act="next">Continuar</button><p class="hint" id="hint"></p>`;
+  if(S.step===1){
+    // CNPJ primeiro: pelo CNAE sai o grau de risco (NR-04). Sem CNPJ, ou sem grau, a pessoa escolhe a atividade.
+    const e=S.emp,manual=S.semCnpj||e?.falhou||(e?.razao&&!S.gr);
+    let st='';
+    if(e?.carregando)st=`<div class="found">Buscando sua empresa...</div>`;
+    else if(e?.erro)st=`<div class="found warn">${esc(e.erro)}</div>`;
+    else if(e?.falhou)st=`<div class="found warn">Não conseguimos consultar o CNPJ agora, mas ele ficou anotado.</div>`;
+    else if(e?.razao)st=`<div class="found"><span class="tag">ENCONTRAMOS</span><b>${esc(e.fantasia||e.razao)}</b><span>${esc([e.cidade,e.uf].filter(Boolean).join(', '))}${e.cnaeDesc?' · '+esc(e.cnaeDesc):''}</span>${S.gr?`<span class="gr">Grau de risco ${S.gr} pela NR-04 · ${S.gr>=3?'atividade de maior risco':'atividade de menor risco'}</span>`:''}</div>`;
+    h=`${back()}<div class="stp">Sua empresa</div><div class="q">${S.semCnpj?'O que sua equipe faz no dia a dia?':'Qual é o CNPJ da empresa?'}</div>
+      ${S.semCnpj?'':`<p class="terms" style="margin:-8px 0 12px">Com o CNPJ identificamos a atividade e o grau de risco da empresa e indicamos os treinamentos que ela precisa.</p>
+      <div class="f" id="f_cnpj"><label for="cnpj">CNPJ da empresa</label><input id="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>${st}`}
+      ${manual?`${S.semCnpj?'':'<div class="q2">O que sua equipe faz no dia a dia?</div>'}<div class="opts">${RISCOS.map(r=>opt(r,S.risco,'risco')).join('')}</div>`:''}
+      <button type="button" class="btn" data-act="next">Continuar</button><p class="hint" id="hint"></p>
+      <button type="button" class="link" data-act="${S.semCnpj?'comcnpj':'semcnpj'}" style="display:block;margin:4px auto 0">${S.semCnpj?'Prefiro informar o CNPJ':'Não tenho o CNPJ em mãos'}</button>`;
+  }
   if(S.step===2)h=`${back()}<div class="stp">Momento</div><div class="q">O que te trouxe até aqui?</div><div class="opts">${NEEDS.map(n=>opt(n,S.need,'need')).join('')}</div><button type="button" class="btn" data-act="next">Ver meus planos</button><p class="hint" id="hint"></p>`;
   if(S.step===3){
     if(!S.escolheu)S.sel=recomendado();
-    const rec=recomendado(),sob=S.faixa==='d';
+    const rec=recomendado(),sob=S.faixa==='e',cons=sobMedida();
+    // plano sob medida exige o técnico: começa no pacote mínimo
+    if(cons&&!S.horas)S.horas=CONFIG.horas.pacotes[0].h;
     const linha=p=>{const on=S.sel.includes(p.id),v=parcelaDe(p.id);return `<button type="button" class="pk ${on?'on':''}" data-pl="${p.id}" aria-pressed="${on}">
       <span class="ck">${on?svg('ok',13,3.6):''}</span>
-      <span class="pk-t"><b>${esc(p.nome)}${rec.includes(p.id)?' <span class="tag">RECOMENDADO</span>':''}</b><small>${esc(p.area)}</small></span>
-      <span class="pk-v">${v==null?'Na proposta':`${CONFIG.parcelas}x R$ ${brl(v)}`}</span></button>`};
-    const extra=a=>{const on=S.extras.includes(a.id);return `<button type="button" class="ex ${on?'on':''}" data-ex="${a.id}" aria-pressed="${on}">
-      <span class="ck sq">${on?svg('ok',12,3.6):''}</span><span class="ex-t">${esc(a.nome)}</span>
-      <span class="ex-v"><s>R$ ${brl(a.de)}</s> R$ ${brl(a.por)}</span></button>`};
+      <span class="pk-t"><b>${esc(p.nome)}${p.ast?`<span class="ast">${p.ast}</span>`:''}${rec.includes(p.id)?' <span class="tag">RECOMENDADO</span>':''}</b><small>${esc(p.area)}</small></span>
+      <span class="pk-v">${p.sobMedida?'Sob medida':v==null?'Na proposta':`${CONFIG.parcelas}x R$ ${brl(v)}`}</span></button>`};
+    const hr=(h,t,v)=>{const on=S.horas===h;return `<button type="button" class="ex ${on?'on':''}" data-hr="${h}" aria-pressed="${on}">
+      <span class="ck">${on?svg('ok',12,3.6):''}</span><span class="ex-t">${esc(t)}</span>${v?`<span class="ex-v">R$ ${brl(v)} a hora</span>`:''}</button>`};
+    const horas=(cons?'':hr(0,'Agora não',0))+CONFIG.horas.pacotes.map(p=>hr(p.h,p.t,p.valor)).join('');
+    const p=pacote();
     h=`${back()}<div class="stp">Seu plano</div><div class="q">Escolha o plano da sua empresa</div>
       <p class="terms" style="margin:-8px 0 12px">${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${S.risco==='alto'?'atividade de maior risco':'atividade de menor risco'}. Já deixamos marcado o que recomendamos.</p>
       <div class="pks">${CONFIG.planos.map(linha).join('')}</div>
-      <div class="exs"><span class="ex-h">Quer incluir? Preço especial na contratação</span>${CONFIG.adicionais.map(extra).join('')}</div>
-      <div class="soma"><span>${S.sel.length?esc(PL[S.sel[0]].nome):'Nenhum plano escolhido'}${S.extras.length?`<small>+ ${S.extras.length} ${S.extras.length>1?'adicionais':'adicional'}: R$ ${brl(extrasValor())} na ativação</small>`:''}</span><b>${S.sel.length?esc(precoTxt()):''}</b></div>
-      ${sob?`<p class="terms">Para mais de 20 funcionários um consultor monta uma proposta sob medida.</p>`:''}
-      <button type="button" class="btn" data-act="modo" data-v="contratar">Receber minha proposta</button><p class="hint" id="hint"></p>
-      ${botaoConsultor('btn out')}
+      <p class="notas">${CONFIG.notas.map(esc).join('<br>')}</p>
+      <div class="exs"><span class="ex-h">${cons?'Horas do técnico na sua empresa':'Quer um técnico de segurança presencial na empresa?'}</span>${horas}
+        <p class="terms" style="margin:2px 0 0">O técnico combina com você como dividir as horas: um dia no mês, 4 horas a cada 15 dias ou dois períodos na semana. Fora do pacote, a hora avulsa é R$ ${brl(CONFIG.horas.avulsa)}.</p></div>
+      <div class="soma"><span>${S.sel.length?esc(PL[S.sel[0]].nome):'Nenhum plano escolhido'}${p?`<small>+ técnico presencial, ${esc(p.t)}, R$ ${brl(p.valor)} a hora</small>`:''}</span><b>${S.sel.length?esc(precoTxt()):''}</b></div>
+      ${cons?`<p class="terms">Este plano é montado para a realidade da sua empresa. Deixe seus dados e nas próximas horas nossa equipe entra em contato.</p>
+        <button type="button" class="btn" data-act="modo" data-v="equipe">Quero falar com a equipe</button><p class="hint" id="hint"></p>`
+      :`${sob?`<p class="terms">Para mais de 20 funcionários a nossa equipe monta uma proposta sob medida.</p>`:''}
+        <button type="button" class="btn" data-act="modo" data-v="contratar">Receber minha proposta</button><p class="hint" id="hint"></p>
+        ${botaoConsultor('btn out')}`}
       <p class="terms" style="text-align:center">Pagamento: ativação + boleto em até ${CONFIG.parcelas}x</p>`;
   }
   if(S.step===4){
-    const d=S.dados,contratar=S.modo==='contratar',e=S.emp;
+    const n=treinIds().length,ind=indicados(),indIds=ind.map(x=>x.id);
+    const tr=(t,motivo)=>{const q=S.trein[t.id]||0;return `<div class="tr ${q?'on':''}">
+      <span class="tr-t"><b>${esc(t.nome)}${t.carga?` <small>${esc(t.carga)}</small>`:''}</b>${motivo?`<span class="why">${esc(motivo)}</span>`:''}<span class="ex-v"><s>R$ ${brl(t.de)}</s> R$ ${brl(t.por)} <small>${esc(unTxt(t))}</small></span></span>
+      <span class="qt"><button type="button" data-tq="${t.id}" data-d="-1" aria-label="Diminuir ${esc(trNome(t))}" ${q?'':'disabled'}>−</button><b aria-live="polite">${q}</b><button type="button" data-tq="${t.id}" data-d="1" aria-label="Aumentar ${esc(trNome(t))}">+</button></span></div>`};
+    // outros: tudo que não foi indicado, sem as outras cargas de CIPA
+    const outros=CONFIG.treinamentos.filter(t=>!indIds.includes(t.id)&&!/^cipa/.test(t.id));
+    const quem=S.emp?.razao?esc(S.emp.fantasia||S.emp.razao):'a sua empresa';
+    const abertoOutros=outros.some(t=>S.trein[t.id]);
+    const duvida=CONFIG.whatsapp
+      ?`<a class="link" data-zap href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Olá! Estou montando meu plano no site e quero ajuda para escolher os treinamentos da minha equipe.')}" target="_blank" rel="noopener">Fale com a gente no WhatsApp</a>`
+      :`<button type="button" class="link" data-act="modo" data-v="consultor">Fale com a nossa equipe</button>`;
+    h=`${back()}<div class="stp">Programe o seu ano</div><div class="q">Já deixe os treinamentos do ano garantidos</div>
+      <p class="terms" style="margin:-8px 0 12px">Fechando junto com o seu plano, treinamentos e palestras saem com preço especial. Em janeiro a nossa tabela muda.</p>
+      <div class="ex-h" style="margin-bottom:8px">Indicados para ${quem}${S.gr?` · grau de risco ${S.gr}`:''}</div>
+      <div class="trs">${ind.map(x=>tr(TR[x.id],x.motivo)).join('')}</div>
+      <details class="mais-tr"${abertoOutros?' open':''}><summary>Ver outros treinamentos e palestras</summary><div class="trs">${outros.map(t=>tr(t)).join('')}</div></details>
+      <p class="terms" style="margin:8px 0 0">Indicação feita pela atividade do CNPJ e pela NR-04. Nosso técnico confirma na visita.</p>
+      <div class="soma"><span>${n?`${n} ${n>1?'treinamentos escolhidos':'treinamento escolhido'}`:'Nenhum treinamento escolhido'}</span><b>${n?`R$ ${brl(treinValor())} na ativação`:''}</b></div>
+      <button type="button" class="btn" data-act="ano">${n?'Incluir e continuar':'Continuar sem treinamentos'}</button>
+      <p class="terms" style="text-align:center">Em dúvida sobre quais treinamentos a sua equipe precisa? ${duvida}</p>`;
+  }
+  if(S.step===5){
+    const d=S.dados,contratar=S.modo==='contratar',equipe=S.modo==='equipe',e=S.emp;
     let emp='';
     if(S.semCnpj)emp=`${field('empManual','Nome da empresa','text',S.empManual,'Informe o nome da empresa','autocomplete="organization"')}<button type="button" class="link" data-act="comcnpj" style="margin:-4px 0 14px">Prefiro informar o CNPJ</button>`;
     else{
@@ -630,23 +777,36 @@ function render(){
       else if(e?.razao)emp+=`<div class="found"><span class="tag">ENCONTRAMOS</span><b>${esc(e.fantasia||e.razao)}</b><span>${esc([e.cidade,e.uf].filter(Boolean).join(', '))}${e.cnaeDesc?' · '+esc(e.cnaeDesc):''}</span></div>`;
       emp+=`<button type="button" class="link" data-act="semcnpj" style="margin:-4px 0 14px">Não tenho o CNPJ em mãos</button>`;
     }
-    const recap=S.sel.length&&S.faixa?`<div class="recap"><b>${esc(nomesSel())}</b> · ${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${esc(precoTxt())}${S.extras.length?`<br>+ ${esc(extrasTxt())}`:''}</div>`:'';
-    h=`${S.direto?'':back()}<div class="stp">${contratar?'Proposta':'Falar com consultor'}</div><div class="q">${contratar?'Para quem enviamos a proposta?':'Como o consultor fala com você?'}</div>
+    const extras=[pacote()&&horasTxt(),contratar&&treinQtd()&&'Treinamentos: '+treinTxt()].filter(Boolean);
+    const grande=S.faixa===GRANDE;
+    const recap=!grande&&S.sel.length&&S.faixa?`<div class="recap"><b>${esc(nomesSel())}</b> · ${esc(FAIXAS.find(f=>f.id===S.faixa).t)} · ${esc(precoTxt())}${extras.map(x=>`<br>+ ${esc(x)}`).join('')}</div>`:'';
+    h=`${S.direto?'':back()}<div class="stp">${contratar?'Proposta':grande?'Falar com um consultor':equipe?'Plano sob medida':'Falar com consultor'}</div><div class="q">${contratar?'Para quem enviamos a proposta?':grande?'Para quem o consultor liga?':equipe?'Para quem a nossa equipe liga?':'Como o consultor fala com você?'}</div>
+      ${grande?`<p class="terms" style="margin:-8px 0 12px">Para empresas com mais de 50 funcionários, um consultor monta o plano junto com você. Preencha seus dados.</p>`:equipe?`<p class="terms" style="margin:-8px 0 12px">Nas próximas horas nossa equipe entra em contato para entender a sua empresa e montar o plano.</p>`:''}
       ${recap}
       ${field('nome','Seu nome','text',d.nome,'Informe seu nome','autocomplete="name"')}
       ${field('tel','Telefone','tel',d.tel,'Informe um telefone com DDD','inputmode="tel" autocomplete="tel" placeholder="(41) 99999 9999"')}
       ${field('email','E-mail','email',d.email,'Informe um e-mail válido','autocomplete="email" placeholder="voce@empresa.com.br"')}
       <div style="display:grid">${emp}</div>
       <div class="terms"><label><input type="checkbox" id="lgpd" ${d.lgpd?'checked':''}><span>Autorizo a eProtege a usar estes dados para enviar a proposta e entrar em contato, conforme a LGPD.</span></label></div>
-      <button type="submit" class="btn" ${S.enviando?'disabled':''}>${S.enviando?'<span class="spin"></span>Enviando':contratar?'Receber minha proposta':'Pedir contato do consultor'}</button>
+      <button type="submit" class="btn" ${S.enviando?'disabled':''}>${S.enviando?'<span class="spin"></span>Enviando':contratar?'Receber minha proposta':S.faixa===GRANDE?'Pedir contato do consultor':equipe?'Pedir contato da equipe':'Pedir contato do consultor'}</button>
       ${S.direto?`<button type="button" class="link" data-act="montar" style="display:block;margin:14px auto 0">Prefiro montar meu plano primeiro</button>`:''}`;
   }
-  if(S.step===5){
-    const contratar=S.modo==='contratar';
+  if(S.step===6){
+    const contratar=S.modo==='contratar',equipe=S.modo==='equipe';
+    // mais de 50 funcionários ou plano com técnico: página de obrigado com o consultor e o WhatsApp
+    if(equipe){
+      const zap=CONFIG.whatsapp
+        ?`<a class="btn" data-zap href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(`Olá! Preenchi o formulário no site${empresaNome()?' pela '+empresaNome():''} e quero falar com um consultor da eProtege.`)}" target="_blank" rel="noopener">${svg('zap',18,2)}Falar com um consultor no WhatsApp</a>`
+        :`<a class="btn" href="tel:+554132781663">Ligar para (41) 3278-1663</a>`;
+      h=`<div class="ok"><div class="big">${svg('ok',36,3)}</div><div class="q">Obrigada por preencher!</div>
+        <p>Para empresas do porte da sua, um consultor precisa te atender para montar o plano certo. Nas próximas horas ele entra em contato. Se preferir adiantar, fale com a gente agora.</p>
+        ${zap}</div>`;
+      $('cfgView').innerHTML=h;return;
+    }
     h=`<div class="ok"><div class="big">${svg('ok',36,3)}</div><div class="q">${contratar?'Proposta a caminho!':'Pronto, recebemos!'}</div>
-      <p>${contratar?`Enviamos a proposta para <b>${esc(S.dados.email)}</b>. Se não encontrar, confira a caixa de spam. Nossa equipe também vai te chamar no WhatsApp para tirar qualquer dúvida.`:'Um consultor da eProtege vai entrar em contato em até 1 dia útil.'}</p>
+      <p>${contratar?`Enviamos a proposta para <b>${esc(S.dados.email)}</b>. Se não encontrar, confira a caixa de spam. Nossa equipe também vai te chamar no WhatsApp para tirar qualquer dúvida.`:equipe?'Nas próximas horas nossa equipe entra em contato para entender a sua empresa e montar o plano com o técnico presencial.':'Um consultor da eProtege vai entrar em contato em até 1 dia útil.'}</p>
       <div class="next">
-        <div><span>1</span>${contratar?'Você confere e aprova a proposta':'Conversa rápida com o consultor'}</div>
+        <div><span>1</span>${contratar?'Você confere e aprova a proposta':equipe?'Conversa com a nossa equipe':'Conversa rápida com o consultor'}</div>
         <div><span>2</span>${contratar?'Nossa equipe envia o contrato para assinar':'Proposta no seu e-mail'}</div>
         <div><span>3</span>Agendamos a visita técnica e os exames</div>
       </div></div>`;
@@ -659,13 +819,19 @@ const view=$('cfgView');
 /* O que falta para seguir (o botão nunca fica apagado: ele diz o que falta) */
 function faltando(){
   if(S.step===0&&!S.faixa)return['Escolha quantas pessoas trabalham na empresa.'];
-  if(S.step===1&&!S.risco)return['Escolha uma das opções acima.'];
+  if(S.step===1&&!S.risco){
+    if(S.emp?.carregando)return['Aguarde, estamos buscando a sua empresa.'];
+    if(S.semCnpj||S.emp?.falhou||S.emp?.razao)return['Escolha o que a sua equipe faz.'];
+    return['Digite o CNPJ ou clique em "Não tenho o CNPJ em mãos".'];
+  }
   if(S.step===2&&!S.need)return['Escolha uma das opções acima.'];
   return null;
 }
 function avancar(){
   const f=faltando();
   if(f){const h=$('hint');if(h)h.textContent=f[0];return}
+  // mais de 50 funcionários: direto para os dados e o consultor
+  if(S.step===0&&S.faixa===GRANDE){S.modo='equipe';S.step=5;track('autovenda_checkout',{modo:'grande'});render();$('plano').scrollIntoView({block:'nearest',behavior:'smooth'});return}
   S.step++;track('autovenda_passo',{passo:S.step+1});
   if(S.step===3)track('autovenda_plano',{planos:recomendado().join('+')});
   render();$('plano').scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -674,8 +840,11 @@ function focarFim(id){const i=$(id);if(i){i.focus();i.setSelectionRange(i.value.
 view.addEventListener('click',e=>{
   const pl=e.target.closest('[data-pl]');
   if(pl){S.escolheu=true;S.sel=[pl.dataset.pl];render();return}
-  const ex=e.target.closest('[data-ex]');
-  if(ex){const id=ex.dataset.ex;S.extras=S.extras.includes(id)?S.extras.filter(x=>x!==id):CONFIG.adicionais.map(a=>a.id).filter(x=>x===id||S.extras.includes(x));track('autovenda_adicional',{adicional:id});render();return}
+  const hr=e.target.closest('[data-hr]');
+  if(hr){S.horas=+hr.dataset.hr;track('autovenda_horas',{horas:S.horas});render();return}
+  const tq=e.target.closest('[data-tq]');
+  if(tq){const id=tq.dataset.tq;S.trein[id]=Math.max(0,(S.trein[id]||0)+ +tq.dataset.d);track('autovenda_treinamento',{treinamento:id,qtd:S.trein[id]});render();
+    view.querySelector(`[data-tq="${id}"][data-d="${tq.dataset.d}"]:not([disabled])`)?.focus();return}
   if(e.target.closest('[data-zap]')){track('autovenda_whatsapp',{onde:'configurador'});return}
   const b=e.target.closest('[data-k],[data-act]');if(!b||b.disabled)return;
   if(b.dataset.k){
@@ -685,13 +854,15 @@ view.addEventListener('click',e=>{
     if(['faixa','risco','need'].includes(b.dataset.k)){const st=S.step;setTimeout(()=>{if(S.step===st)avancar()},260)}
     return}
   const a=b.dataset.act;
-  if(a==='semcnpj'){S.semCnpj=true;S.emp=null;S.cnpj='';render();$('empManual')?.focus();return}
-  if(a==='comcnpj'){S.semCnpj=false;S.emp=null;render();$('cnpj')?.focus();return}
+  if(a==='semcnpj'){S.semCnpj=true;S.emp=null;S.cnpj='';if(S.gr){S.gr=null;S.risco=null}render();$('empManual')?.focus();return}
+  if(a==='comcnpj'){S.semCnpj=false;S.emp=null;S.risco=null;render();$('cnpj')?.focus();return}
   if(a==='next'){avancar();return}
-  if(a==='back')S.step--;
+  // dos dados, quem não pediu proposta volta direto para o plano (o passo do ano é só da proposta)
+  if(a==='back')S.step=S.step===5&&S.faixa===GRANDE?0:S.step===5&&S.modo!=='contratar'?3:S.step-1;
   if(a==='modo'){
     if(b.dataset.v==='contratar'&&!S.sel.length){$('hint').textContent='Escolha um plano.';return}
-    S.modo=b.dataset.v;S.step=4;track('autovenda_checkout',{modo:S.modo,planos:S.sel.join('+')})}
+    S.modo=b.dataset.v;S.step=S.modo==='contratar'?4:5;track('autovenda_checkout',{modo:S.modo,planos:S.sel.join('+')})}
+  if(a==='ano'){S.step=5;track('autovenda_ano',{participantes:treinQtd()})}
   if(a==='montar'){S.direto=false;S.modo=null;S.step=0}
   render();
   $('plano').scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -702,7 +873,7 @@ view.addEventListener('input',e=>{
     t.value=cnpjMask(t.value);S.cnpj=t.value;$('f_cnpj').classList.remove('err');
     const d=t.value.replace(/\D/g,'');
     if(d.length===14)buscarCNPJ().then(()=>focarFim('cnpj'));
-    else if(S.emp){S.emp=null;render();focarFim('cnpj')}
+    else if(S.emp){S.emp=null;if(S.gr){S.gr=null;S.risco=null}render();focarFim('cnpj')}
   }
   if(t.id==='empManual'){
     const d=t.value.replace(/[.\/\-\s]/g,'');
@@ -719,7 +890,7 @@ const validTel=v=>v.replace(/\D/g,'').length>=10;
 const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 $('cfg').addEventListener('submit',async e=>{
   e.preventDefault();
-  if(S.step!==4||S.enviando)return;
+  if(S.step!==5||S.enviando)return;
   const d=S.dados;
   const temEmpresa=!!empresaNome()&&!S.emp?.carregando;
   const campoEmp=S.semCnpj||S.emp?.falhou?'empManual':'cnpj';
@@ -730,28 +901,30 @@ $('cfg').addEventListener('submit',async e=>{
   if(!ok||!d.lgpd){view.querySelector('.err input')?.focus();return}
   S.enviando=true;render();
   await enviar();
-  S.enviando=false;S.step=5;render();
+  S.enviando=false;S.step=6;render();
   track('autovenda_lead',{modo:S.modo,planos:S.sel.join('+'),faixa:S.faixa});
 });
 
 function enviar(){
   const e=S.emp||{},faixa=FAIXAS.find(f=>f.id===S.faixa)?.t||'',planos=S.faixa?nomesSel():'';
-  const tipo=S.modo==='contratar'?'Quer proposta':'Falar com consultor';
+  const tipo=S.modo==='contratar'?'Quer proposta':S.modo==='equipe'?'Plano sob medida (equipe liga)':'Falar com consultor';
   const atividade=S.risco==='alto'?'Maior risco (obra, indústria, oficina, saúde)':S.risco==='baixo'?'Menor risco (escritório, comércio, serviços)':'';
   const momento=NEEDS.find(n=>n.id===S.need)?.t||'';
-  const interesse=['Autovenda',tipo,planos,faixa,atividade,momento&&'Momento: '+momento,planos&&precoTxt(),S.extras.length&&'Adicionais: '+extrasTxt()].filter(Boolean).join(' | ');
+  // treinamentos com desconto só valem para quem pediu a proposta (passou pelo "Programe o seu ano")
+  const trein=S.modo==='contratar'&&treinQtd()?treinTxt():'',horas=planos?horasTxt():'';
+  const interesse=['Autovenda',tipo,planos,faixa,atividade,momento&&'Momento: '+momento,planos&&precoTxt(),horas,trein&&'Treinamentos: '+trein].filter(Boolean).join(' | ');
   const campos={
     'Tipo':tipo,'Nome':S.dados.nome.trim(),'Telefone':S.dados.tel,'E-mail':S.dados.email.trim(),
     'Empresa':empresaNome(),'Razão social':e.razao||'','CNPJ':S.semCnpj?'':S.cnpj,'Cidade':[e.cidade,e.uf].filter(Boolean).join('/'),
     'CNAE':e.cnae?`${e.cnae} ${e.cnaeDesc}`:'','Situação CNPJ':e.situacao||'',
-    'Funcionários':faixa,'Atividade':atividade,'Momento':momento,'Plano':planos,'Parcela exibida':planos?precoTxt():'','Adicionais':S.extras.map(id=>`${AD[id].nome} (R$ ${brl(AD[id].por)})`).join(', '),
+    'Funcionários':faixa,'Atividade':atividade,'Momento':momento,'Plano':planos,'Parcela exibida':planos?precoTxt():'','Técnico presencial':horas,'Adicionais':trein,
     'Campanha':UTM.utm_campaign||'','Criativo':UTM.utm_content||UTM.utm_term||'','Origem':UTM.utm_source||'','Mídia':UTM.utm_medium||'',
     'gclid':UTM.gclid||'','fbclid':UTM.fbclid||'','Página':location.href
   };
   // proposta automática só quando o cliente montou o plano e pediu a proposta (uma linha por plano no slide)
-  const proposta=planos&&S.modo==='contratar'?{plano:planos,itens:PL[S.sel[0]].itens.concat(S.extras.map(id=>`Adicional: ${AD[id].nome} (R$ ${brl(AD[id].por)} na ativação)`)),
-    parcela:parcela(),parcelas:CONFIG.parcelas,funcionarios:faixa,empresa:campos['Empresa'],cnpj:campos['CNPJ'],sobMedida:S.faixa==='d',
-    planos:S.sel,vidas:{a:5,b:10,c:20}[S.faixa]||null,setor:e.cnaeDesc||atividade,momento}:null;
+  const proposta=planos&&S.modo==='contratar'?{plano:planos,itens:PL[S.sel[0]].itens.concat(horas?[horas]:[],treinIds().map(id=>`Treinamento: ${S.trein[id]}x ${trNome(TR[id])} (R$ ${brl(TR[id].por)} ${unTxt(TR[id])}, na ativação)`)),
+    parcela:parcela(),parcelas:CONFIG.parcelas,funcionarios:faixa,empresa:campos['Empresa'],cnpj:campos['CNPJ'],sobMedida:['e','f'].includes(S.faixa),
+    planos:S.sel,vidas:{a:5,b:10,c:15,d:20}[S.faixa]||null,setor:e.cnaeDesc||atividade,momento}:null;
   const payload={campos,proposta,website:$('website').value,crm:{nome:campos['Nome'],email:campos['E-mail'],telefone:campos['Telefone'],empresa:campos['Empresa'],interesse,pagina:location.href,origem:UTM.utm_source||'',midia:UTM.utm_medium||'',campanha:UTM.utm_campaign||'',criativo:campos['Criativo']}};
   if(!CONFIG.planilha){console.warn('CONFIG.planilha vazio: pedido não enviado',payload);return new Promise(r=>setTimeout(r,500))}
   return fetch(CONFIG.planilha,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
@@ -759,11 +932,13 @@ function enviar(){
 
 /* ---------- Cartões de planos ---------- */
 $('planCards').innerHTML=CONFIG.planos.map(p=>{const v=aPartir(p.id);return `<div class="pc${p.destaque?' star':''}">${p.destaque?`<span class="tag">${svg('star',14,2.4)}${esc(p.destaque)}</span>`:''}
-  <h3>${esc(p.nome)}</h3>
-  <div class="val">${v==null?'<b class="ask">Valor na proposta</b>':`<small>a partir de</small><b>R$ ${brl(v)}<span>/mês</span></b>`}</div>
+  <h3>${esc(p.nome)}${p.ast?`<span class="ast">${p.ast}</span>`:''}</h3>
+  <h4 class="pc-a">${esc(p.area)}</h4>
+  <div class="val">${p.sobMedida?`<small>hora técnica a partir de</small><b>R$ ${brl(Math.min(...CONFIG.horas.pacotes.map(x=>x.valor)))}<span>/hora</span></b>`:v==null?'<b class="ask">Valor na proposta</b>':`<small>a partir de</small><b>R$ ${brl(v)}<span>/mês</span></b>`}</div>
   <p class="for">${esc(p.desc)}</p>
   <ul>${p.itens.map(i=>`<li${/^Tudo do/.test(i)?' class="plus"':''}>${CONFIG.explica[i]?`<button type="button" class="it" aria-expanded="false"><span class="chk">${svg('ok',11,3.6)}</span><span class="it-n">${esc(i)}</span><span class="mais" aria-hidden="true">+</span></button><p class="it-x" hidden>${esc(CONFIG.explica[i])}</p>`:`<span class="chk">${svg('ok',11,3.6)}</span>${esc(i)}`}</li>`).join('')}</ul>
-  <a href="#plano" class="btn" data-go="plano:${p.id}">Contratar</a></div>`}).join('');
+  <a href="#plano" class="btn" data-go="plano:${p.id}">${p.sobMedida?'Falar com a equipe':'Contratar'}</a></div>`}).join('');
+$('planNotas').innerHTML=CONFIG.notas.map(esc).join('<br>');
 
 // clicar no item do plano abre (ou fecha) a explicação
 $('planCards').addEventListener('click',e=>{
@@ -777,7 +952,7 @@ $('planCards').addEventListener('click',e=>{
 document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',ev=>{
   ev.preventDefault();
   const go=a.dataset.go;
-  if(go==='consultor'){if(CONFIG.whatsapp){track('autovenda_whatsapp',{onde:'pagina'});window.open(linkZap(),'_blank','noopener');return}S.modo='consultor';S.direto=true;S.step=4}
+  if(go==='consultor'){if(CONFIG.whatsapp){track('autovenda_whatsapp',{onde:'pagina'});window.open(linkZap(),'_blank','noopener');return}S.modo='consultor';S.direto=true;S.step=5}
   else{
     if(go.startsWith('plano:')){S.escolheu=true;S.sel=[go.slice(6)]}
     if(S.direto||S.step>=4){S.direto=false;S.modo=null;S.step=S.faixa&&S.risco&&S.need?3:0}
