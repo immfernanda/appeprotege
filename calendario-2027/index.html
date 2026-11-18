@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calendário de Conteúdo 2027 | eProtege</title>
+<meta name="description" content="Calendário de conteúdo 2027 da eProtege: feriados, pontos facultativos, datas de Saúde e Segurança do Trabalho, campanhas de saúde e datas comemorativas." />
+<link rel="icon" type="image/png" href="simbolo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Paleta oficial eProtege (Manual da marca) */
+    --navy: #001B4A;
+    --azul: #2864B0;
+    --turquesa: #12B0B6;
+    --turquesa-claro: #64C6CC;
+    --amarelo: #F4BB0E;
+    --cinza-logo: #3E5A70;
+    --degrade: linear-gradient(90deg, #2864B0, #12B0B6);
+
+    --bg: #F3F7FA;
+    --surface: #FFFFFF;
+    --surface-2: #F7FAFC;
+    --border: #CBD9E5;
+    --text: #13294B;
+    --muted: #3F566C;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Montserrat", -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1480px; margin: 0 auto; padding: 0 32px 80px; }
+
+  /* Topo */
+  .top { background: var(--navy); color: #fff; position: relative; overflow: hidden; }
+  .top::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
+    background: var(--degrade); }
+  .top-inner { max-width: 1480px; margin: 0 auto; padding: 28px 32px 44px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+  .topbar img { height: 46px; width: auto; display: block; }
+  .topbar .tag { font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--turquesa-claro); }
+
+  .hero { border-left: 4px solid var(--amarelo); padding-left: 22px; }
+  h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 800; line-height: 1.08;
+    color: #fff; letter-spacing: -1px; }
+  h1 .accent { background: linear-gradient(90deg, #64C6CC, #12B0B6);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .subtitle { color: #E4ECF5; margin-top: 14px; font-size: 17px; max-width: 760px; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+  .stat { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 12px 18px; min-width: 140px; }
+  .stat b { display: block; font-size: 26px; font-weight: 800; color: #fff; line-height: 1.1; }
+  .stat span { font-size: 13px; color: #E4ECF5; font-weight: 600; }
+
+  /* Legenda / filtros */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 0; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font-family: inherit;
+    font-size: 14px; font-weight: 600; color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); border-radius: 30px; padding: 7px 14px 7px 10px;
+    cursor: pointer; transition: .15s; }
+  .chip:hover { border-color: var(--turquesa); }
+  .chip.off { opacity: .45; }
+  .chip.off .swatch { background: transparent !important; box-shadow: inset 0 0 0 2px var(--muted); }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+  .legend-hint { font-size: 13px; color: var(--muted); align-self: center; }
+
+  /* Abas */
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 24px; border-bottom: 2px solid var(--border); }
+  .tab { background: transparent; border: none; color: var(--muted); font-family: inherit;
+    font-size: 16px; font-weight: 700; padding: 12px 18px; cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--azul); border-bottom-color: var(--turquesa); }
+
+  /* Campanha do mês */
+  .campaign { display: flex; align-items: center; gap: 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px;
+    margin-bottom: 18px; }
+  .campaign .ribbon { width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    display: grid; place-items: center; font-size: 22px; }
+  .campaign h3 { font-size: 18px; font-weight: 800; color: var(--navy); }
+  .campaign p { font-size: 15px; color: var(--muted); margin-top: 2px; }
+
+  /* Calendário */
+  .cal-card { background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 26px; box-shadow: 0 6px 24px rgba(0,27,74,.05); }
+  .cal-head { display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .cal-head h2 { font-size: 26px; font-weight: 800; color: var(--navy); letter-spacing: -.3px; }
+  .cal-head-right { display: flex; align-items: center; gap: 14px; }
+  .done-counter { font-size: 13px; font-weight: 700; color: var(--azul);
+    background: rgba(40,100,176,.1); padding: 6px 12px; border-radius: 20px; white-space: nowrap; }
+  .cal-nav { display: flex; gap: 8px; }
+  .cal-nav button { background: var(--surface); border: 1px solid var(--border);
+    color: var(--navy); width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
+    font-size: 20px; font-family: inherit; transition: .15s; }
+  .cal-nav button:hover:not(:disabled) { background: var(--turquesa); border-color: var(--turquesa); color: #fff; }
+  .cal-nav button:disabled { opacity: .35; cursor: default; }
+
+  .weekdays { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 8px;
+    margin-bottom: 8px; }
+  .weekdays div { text-align: center; font-size: 13px; font-weight: 800;
+    color: var(--navy); text-transform: uppercase; letter-spacing: 1px; padding: 6px 0; }
+
+  .grid { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 8px; }
+  .cell { background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 12px; min-height: 140px; padding: 10px; display: flex;
+    flex-direction: column; gap: 5px; min-width: 0; }
+  .cell.empty { background: transparent; border: 1px dashed var(--border); }
+  .cell.weekend { background: #EEF3F7; }
+  .cell.holiday { background: #EAF0F8; border-color: #C5D4E8; }
+  .cell.today { border-color: var(--turquesa); box-shadow: 0 0 0 1px var(--turquesa) inset; }
+  .cell .num { font-size: 15px; font-weight: 800; color: var(--text); }
+  .cell.holiday .num { color: var(--navy); }
+  .cell.today .num { color: var(--turquesa); }
+
+  .event { position: relative; display: block; width: 100%; text-align: left; border: none;
+    font-family: inherit; font-size: 13px; font-weight: 700; padding: 7px 9px;
+    border-radius: 8px; line-height: 1.3; cursor: pointer;
+    transition: transform .12s, filter .12s; word-break: break-word; }
+  .event:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  .ev-check { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px;
+    border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center;
+    font-size: 11px; font-weight: 900; line-height: 1; opacity: .7; }
+  .ev-check:hover { opacity: 1; }
+  .ev-title { display: block; padding-right: 22px; }
+  .event.done { opacity: .55; }
+  .event.done .ev-title { text-decoration: line-through; }
+  .event.done .ev-check { opacity: 1; }
+
+  /* Lista do mês */
+  .section-title { display: flex; align-items: center; gap: 12px; margin: 44px 0 18px; }
+  .section-title h2 { font-size: 22px; font-weight: 800; color: var(--navy); letter-spacing: -.3px; }
+  .section-title .bar { width: 26px; height: 4px; background: var(--degrade); border-radius: 4px; }
+  .posts { display: grid; gap: 12px; }
+  .post-card { background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; transition: .15s; scroll-margin-top: 20px; }
+  .post-card:hover { border-color: var(--turquesa-claro); }
+  .post-card.flash { box-shadow: 0 0 0 3px rgba(18,176,182,.35); border-color: var(--turquesa); }
+  .post-top { display: flex; align-items: center; gap: 16px; }
+  .post-date { text-align: center; min-width: 54px; }
+  .post-date .d { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1.1; }
+  .post-date .m { font-size: 11px; color: var(--muted); text-transform: uppercase;
+    font-weight: 700; letter-spacing: .5px; }
+  .post-bar { width: 5px; align-self: stretch; border-radius: 4px; min-height: 44px; }
+  .post-body { flex: 1; min-width: 0; }
+  .post-cat { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .post-title { font-size: 17px; color: var(--navy); margin-top: 2px; font-weight: 700; }
+  .post-meta { font-size: 12px; color: var(--muted); margin-top: 6px;
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pill { padding: 4px 11px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .pill.dow { background: #EEF3F7; color: var(--cinza-logo); }
+  .pill.ok { background: rgba(18,176,182,.14); color: #0B7C80; }
+  .pill.todo { background: rgba(244,187,14,.18); color: #8A6500; }
+
+  .idea { margin: 14px 0 4px; padding: 13px 15px; background: var(--surface-2);
+    border: 1px solid var(--border); border-left: 4px solid var(--turquesa); border-radius: 10px; }
+  .idea b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+    color: var(--turquesa); margin-bottom: 4px; }
+  .idea p { white-space: pre-line; font-size: 15px; line-height: 1.6; color: var(--text); }
+
+  .post-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    font-size: 13px; font-weight: 700; padding: 9px 16px; border-radius: 9px;
+    cursor: pointer; border: 1px solid var(--border); transition: .15s;
+    font-family: inherit; background: var(--surface); color: var(--text); }
+  .btn:hover { border-color: var(--turquesa); color: var(--turquesa); }
+  .btn-done.is-done { background: var(--turquesa); color: #fff; border-color: var(--turquesa); }
+  .btn-drive { background: var(--azul); color: #fff; border-color: var(--azul); }
+  .btn-drive:hover { color: #fff; filter: brightness(1.08); }
+  .btn.copied { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .empty-msg { color: var(--muted); font-size: 14px; padding: 18px; background: var(--surface);
+    border: 1px dashed var(--border); border-radius: 14px; }
+
+  /* Visão do ano */
+  .year-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 16px; }
+  .mini { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px; cursor: pointer; transition: .15s; text-align: left; font-family: inherit;
+    color: inherit; width: 100%; min-width: 0; }
+  .mini:hover { border-color: var(--turquesa); transform: translateY(-2px); }
+  .mini-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .mini h3 { font-size: 16px; font-weight: 800; color: var(--navy); }
+  .mini .camp { font-size: 11px; font-weight: 700; color: var(--muted); text-align: right; }
+  .mini-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 10px; }
+  .mini-days span { font-size: 12.5px; text-align: center; padding: 4px 0; border-radius: 6px;
+    color: var(--muted); font-weight: 600; }
+  .mini-days span.wd { font-size: 9.5px; font-weight: 700; text-transform: uppercase; }
+  .mini-days span.has { color: #fff; font-weight: 800; }
+  .mini-count { margin-top: 10px; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+  .holiday-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .holiday-table th { text-align: left; color: var(--muted); font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .6px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  .holiday-table td { padding: 10px; border-bottom: 1px solid #EDF2F6; }
+  .holiday-table td:first-child { font-weight: 800; color: var(--navy); white-space: nowrap; }
+  .holiday-table .long { color: #0B7C80; font-weight: 700; font-size: 12px; }
+
+  /* Relatórios */
+  .report-card { background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px; }
+  .rep-table-wrap { overflow-x: auto; }
+  .rep-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .rep-table th { text-align: left; color: var(--muted); font-weight: 700;
+    text-transform: uppercase; font-size: 11px; letter-spacing: .5px; padding: 6px 8px;
+    border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .rep-table td { padding: 5px 6px; border-bottom: 1px solid #EDF2F6; vertical-align: middle; }
+  .rep-table input { width: 100%; min-width: 78px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-family: inherit; font-size: 13px; padding: 8px 10px; }
+  .rep-table input:focus, .insights-box:focus { outline: none; border-color: var(--turquesa); }
+  .rep-table .rep-post { min-width: 220px; }
+  .insights-box { width: 100%; min-height: 150px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    font-family: inherit; font-size: 14px; line-height: 1.6; padding: 14px; resize: vertical; }
+  .hero-light h1 { color: var(--navy); font-size: clamp(26px, 4vw, 38px); }
+  .hero-light .subtitle { color: var(--muted); }
+
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 10px; color: var(--muted); font-size: 13px; }
+  footer .slogan { color: var(--azul); font-weight: 700; }
+
+  @media (max-width: 760px) {
+    .wrap, .top-inner { padding-left: 16px; padding-right: 16px; }
+    .top-inner { padding-top: 22px; padding-bottom: 32px; }
+    .topbar { margin-bottom: 28px; }
+    .topbar img { height: 36px; }
+    .cal-card { padding: 14px 10px; }
+    .weekdays, .grid { gap: 4px; }
+    .cell { min-height: 74px; padding: 5px; border-radius: 8px; gap: 3px; }
+    .cell .num { font-size: 11px; }
+    .event { font-size: 0; padding: 0; height: 8px; border-radius: 4px; }
+    .event .ev-check, .event .ev-title { display: none; }
+    .weekdays div { font-size: 10px; letter-spacing: 0; }
+    .stat { min-width: 0; flex: 1 1 40%; }
+    .campaign { padding: 14px; }
+    .post-top { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <div class="topbar">
+      <img src="logo-horizontal-branco.svg" alt="eProtege Saúde e Segurança do Trabalho" />
+      <div class="tag">Marketing · Calendário de Conteúdo</div>
+    </div>
+    <div class="hero">
+      <h1>Calendário de Conteúdo <span class="accent">2027</span></h1>
+      <p class="subtitle">Feriados, pontos facultativos, datas de Saúde e Segurança do Trabalho, campanhas de saúde e datas comemorativas do ano, cada uma com uma ideia de pauta. Clique numa data para ver a ideia e use o ✓ para marcar o que já foi publicado (fica salvo no seu navegador).</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="legend" id="legend"></div>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="viewMes">📅 Mês a mês</button>
+    <button class="tab" data-view="viewAno">🗓️ Ano 2027</button>
+    <button class="tab" data-view="viewRelatorios">📊 Relatórios</button>
+  </nav>
+
+  <div id="viewMes">
+    <div class="campaign" id="campaign"></div>
+    <section class="cal-card">
+      <div class="cal-head">
+        <h2 id="calTitle">Janeiro 2027</h2>
+        <div class="cal-head-right">
+          <span id="doneCounter" class="done-counter"></span>
+          <div class="cal-nav">
+            <button id="prevBtn" aria-label="Mês anterior">‹</button>
+            <button id="nextBtn" aria-label="Próximo mês">›</button>
+          </div>
+        </div>
+      </div>
+      <div class="weekdays">
+        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+      </div>
+      <div class="grid" id="calGrid"></div>
+    </section>
+
+    <div class="section-title"><span class="bar"></span><h2 id="listTitle">Datas do mês</h2></div>
+    <div class="posts" id="postsList"></div>
+  </div>
+
+  <div id="viewAno" hidden>
+    <div class="year-grid" id="yearGrid"></div>
+
+    <div class="section-title"><span class="bar"></span><h2>Feriados nacionais e pontos facultativos 2027</h2></div>
+    <div class="report-card"><div class="rep-table-wrap"><table class="holiday-table" id="holidayTable"></table></div></div>
+  </div>
+
+  <div id="viewRelatorios" hidden>
+    <div class="hero hero-light" style="margin:8px 0 4px"><h1>Relatórios e insights</h1>
+      <p class="subtitle">Registre os resultados das datas que viraram post. Os campos são editáveis e ficam salvos no seu navegador.</p></div>
+
+    <div class="section-title"><span class="bar"></span><h2>Engajamento dos posts publicados</h2></div>
+    <div class="report-card"><div class="rep-table-wrap"><table class="rep-table" id="engageTable"></table></div></div>
+
+    <div class="section-title"><span class="bar"></span><h2>Observações e aprendizados</h2></div>
+    <div class="report-card"><textarea id="insightsBox" class="insights-box" placeholder="Anote o que funcionou, comparativos entre meses e ideias para as próximas datas..."></textarea></div>
+  </div>
+
+  <footer>
+    <span>eProtege · Saúde e Segurança do Trabalho · mais de 25 anos cuidando de cada colaborador</span>
+    <span class="slogan">Escale novos patamares com Saúde e Segurança.</span>
+  </footer>
+</div>
+
+<script>
+  const YEAR = 2027;
+
+  // ---- Categorias (cores da marca) ----
+  const CATS = {
+    feriado:     { name: "Feriado nacional",          color: "#001B4A", text: "#FFFFFF" },
+    facultativo: { name: "Ponto facultativo",         color: "#64C6CC", text: "#001B4A" },
+    sst:         { name: "Saúde e Segurança do Trabalho", color: "#F4BB0E", text: "#001B4A" },
+    saude:       { name: "Saúde",                     color: "#12B0B6", text: "#FFFFFF" },
+    data:        { name: "Comemorativa e comercial",  color: "#2864B0", text: "#FFFFFF" },
+  };
+
+  // ---- Campanhas do mês ----
+  const CAMPAIGNS = [
+    { icon: "🤍", name: "Janeiro Branco", color: "#3E5A70", desc: "Saúde mental e emocional. Bom mês para falar de bem estar no trabalho e riscos psicossociais no PGR." },
+    { icon: "💜", name: "Fevereiro Roxo e Laranja", color: "#EFE6F7", desc: "Conscientização sobre lúpus, fibromialgia, Alzheimer e leucemia. Gancho para doação de medula e exames periódicos." },
+    { icon: "💜", name: "Março Lilás", color: "#F1E8F7", desc: "Prevenção do câncer do colo do útero. Mês da mulher: saúde da trabalhadora e exames preventivos." },
+    { icon: "💚", name: "Abril Verde", color: "#E3F4EA", desc: "O mês da Saúde e Segurança do Trabalho. Principal campanha do ano para a eProtege: PGR, PCMSO, prevenção de acidentes e SIPAT." },
+    { icon: "💛", name: "Maio Amarelo", color: "#FDF3D3", desc: "Segurança no trânsito. Gancho para acidentes de trajeto, motoristas e frota das empresas." },
+    { icon: "❤️", name: "Junho Vermelho", color: "#FBE3E3", desc: "Incentivo à doação de sangue. Ação simples para engajar colaboradores e mostrar cuidado." },
+    { icon: "💛", name: "Julho Amarelo", color: "#FDF3D3", desc: "Prevenção das hepatites virais. Gancho para vacinação e PCMSO." },
+    { icon: "💜", name: "Agosto Lilás", color: "#F1E8F7", desc: "Combate à violência contra a mulher. Gancho para prevenção ao assédio, CIPA e canais de denúncia." },
+    { icon: "💛", name: "Setembro Amarelo", color: "#FDF3D3", desc: "Prevenção ao suicídio e valorização da vida. Saúde mental no ambiente de trabalho." },
+    { icon: "🩷", name: "Outubro Rosa", color: "#FCE6EF", desc: "Prevenção do câncer de mama. Exames, autocuidado e apoio às colaboradoras." },
+    { icon: "💙", name: "Novembro Azul", color: "#E2ECF8", desc: "Saúde do homem e prevenção do câncer de próstata. Exames de rotina e check up." },
+    { icon: "❤️", name: "Dezembro Vermelho e Laranja", color: "#FCE7DF", desc: "Prevenção ao HIV/AIDS e ao câncer de pele. Gancho para proteção solar de quem trabalha ao ar livre." },
+  ];
+
+  // ---- Datas 2027 ----
+  // Para anexar o criativo de um post, adicione drive: "link da pasta" na data.
+  const posts = [
+    // Janeiro
+    { date: "2027-01-01", cat: "feriado", title: "Ano Novo", idea: "Mensagem de Ano Novo: 2027 com mais saúde e segurança para cada colaborador. Agradecer a confiança das empresas clientes." },
+    { date: "2027-01-12", cat: "saude", title: "Janeiro Branco: saúde mental no trabalho", idea: "Carrossel com sinais de esgotamento no trabalho e como o PGR passa a olhar para os riscos psicossociais." },
+    { date: "2027-01-20", cat: "sst", title: "SST no começo do ano", idea: "Checklist de início de ano: exames periódicos vencendo, ASOs em dia e treinamentos para renovar no primeiro trimestre." },
+
+    // Fevereiro
+    { date: "2027-02-04", cat: "saude", title: "Dia Mundial do Câncer", idea: "Prevenção começa nos exames de rotina. Mostrar como o PCMSO ajuda a acompanhar a saúde da equipe." },
+    { date: "2027-02-08", cat: "facultativo", title: "Carnaval (segunda)", idea: "Aviso de funcionamento no Carnaval e dicas de segurança para quem trabalha no feriado." },
+    { date: "2027-02-09", cat: "facultativo", title: "Carnaval (terça)", idea: "" },
+    { date: "2027-02-10", cat: "facultativo", title: "Quarta de Cinzas (até 14h)", idea: "" },
+    { date: "2027-02-28", cat: "sst", title: "Dia Internacional de Prevenção às LER/DORT", idea: "Ergonomia no escritório e na produção: 5 ajustes simples no posto de trabalho que evitam afastamentos." },
+
+    // Março
+    { date: "2027-03-03", cat: "saude", title: "Dia Mundial da Audição", idea: "Ruído no trabalho: quando o protetor auricular é obrigatório e por que a audiometria faz parte do PCMSO." },
+    { date: "2027-03-08", cat: "data", title: "Dia Internacional da Mulher", idea: "Homenagem às trabalhadoras e à equipe eProtege. Gancho para saúde da mulher no Março Lilás." },
+    { date: "2027-03-15", cat: "data", title: "Dia do Consumidor", idea: "Condição especial para novos clientes ou conteúdo sobre o que avaliar ao contratar uma empresa de SST." },
+    { date: "2027-03-22", cat: "data", title: "Dia Mundial da Água", idea: "Hidratação no trabalho, especialmente em ambientes quentes e atividades externas." },
+    { date: "2027-03-26", cat: "feriado", title: "Paixão de Cristo (Sexta Santa)", idea: "Aviso de funcionamento do feriado de Páscoa." },
+    { date: "2027-03-28", cat: "data", title: "Páscoa", idea: "Mensagem de Páscoa: renovação e cuidado com as pessoas." },
+
+    // Abril
+    { date: "2027-04-01", cat: "sst", title: "Início do Abril Verde", idea: "Abertura da campanha: série de posts do mês sobre prevenção de acidentes e doenças do trabalho." },
+    { date: "2027-04-07", cat: "saude", title: "Dia Mundial da Saúde", idea: "Saúde do colaborador é resultado para a empresa. Dados de afastamento e o papel dos exames ocupacionais." },
+    { date: "2027-04-16", cat: "saude", title: "Dia Mundial da Voz", idea: "Cuidados com a voz para quem trabalha com atendimento, telemarketing e ensino." },
+    { date: "2027-04-21", cat: "feriado", title: "Tiradentes", idea: "Aviso de funcionamento do feriado." },
+    { date: "2027-04-26", cat: "saude", title: "Dia Nacional de Prevenção e Combate à Hipertensão", idea: "Pressão alta e trabalho: aferição nos exames periódicos e hábitos que ajudam." },
+    { date: "2027-04-28", cat: "sst", title: "Dia Mundial da Segurança e Saúde no Trabalho", idea: "Data mais importante do ano para a eProtege. Também é o Dia em Memória das Vítimas de Acidentes e Doenças do Trabalho. Post institucional forte + vídeo da equipe técnica." },
+
+    // Maio
+    { date: "2027-05-01", cat: "feriado", title: "Dia do Trabalho", idea: "Homenagem a quem trabalha todos os dias e volta para casa em segurança." },
+    { date: "2027-05-09", cat: "data", title: "Dia das Mães", idea: "Homenagem às mães trabalhadoras. Gancho para direitos da gestante e acompanhamento no PCMSO." },
+    { date: "2027-05-12", cat: "saude", title: "Dia do Enfermeiro", idea: "Bastidores da equipe de saúde da eProtege e do consultório móvel." },
+    { date: "2027-05-18", cat: "sst", title: "Maio Amarelo: acidente de trajeto", idea: "O que é acidente de trajeto, como registrar e como orientar a equipe que usa moto ou carro." },
+    { date: "2027-05-27", cat: "facultativo", title: "Corpus Christi", idea: "Aviso de funcionamento do feriado." },
+    { date: "2027-05-31", cat: "saude", title: "Dia Mundial sem Tabaco", idea: "Tabagismo e saúde ocupacional: programas simples de apoio dentro da empresa." },
+
+    // Junho
+    { date: "2027-06-03", cat: "data", title: "Dia do Profissional de RH", idea: "Homenagem ao RH, nosso principal parceiro. Mostrar como o App eProtege simplifica a rotina de SST." },
+    { date: "2027-06-05", cat: "data", title: "Dia Mundial do Meio Ambiente", idea: "Ambiente de trabalho seguro também é ambiente saudável. Agentes químicos e o LTCAT." },
+    { date: "2027-06-12", cat: "data", title: "Dia dos Namorados", idea: "Post leve: cuidar de quem a gente ama começa por voltar para casa em segurança." },
+    { date: "2027-06-14", cat: "saude", title: "Dia Mundial do Doador de Sangue", idea: "Junho Vermelho: incentive a equipe a doar. Ideia de ação coletiva para empresas clientes." },
+    { date: "2027-06-24", cat: "data", title: "São João", idea: "Segurança nas festas juninas da empresa: fogueira, fogos e alimentação." },
+
+    // Julho
+    { date: "2027-07-02", cat: "sst", title: "Dia do Bombeiro", idea: "Brigada de incêndio e plano de emergência: sua empresa está preparada?" },
+    { date: "2027-07-14", cat: "sst", title: "Férias de julho e frio", idea: "Trabalho em baixas temperaturas: EPIs, pausas e cuidados com a saúde no inverno." },
+    { date: "2027-07-27", cat: "sst", title: "Dia Nacional de Prevenção de Acidentes do Trabalho", idea: "Números de acidentes no Brasil e as 3 medidas que mais previnem. Chamada para conhecer os serviços eProtege." },
+    { date: "2027-07-28", cat: "saude", title: "Dia Mundial de Luta contra as Hepatites", idea: "Julho Amarelo: vacinação e exames para profissões de risco biológico." },
+
+    // Agosto
+    { date: "2027-08-05", cat: "saude", title: "Dia Nacional da Saúde", idea: "O que a medicina do trabalho faz pela saúde do colaborador, explicado de forma simples." },
+    { date: "2027-08-08", cat: "data", title: "Dia dos Pais", idea: "Homenagem aos pais trabalhadores. Dia Nacional de Combate ao Colesterol cai no mesmo dia: dá para unir os temas." },
+    { date: "2027-08-18", cat: "sst", title: "Agosto Lilás: prevenção ao assédio", idea: "CIPA e prevenção ao assédio: o que a empresa precisa ter (canal de denúncia, treinamento, acolhimento)." },
+    { date: "2027-08-27", cat: "saude", title: "Dia do Psicólogo", idea: "Riscos psicossociais no trabalho: como identificar e por que entram no gerenciamento de riscos." },
+    { date: "2027-08-29", cat: "saude", title: "Dia Nacional de Combate ao Fumo", idea: "Ambientes livres de fumo e apoio a quem quer parar." },
+
+    // Setembro
+    { date: "2027-09-07", cat: "feriado", title: "Independência do Brasil", idea: "Aviso de funcionamento do feriado." },
+    { date: "2027-09-09", cat: "data", title: "Dia do Administrador", idea: "Para o gestor: SST como investimento, com redução de afastamentos e passivo trabalhista." },
+    { date: "2027-09-10", cat: "saude", title: "Dia Mundial de Prevenção do Suicídio", idea: "Setembro Amarelo: como líderes podem perceber sinais e acolher. Tom cuidadoso, com CVV 188." },
+    { date: "2027-09-15", cat: "data", title: "Dia do Cliente", idea: "Agradecimento às mais de 750 clínicas credenciadas e às empresas que confiam na eProtege." },
+    { date: "2027-09-21", cat: "data", title: "Dia Nacional de Luta da Pessoa com Deficiência", idea: "Inclusão com segurança: adaptação do posto de trabalho e acessibilidade." },
+    { date: "2027-09-22", cat: "data", title: "Dia do Contador", idea: "Homenagem aos contadores parceiros. eSocial e SST: os eventos que o escritório contábil precisa acompanhar." },
+    { date: "2027-09-29", cat: "saude", title: "Dia Mundial do Coração", idea: "Saúde cardiovascular: sedentarismo no trabalho e exames que ajudam a prevenir." },
+
+    // Outubro
+    { date: "2027-10-10", cat: "saude", title: "Dia Mundial da Saúde Mental", idea: "Ações práticas de saúde mental que a empresa pode começar este mês." },
+    { date: "2027-10-12", cat: "feriado", title: "Nossa Senhora Aparecida e Dia das Crianças", idea: "Post leve sobre voltar para casa em segurança para quem nos espera." },
+    { date: "2027-10-15", cat: "data", title: "Dia do Professor", idea: "Homenagem aos instrutores de treinamentos e cursos de NR." },
+    { date: "2027-10-18", cat: "saude", title: "Dia do Médico", idea: "Homenagem à equipe médica própria da eProtege. Apresentar os médicos do trabalho." },
+    { date: "2027-10-20", cat: "saude", title: "Outubro Rosa: exames e autocuidado", idea: "Como apoiar as colaboradoras na prevenção do câncer de mama." },
+    { date: "2027-10-28", cat: "facultativo", title: "Dia do Servidor Público", idea: "" },
+
+    // Novembro
+    { date: "2027-11-02", cat: "feriado", title: "Finados", idea: "" },
+    { date: "2027-11-10", cat: "saude", title: "Dia Nacional de Prevenção e Combate à Surdez", idea: "Perda auditiva induzida por ruído: prevenção e acompanhamento com audiometria." },
+    { date: "2027-11-14", cat: "saude", title: "Dia Mundial do Diabetes", idea: "Novembro Azul e diabetes: check up e hábitos simples na rotina de trabalho." },
+    { date: "2027-11-15", cat: "feriado", title: "Proclamação da República", idea: "Aviso de funcionamento do feriado." },
+    { date: "2027-11-20", cat: "feriado", title: "Dia Nacional de Zumbi e da Consciência Negra", idea: "Diversidade e respeito no ambiente de trabalho." },
+    { date: "2027-11-26", cat: "data", title: "Black Friday", idea: "Oferta pontual para novos contratos ou para o App eProtege." },
+    { date: "2027-11-27", cat: "sst", title: "Dia do Técnico de Segurança do Trabalho", idea: "Homenagem aos técnicos de segurança da eProtege e dos clientes. Bastidores de uma visita técnica." },
+
+    // Dezembro
+    { date: "2027-12-01", cat: "saude", title: "Dia Mundial de Luta contra a AIDS", idea: "Dezembro Vermelho: informação sem preconceito e sigilo médico no trabalho." },
+    { date: "2027-12-06", cat: "sst", title: "Planejamento SST 2028", idea: "Checklist de fim de ano: PGR, PCMSO, exames e treinamentos que vencem no começo de 2028." },
+    { date: "2027-12-11", cat: "data", title: "Dia do Engenheiro", idea: "Homenagem ao engenheiro de segurança da equipe eProtege." },
+    { date: "2027-12-15", cat: "sst", title: "Festas de fim de ano com segurança", idea: "Confraternização da empresa: bebida e direção, e cuidados no deslocamento." },
+    { date: "2027-12-24", cat: "facultativo", title: "Véspera de Natal (após 14h)", idea: "" },
+    { date: "2027-12-25", cat: "feriado", title: "Natal", idea: "Mensagem de Natal da equipe eProtege." },
+    { date: "2027-12-31", cat: "facultativo", title: "Véspera de Ano Novo (após 14h)", idea: "Retrospectiva 2027 e convite para planejar 2028 juntos." },
+  ];
+
+  const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const MES_ABR = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+  const DIAS = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+  const DIAS_ABR = ["D","S","T","Q","Q","S","S"];
+  const pad = n => String(n).padStart(2, "0");
+  const keyOf = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`;
+  const dateOf = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+
+  const _now = new Date();
+  const TODAY = keyOf(_now.getFullYear(), _now.getMonth(), _now.getDate());
+  let viewMonth = _now.getFullYear() === YEAR ? _now.getMonth() : 0;
+
+  // ---- Armazenamento no navegador (com proteção para modo privado) ----
+  function load(k, def) { try { return JSON.parse(localStorage.getItem(k)) || def; } catch (e) { return def; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  const DONE_KEY = "eprotege_cal2027_done";
+  const FILTER_KEY = "eprotege_cal2027_hidden";
+  const REPORTS_KEY = "eprotege_cal2027_reports";
+  const postId = p => p.date + "|" + p.title;
+  const isDone = p => !!load(DONE_KEY, {})[postId(p)];
+  function toggleDone(p) { const o = load(DONE_KEY, {}); o[postId(p)] = !o[postId(p)]; save(DONE_KEY, o); renderAll(); }
+
+  let hidden = load(FILTER_KEY, []);
+  const visible = p => !hidden.includes(p.cat);
+  // Feriados e facultativos não são "posts"; o contador considera só datas com ideia de pauta
+  const isPostable = p => !!p.idea;
+
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  const byDate = (a, b) => a.date.localeCompare(b.date);
+
+  // ---- Topo ----
+  function renderStats() {
+    const feriados = posts.filter(p => p.cat === "feriado").length;
+    const sst = posts.filter(p => p.cat === "sst").length;
+    const postable = posts.filter(isPostable);
+    const done = postable.filter(isDone).length;
+    document.getElementById("stats").innerHTML = `
+      <div class="stat"><b>${posts.length}</b><span>datas no ano</span></div>
+      <div class="stat"><b>${feriados}</b><span>feriados nacionais</span></div>
+      <div class="stat"><b>${sst}</b><span>datas de SST</span></div>
+      <div class="stat"><b>${done}/${postable.length}</b><span>pautas publicadas</span></div>`;
+  }
+
+  function renderLegend() {
+    const el = document.getElementById("legend");
+    el.innerHTML = Object.entries(CATS).map(([k, c]) =>
+      `<button class="chip${hidden.includes(k) ? " off" : ""}" data-cat="${k}"><span class="swatch" style="background:${c.color}"></span>${c.name}</button>`
+    ).join("") + `<span class="legend-hint">Clique para mostrar ou esconder</span>`;
+    el.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+      const k = b.dataset.cat;
+      hidden = hidden.includes(k) ? hidden.filter(x => x !== k) : [...hidden, k];
+      save(FILTER_KEY, hidden); renderAll();
+    }));
+  }
+
+  // ---- Mês ----
+  function renderCampaign() {
+    const c = CAMPAIGNS[viewMonth];
+    document.getElementById("campaign").innerHTML = `
+      <div class="ribbon" style="background:${c.color}">${c.icon}</div>
+      <div><h3>Campanha do mês: ${c.name}</h3><p>${esc(c.desc)}</p></div>`;
+  }
+
+  function renderCalendar() {
+    document.getElementById("calTitle").textContent = `${MESES[viewMonth]} ${YEAR}`;
+    document.getElementById("prevBtn").disabled = viewMonth === 0;
+    document.getElementById("nextBtn").disabled = viewMonth === 11;
+    const grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+    const firstDay = new Date(YEAR, viewMonth, 1).getDay();
+    const daysInMonth = new Date(YEAR, viewMonth + 1, 0).getDate();
+    for (let i = 0; i < firstDay; i++) {
+      const e = document.createElement("div"); e.className = "cell empty"; grid.appendChild(e);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = keyOf(YEAR, viewMonth, d);
+      const dayPosts = posts.filter(p => p.date === key);
+      const cell = document.createElement("div"); cell.className = "cell";
+      const dow = new Date(YEAR, viewMonth, d).getDay();
+      if (dow === 0 || dow === 6) cell.classList.add("weekend");
+      if (dayPosts.some(p => p.cat === "feriado")) cell.classList.add("holiday");
+      if (key === TODAY) cell.classList.add("today");
+      cell.innerHTML = `<div class="num">${d}</div>`;
+      dayPosts.filter(visible).forEach(p => {
+        const c = CATS[p.cat];
+        const done = isDone(p);
+        const b = document.createElement("button");
+        b.className = "event" + (done ? " done" : "");
+        b.style.background = c.color; b.style.color = c.text;
+        b.title = `${c.name}: ${p.title}`;
+        b.innerHTML = (isPostable(p) ? `<span class="ev-check" title="Marcar como publicado">${done ? "✓" : ""}</span>` : "") +
+          `<span class="ev-title">${esc(p.title)}</span>`;
+        b.addEventListener("click", (e) => {
+          if (e.target.closest(".ev-check")) { e.stopPropagation(); toggleDone(p); return; }
+          const card = document.getElementById("card-" + p.date + "-" + slug(p.title));
+          if (card) {
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+            card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 1600);
+          }
+        });
+        cell.appendChild(b);
+      });
+      grid.appendChild(cell);
+    }
+    const monthPosts = posts.filter(p => dateOf(p.date).getMonth() === viewMonth && isPostable(p));
+    document.getElementById("doneCounter").textContent =
+      `${monthPosts.filter(isDone).length} de ${monthPosts.length} pautas publicadas`;
+  }
+
+  const slug = s => s.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "");
+
+  function renderList() {
+    document.getElementById("listTitle").textContent = `Datas e pautas de ${MESES[viewMonth].toLowerCase()}`;
+    const list = document.getElementById("postsList");
+    const items = posts.filter(p => dateOf(p.date).getMonth() === viewMonth && visible(p)).sort(byDate);
+    if (!items.length) { list.innerHTML = `<div class="empty-msg">Nenhuma data visível neste mês. Confira os filtros de categoria acima.</div>`; return; }
+    list.innerHTML = items.map((p, i) => {
+      const c = CATS[p.cat];
+      const dt = dateOf(p.date);
+      const done = isDone(p);
+      let actions = "";
+      if (isPostable(p)) {
+        actions += `<button class="btn btn-done${done ? " is-done" : ""}" data-done="${i}">${done ? "✓ Publicado" : "Marcar como publicado"}</button>`;
+        actions += `<button class="btn btn-copy" data-copy="${i}">📋 Copiar ideia</button>`;
+      }
+      if (p.drive) actions += `<a class="btn btn-drive" href="${esc(p.drive)}" target="_blank" rel="noopener">📁 Abrir criativo no Drive</a>`;
+      const status = isPostable(p) ? `<span class="pill ${done ? "ok" : "todo"}">${done ? "Publicado ✓" : "A publicar"}</span>` : "";
+      return `
+        <div class="post-card" id="card-${p.date}-${slug(p.title)}">
+          <div class="post-top">
+            <div class="post-date"><div class="d">${dt.getDate()}</div><div class="m">${MES_ABR[dt.getMonth()]}</div></div>
+            <div class="post-bar" style="background:${c.color}"></div>
+            <div class="post-body">
+              <div class="post-cat" style="color:${p.cat === "sst" ? "#A67C00" : p.cat === "facultativo" ? "#2B8F95" : c.color}">${c.name}</div>
+              <div class="post-title">${esc(p.title)}</div>
+              <div class="post-meta"><span class="pill dow">${DIAS[dt.getDay()]}</span>${status}</div>
+            </div>
+          </div>
+          ${p.idea ? `<div class="idea"><b>Ideia de pauta</b><p id="idea-${i}">${esc(p.idea)}</p></div>` : ""}
+          ${actions ? `<div class="post-actions">${actions}</div>` : ""}
+        </div>`;
+    }).join("");
+
+    list.querySelectorAll(".btn-done").forEach(btn =>
+      btn.addEventListener("click", () => toggleDone(items[+btn.dataset.done])));
+    list.querySelectorAll(".btn-copy").forEach(btn =>
+      btn.addEventListener("click", () => {
+        const p = items[+btn.dataset.copy];
+        const txt = `${p.title} (${dateOf(p.date).toLocaleDateString("pt-BR")})\n${p.idea}`;
+        const done = () => {
+          const old = btn.textContent; btn.textContent = "✅ Ideia copiada!"; btn.classList.add("copied");
+          setTimeout(() => { btn.textContent = old; btn.classList.remove("copied"); }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done).catch(() => {});
+      }));
+  }
+
+  // ---- Ano ----
+  function renderYear() {
+    const grid = document.getElementById("yearGrid");
+    grid.innerHTML = "";
+    for (let m = 0; m < 12; m++) {
+      const card = document.createElement("button");
+      card.className = "mini";
+      const first = new Date(YEAR, m, 1).getDay();
+      const days = new Date(YEAR, m + 1, 0).getDate();
+      let cells = DIAS_ABR.map(d => `<span class="wd">${d}</span>`).join("");
+      for (let i = 0; i < first; i++) cells += "<span></span>";
+      for (let d = 1; d <= days; d++) {
+        const ps = posts.filter(p => p.date === keyOf(YEAR, m, d) && visible(p));
+        if (ps.length) {
+          // prioridade de cor: feriado > sst > facultativo > saúde > data
+          const order = ["feriado", "sst", "facultativo", "saude", "data"];
+          const top = order.find(k => ps.some(p => p.cat === k));
+          const c = CATS[top];
+          cells += `<span class="has" style="background:${c.color};color:${c.text}" title="${esc(ps.map(p => p.title).join(" / "))}">${d}</span>`;
+        } else cells += `<span>${d}</span>`;
+      }
+      const count = posts.filter(p => dateOf(p.date).getMonth() === m && visible(p)).length;
+      card.innerHTML = `
+        <div class="mini-head"><h3>${MESES[m]}</h3><span class="camp">${CAMPAIGNS[m].icon} ${CAMPAIGNS[m].name}</span></div>
+        <div class="mini-days">${cells}</div>
+        <div class="mini-count">${count} ${count === 1 ? "data" : "datas"} · ver o mês →</div>`;
+      card.addEventListener("click", () => { viewMonth = m; showView("viewMes"); renderAll(); });
+      grid.appendChild(card);
+    }
+
+    // Feriados e facultativos, com aviso de feriado prolongado
+    const rows = posts.filter(p => p.cat === "feriado" || p.cat === "facultativo").sort(byDate).map(p => {
+      const dt = dateOf(p.date); const dow = dt.getDay();
+      let note = "";
+      if (dow === 1 || dow === 5) note = "Fim de semana prolongado";
+      else if (dow === 2 || dow === 4) note = "Possível emenda";
+      else if (dow === 0 || dow === 6) note = "Cai no fim de semana";
+      return `<tr><td>${pad(dt.getDate())}/${pad(dt.getMonth() + 1)}</td><td>${DIAS[dow]}</td>
+        <td>${esc(p.title)}</td><td>${CATS[p.cat].name}</td><td class="long">${note}</td></tr>`;
+    }).join("");
+    document.getElementById("holidayTable").innerHTML =
+      `<tr><th>Data</th><th>Dia</th><th>Feriado</th><th>Tipo</th><th>Observação</th></tr>` + rows;
+  }
+
+  // ---- Relatórios ----
+  function renderReports() {
+    const r = load(REPORTS_KEY, { engage: {}, insights: "" });
+    const done = posts.filter(p => isPostable(p) && isDone(p)).sort(byDate);
+    document.getElementById("engageTable").innerHTML =
+      `<tr><th>Data</th><th>Categoria</th><th>Pauta</th><th>Curtidas</th><th>Comentários</th><th>Alcance</th></tr>` +
+      (done.length ? done.map(p => {
+        const id = postId(p); const e = r.engage[id] || {}; const c = CATS[p.cat]; const dt = dateOf(p.date);
+        return `<tr>
+          <td>${pad(dt.getDate())}/${pad(dt.getMonth() + 1)}</td>
+          <td style="white-space:nowrap"><span class="swatch" style="display:inline-block;vertical-align:-2px;margin-right:6px;background:${c.color}"></span>${c.name}</td>
+          <td class="rep-post">${esc(p.title)}</td>
+          <td><input data-id="${esc(id)}" data-k="likes" value="${esc(e.likes)}"></td>
+          <td><input data-id="${esc(id)}" data-k="coments" value="${esc(e.coments)}"></td>
+          <td><input data-id="${esc(id)}" data-k="alcance" value="${esc(e.alcance)}"></td></tr>`;
+      }).join("") : `<tr><td colspan="6" style="color:var(--muted);padding:14px 8px">Nenhuma pauta marcada como publicada ainda. Use o ✓ no calendário.</td></tr>`);
+    document.getElementById("insightsBox").value = r.insights || "";
+  }
+
+  document.addEventListener("input", (ev) => {
+    const el = ev.target;
+    const r = load(REPORTS_KEY, { engage: {}, insights: "" });
+    if (el.id === "insightsBox") { r.insights = el.value; save(REPORTS_KEY, r); return; }
+    if (el.dataset && el.dataset.id) {
+      r.engage[el.dataset.id] = r.engage[el.dataset.id] || {};
+      r.engage[el.dataset.id][el.dataset.k] = el.value; save(REPORTS_KEY, r);
+    }
+  });
+
+  // ---- Navegação ----
+  function showView(view) {
+    document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.view === view));
+    ["viewMes", "viewAno", "viewRelatorios"].forEach(v => document.getElementById(v).hidden = v !== view);
+    if (view === "viewRelatorios") renderReports();
+    window.scrollTo({ top: document.querySelector(".tabs").offsetTop - 10, behavior: "smooth" });
+  }
+  document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => showView(btn.dataset.view)));
+  document.getElementById("prevBtn").onclick = () => { if (viewMonth > 0) { viewMonth--; renderMonth(); } };
+  document.getElementById("nextBtn").onclick = () => { if (viewMonth < 11) { viewMonth++; renderMonth(); } };
+
+  function renderMonth() { renderCampaign(); renderCalendar(); renderList(); }
+  function renderAll() { renderStats(); renderLegend(); renderMonth(); renderYear(); }
+
+  renderAll();
+</script>
+</body>
+</html>
