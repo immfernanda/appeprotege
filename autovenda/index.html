@@ -814,7 +814,7 @@ function render(){
   let h='';
   if(S.step===P.EMP){
     const manual=S.semCnpj||S.emp?.falhou||(S.emp?.razao&&!S.gr);
-    const chip=f=>`<button type="button" class="fx ${S.faixa===f.id?'on':''}" data-k="faixa" data-v="${f.id}"><b>${esc(f.t.replace(' funcionários','').replace('Mais de ','+'))}</b><small>${f.id===GRANDE?'consultor':'pessoas'}</small></button>`;
+    const chip=f=>`<button type="button" class="fx ${S.faixa===f.id?'on':''}" data-k="faixa" data-v="${f.id}"><b>${esc(f.t.replace(' funcionários','').replace('Mais de ','+'))}</b><small>funcionários</small></button>`;
     h=`<div class="q">Descubra o plano certo para a sua empresa</div>
       <p class="sub-q">${S.semCnpj?'Sem problema. Conte o que a sua equipe faz:':'Digite o CNPJ e nós identificamos a atividade e o grau de risco.'}</p>
       ${S.semCnpj?'':`<div class="f big" id="f_cnpj"><label for="cnpj" class="sr">CNPJ da empresa</label><span class="in-ic">${icoBusca}</span><input id="cnpj" inputmode="numeric" placeholder="CNPJ da empresa" value="${esc(S.cnpj)}" autocomplete="off"><span class="msg">Digite os 14 números do CNPJ</span></div>${statusCnpj()}`}
